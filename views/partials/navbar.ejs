@@ -1,22 +1,40 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-  <a class="navbar-brand text-success" href="/">FoodDeck</a>
-  <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarNav">
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #fff;">
+  <a class="navbar-brand" href="/">FoodDeck</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
+
   <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav ml-auto">
-      <li class="nav-item">
-        <a class="nav-link text-dark" href="/">Home</a>
+    <ul class="navbar-nav mr-auto">
+      <!-- Categories Dropdown -->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Categories
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/categories/farm-fresh">Farm Fresh</a>
+          <a class="dropdown-item" href="/categories/dry-groceries">Dry Groceries</a>
+          <a class="dropdown-item" href="/categories/beverages">Beverages</a>
+          <a class="dropdown-item" href="/categories/snacks">Snacks</a>
+        </div>
       </li>
+
+      <!-- Cart Link -->
       <li class="nav-item">
-        <a class="nav-link text-dark" href="/categories">Categories</a>
+        <a class="nav-link" href="/cart">Cart</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link text-dark" href="/cart">Cart</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-dark" href="/payment">Payment</a>
+
+      <!-- User Profile Dropdown -->
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="userProfileDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          User Profile
+        </a>
+        <div class="dropdown-menu" aria-labelledby="userProfileDropdown">
+          <a class="dropdown-item" href="/login">Login</a>
+          <a class="dropdown-item" href="/signup">Sign Up</a>
+        </div>
       </li>
     </ul>
   </div>
 </nav>
+
