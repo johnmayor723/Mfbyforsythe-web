@@ -1,0 +1,47 @@
+/* Navbar Styles */
+.navbar {
+    background-color: #fff; /* White background */
+}
+
+.navbar-brand {
+    color: #28a745; /* Green color for brand */
+}
+
+.navbar-nav .nav-link {
+    color: #28a745; /* Green color for nav links */
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ff6f00; /* Orange hover color */
+}
+
+.dropdown-item {
+    color: #28a745; /* Green color for dropdown items */
+}
+
+.dropdown-item:hover {
+    color: #ff6f00; /* Orange hover color for dropdown items */
+    background-color: #e2e2e2; /* Optional background on hover */
+}
+
+/* Navbar Toggler Color */
+.navbar-toggler-icon {
+    background-color: #28a745; /* Green color for toggler */
+}
+
+/* Footer styles */
+footer {
+    background-color: #f8f9fa; /* Light gray background */
+}
+
+footer h5 {
+    font-weight: bold; /* Bold headings */
+}
+
+footer a {
+    color: #28a745; /* Change to your desired link color */
+}
+
+footer a:hover {
+    color: #ff6f00; /* Change to your desired hover color */
+}
