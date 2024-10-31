@@ -1,0 +1,26 @@
+
+<div class="container mt-5">
+  <!-- Single Image Hero Section -->
+  <div class="card mb-4">
+    <img src="/images/hero-payment.jpg" class="card-img-top" alt="Payment Hero Image">
+  </div>
+
+  <h1>Payment</h1>
+  <form action="/payment/process" method="POST">
+    <div class="form-group">
+      <label for="cardNumber">Card Number</label>
+      <input type="text" class="form-control" id="cardNumber" name="cardNumber" required>
+    </div>
+    <div class="form-row">
+      <div class="col">
+        <label for="expiryDate">Expiry Date</label>
+        <input type="text" class="form-control" id="expiryDate" name="expiryDate" placeholder="MM/YY" required>
+      </div>
+      <div class="col">
+        <label for="cvv">CVV</label>
+        <input type="text" class="form-control" id="cvv" name="cvv" required>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-success mt-4">Pay Now</button>
+  </form>
+</div>

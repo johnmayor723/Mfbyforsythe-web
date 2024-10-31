@@ -1,0 +1,23 @@
+
+<div class="container mt-5">
+  <!-- Single Image Hero Section -->
+  <div class="card mb-4">
+    <img src="/images/hero-category.jpg" class="card-img-top" alt="Category Hero Image">
+  </div>
+
+  <h1><%= categoryName %> Products</h1>
+  <div class="row">
+    <% categoryProducts.forEach(product => { %>
+      <div class="col-md-3 col-6 mb-4">
+        <div class="card h-100">
+          <img src="<%= product.image %>" class="card-img-top" alt="<%= product.title %>">
+          <div class="card-body text-center">
+            <h5 class="card-title"><%= product.title %></h5>
+            <p class="text-success">$<%= product.price %></p>
+            <a href="/product/<%= product.id %>" class="btn btn-outline-success btn-sm">View Details</a>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</div>
