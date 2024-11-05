@@ -8,45 +8,32 @@ const API_URL = "https://pantry-hub-server.onrender.com/api/products";
 router.get("/", async (req, res) => {
   try {
     const { data: products } = await axios.get(API_URL);
-    res.render("index", { products });
+    res.render("Homepage", { products, title: "Home" });
   } catch (err) {
     res.status(500).send("Error loading products");
   }
 });
 
 // Product detail route
-router.get("/product/:id", async (req, res) => {
+router.get("/products/:id", async (req, res) => {
   try {
     const { data: product } = await axios.get(`${API_URL}/${req.params.id}`);
     const { data: allProducts } = await axios.get(API_URL);
     const suggestedProducts = allProducts.sort(() => 0.5 - Math.random()).slice(0, 8);
-    res.render("show", { product, suggestedProducts });
+    res.render("shop-detail", { product, products: suggestedProducts, title: "Product Detail" });
   } catch (err) {
     res.status(500).send("Error loading product details");
   }
 });
 
-// Cart page route
-router.get("/cart", (req, res) => {
-  res.render("cart", { cart: req.session.cart || [] });
+// Contact page route
+router.get("/contact", (req, res) => {
+  res.render("contact");
 });
 
-// Payment page route
-router.get("/payment", (req, res) => {
-  res.render("payment");
-});
-
-// Add to Cart
-router.post("/cart/add/:id", (req, res) => {
-  const product = req.session.cart.find(item => item.id === req.params.id);
-  if (product) {
-    product.quantity++;
-  } else {
-    req.session.cart.push({ id: req.params.id, quantity: 1 });
-  }
-  req.flash("success", "Product added to cart");
-  res.redirect("/cart");
+// About page route
+router.get("/about", (req, res) => {
+  res.render("about");
 });
 
 module.exports = router;
-

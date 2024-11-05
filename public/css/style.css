@@ -379,7 +379,7 @@
 }
 
 .vesitable .owl-nav .owl-next:hover {
-    background: var(--bs-secondary);
+    background: "green";
     color: var(--bs-white);
 }
 /*** vesitable End ***/
@@ -405,7 +405,7 @@
 }
 
 .counter h4 {
-    color: var(--bs-primary);
+    color: green;
     letter-spacing: 1px;
     text-transform: uppercase;
 }
