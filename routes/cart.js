@@ -26,6 +26,7 @@ router.post('/:id', (req, res) => {
         req.session.cart.items.push({ id, name, imageUrl, price, quantity: 1 });
     }
     calculateTotals(req.session.cart);
+    console.log("Cart Items:", req.session.cart.items);
     req.flash('success_msg', 'Item added to cart!');
     res.redirect('/cart');
     } catch (error) {
@@ -43,22 +44,24 @@ router.get('/', (req, res) => {
 });
 
 // Increase product quantity by one
-router.post('/increase', (req, res) => {
-    const { id } = req.body;
+/*router.post('/increase', (req, res, next) => {
+  console.log("increasing")
+  const { id } = req.body;
     let product = findProductInCart(req.session.cart.items, id);
 
     if (product) {
         product.quantity += 1;
         calculateTotals(req.session.cart);
     }
+    req.flash('success_msg', ' successfully updated cart.');
     res.redirect('/cart');
-});
+});*/
 
 
 
 // Reduce product quantity by one
-router.post('/reduce', (req, res) => {
-    const { id } = req.body;
+router.post('/reduce/:id', (req, res) => {
+    const { id } = req.params;
     let product = findProductInCart(req.session.cart.items, id);
 
     if (product && product.quantity > 1) {
@@ -69,11 +72,25 @@ router.post('/reduce', (req, res) => {
     calculateTotals(req.session.cart);
     res.redirect('/cart');
 });
+// increase product quantity by one
+router.post('/increase/:id', (req, res) => {
+    const { id } = req.params;
+    console.log("Received ID:", id); // Log to verify that the ID is correct
 
+    let product = findProductInCart(req.session.cart.items, id);
+    console.log("Found product:", product);
+
+    if (product) {
+        product.quantity += 1;
+        calculateTotals(req.session.cart); // Assuming this updates total amount and quantity
+    }
+    
+    res.redirect('/cart');
+});
 
 // Remove product from cart
-router.post('/remove', (req, res) => {
-    const { id } = req.body;
+router.post('/remove/:id', (req, res) => {
+    const { id } = req.params;
     req.session.cart.items = req.session.cart.items.filter(item => item.id !== id);
     calculateTotals(req.session.cart);
     res.redirect('/cart');
@@ -89,3 +106,4 @@ router.get("/clearCart", (req, res) => {
 
 
 module.exports = router;
+ 
