@@ -1,76 +1,91 @@
 const express = require("express");
 const router = express.Router();
-const Cart = require('../models');
 
-// Route to add an item to the cart
-router.post('/:id', (req, res, next) => {
-  const productId = req.params.id;
-  const cart = new Cart(req.session.cart ? req.session.cart.items : {});
-  
-  const { name, imageUrl, price } = req.body;
-  const product = { name, imageUrl, price };
 
-  cart.add(product, productId);
-  req.session.cart = cart;
-  req.flash('success_msg', 'Item added to cart!'); // Flash message for success
-  res.redirect('/');
-});
 
-// Cart view route
-router.get('/', (req, res, next) => {
-  if (!req.session.cart) {
-    return res.render('shopping-cart', { products: null, title: "Shopping Cart" });
+// Helper functions
+const findProductInCart = (cartItems, productId) => {
+    return cartItems.find(item => item.id === productId);
+};
+
+const calculateTotals = (cart) => {
+    cart.totalQty = cart.items.reduce((sum, item) => sum + item.quantity, 0);
+    cart.totalAmount = cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+};
+
+//route to add a product to cart.
+router.post('/:id', (req, res) => {
+    try {
+    const { id, name, price, imageUrl } = req.body;
+    
+    let product = findProductInCart(req.session.cart.items, id);
+
+    if (product) {
+        product.quantity += 1;
+    } else {
+        req.session.cart.items.push({ id, name, imageUrl, price, quantity: 1 });
+    }
+    calculateTotals(req.session.cart);
+    req.flash('success_msg', 'Item added to cart!');
+    res.redirect('/cart');
+    } catch (error) {
+    console.error("Error fetching product:", error);
+    req.flash('error_msg', 'Item not added to cart!');
+    res.redirect('/');
+    
   }
-  const cart = new Cart(req.session.cart.items);
-  res.render('cart', { products: cart.generateArray(), totalPrice: cart.totalPrice, title: "Cart" });
 });
 
-// Reduce product quantity by one
-router.get('/reduce/:id', (req, res, next) => {
-  const productId = req.params.id;
-  const cart = new Cart(req.session.cart ? req.session.cart : {});
 
-  cart.reduceByOne(productId);
-  req.session.cart = cart;
-  res.redirect('/shopping-cart');
+// route to get cart
+router.get('/', (req, res) => {
+    res.render('cart', { cart: req.session.cart, title: "Cart" });
 });
 
 // Increase product quantity by one
-router.get('/increase/:id', (req, res, next) => {
-  const productId = req.params.id;
-  const cart = new Cart(req.session.cart ? req.session.cart : {});
+router.post('/increase', (req, res) => {
+    const { id } = req.body;
+    let product = findProductInCart(req.session.cart.items, id);
 
-  cart.increaseByOne(productId);
-  req.session.cart = cart;
-  res.redirect('/shopping-cart');
+    if (product) {
+        product.quantity += 1;
+        calculateTotals(req.session.cart);
+    }
+    res.redirect('/cart');
 });
+
+
+
+// Reduce product quantity by one
+router.post('/reduce', (req, res) => {
+    const { id } = req.body;
+    let product = findProductInCart(req.session.cart.items, id);
+
+    if (product && product.quantity > 1) {
+        product.quantity -= 1;
+    } else if (product) {
+        req.session.cart.items = req.session.cart.items.filter(item => item.id !== id);
+    }
+    calculateTotals(req.session.cart);
+    res.redirect('/cart');
+});
+
 
 // Remove product from cart
-router.get('/remove/:id', (req, res, next) => {
-  const productId = req.params.id;
-  const cart = new Cart(req.session.cart ? req.session.cart : {});
+router.post('/remove', (req, res) => {
+    const { id } = req.body;
+    req.session.cart.items = req.session.cart.items.filter(item => item.id !== id);
+    calculateTotals(req.session.cart);
+    res.redirect('/cart');
+});
 
-  cart.removeItem(productId);
-  req.session.cart = cart;
-  res.redirect('/shopping-cart');
+// Route to clear the cart session
+router.get("/clearCart", (req, res) => {
+  req.session.cart = null;
+  req.flash('success_msg', 'Cart has been cleared successfully.'); 
+  res.redirect('/cart');
 });
 
 
-// Function to format cart contents
-function formatCart(cart) {
-  let formattedCart = 'Your cart contains:\n\n';
-  let totalAmount = 0;
-
-  cart.forEach(item => {
-    formattedCart += `Name: ${item.name}\n`;
-    formattedCart += `Price: $${item.price}\n`;
-    formattedCart += `Quantity: ${item.qty}\n`;
-    formattedCart += `-----------------\n`;
-    totalAmount += item.price * item.qty;
-  });
-
-  formattedCart += `Total Price: $${totalAmount.toFixed(2)}\n`;
-  return formattedCart;
-}
 
 module.exports = router;

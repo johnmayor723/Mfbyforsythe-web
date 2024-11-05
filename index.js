@@ -43,6 +43,19 @@ app.use((req, res, next) => {
   res.locals.session = req.session;
   next();
 });
+
+// Initialize cart in session
+app.use((req, res, next) => {
+    if (!req.session.cart) {
+        req.session.cart = {
+            items: [],
+            totalQty: 0,
+            totalAmount: 0
+        };
+    }
+    next();
+});
+
 app.use((req, res, next) => {
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
@@ -60,9 +73,9 @@ app.use("/cart", cartRouter);
 app.use("/payments", paymentRouter); 
 
 // Start the server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-      console.log(`Server is running on port ${PORT}`);
+      console.log(`Server is running on https://localhost:${PORT}`);
     });
   })
   .catch(err => {
