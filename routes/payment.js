@@ -3,14 +3,15 @@ const router = express.Router();
 const Cart = require('../models');
 
 // Payment page route
-router.get('/', (req, res, next) => {
+router.post('/', (req, res, next) => {
+    const amount = req.body.amount
+    console.log('amount to be paid:', amount)
   if (!req.session.cart) {
-    return res.render('shopping-cart', { products: null, title: "Shopping Cart" });
+    return res.render('cart', {cart, title: "Shopping Cart" });
   }
-  const cart = new Cart(req.session.cart.items);
+  
   res.render('checkout', { 
-    products: cart.generateArray(), 
-    totalPrice: cart.totalPrice, 
+    amount,
     title: "Payment Page" 
   });
 });
