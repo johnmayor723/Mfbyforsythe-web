@@ -116,18 +116,18 @@ router.post('/process', async (req, res) => {
     };
     
     const userEmailOptions = {
-        from: 'fooddeck3@gmail.com',
-        to: email,
-        subject: 'Order Confirmation - FoodDeck',
-        html: generateOrderEmailHTML(cart.items, orderPayload)
-    };
+    from: '"FoodDeck" <fooddeck3@gmail.com>', // Display name with email in brackets
+    to: email,
+    subject: 'Order Confirmation - FoodDeck',
+    html: generateOrderEmailHTML(cart.items, orderPayload)
+};
 
-    const adminEmailOptions = {
-        from: 'fooddeck3@gmail.com',
-        to: 'fooddeck3@gmail.com',
-        subject: 'New Order Notification - FoodDeck',
-        html: generateOrderEmailHTML(cart.items, orderPayload, true)
-    };
+const adminEmailOptions = {
+    from: '"FoodDeck" <fooddeck3@gmail.com>',
+    to: 'fooddeck3@gmail.com',
+    subject: 'New Order Notification - FoodDeck',
+    html: generateOrderEmailHTML(cart.items, orderPayload, true)
+};
 
     // Prepare the order payload
     
