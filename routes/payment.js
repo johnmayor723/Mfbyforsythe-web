@@ -63,7 +63,7 @@ router.post('/process', async (req, res) => {
         const paystackData = {
             email: email,  // Customer's email
             amount: amount * 100,  // Amount in kobo (Paystack uses kobo, so we multiply by 100)
-            callback_url: 'http://localhost:5000/payments/callback',  // URL to handle the callback after payment
+            callback_url: 'http://localhost:5000/payments/callback'
         };
 
         // Making an API request to Paystack to initialize the payment
