@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const axios = require('axios');
 const Cart = require('../models');
 
 // Payment page route
@@ -16,14 +17,85 @@ router.post('/', (req, res, next) => {
   });
 });
 
-// Additional payment processing route (if needed)
-// This route could handle actual payment processing, such as integrating with a payment gateway.
-// Example of a payment processing endpoint (assuming POST for handling payment data)
-router.post('/process', async (req, res) => {
-  try {
-    // Add your payment processing logic here
-    // e.g., use a payment gateway API to process the payment
 
+router.get('/callback', async (req, res) => {
+    try {
+        // Log the request body, this will contain the transaction data sent by Paystack
+        console.log(req.body); // This will log the order details received
+
+        // Send the order object (the request body) to the screen
+        res.json({
+            message: 'Order details received.',
+            order: req.body,  // Sending the order object to the screen
+        });
+    } catch (error) {
+        console.error('Error handling the callback:', error);
+        res.status(500).json({
+            message: 'An error occurred while processing your order.',
+            error: error.message,
+        });
+    }
+});
+
+
+// Express route to handle the payment processing
+router.post('/process', async (req, res) => {
+    try {
+        console.log(req.body); // Logging the incoming request body for debugging
+        // Paystack keys
+        const PAYSTACK_SECRET_KEY = 'sk_test_d754fb2a648e8d822b09aa425d13fc62059ca08e';
+        const PAYSTACK_PUBLIC_KEY = 'pk_test_aaa2a37e07f4dffbc9dfdb2f8418d34243ecb816';
+
+
+        const { name, address, mobile, email, ordernotes, amount, paymentmethod } = req.body;
+
+        // Check if the payment method is 'banktransfer' (Cash on Delivery)
+        if (paymentmethod === 'banktransfer') {
+            console.log('Order Successful: Payment method is "Cash on Delivery".');
+            
+            // Proceed to clear the cart after successful order
+            req.session.cart = null;  // Clear the cart after successful payment
+            req.flash('success_msg', 'Payment processed successfully!');  // Flash success message
+            return res.redirect('/');  // Redirect to the home page or a success page
+        }
+
+        // If payment method is Paystack (card payment), we need to initiate a Paystack payment
+        const paystackData = {
+            email: email,  // Customer's email
+            amount: amount * 100,  // Amount in kobo (Paystack uses kobo, so we multiply by 100)
+            callback_url: 'http://localhost:5000/payments/callback',  // URL to handle the callback after payment
+        };
+
+        // Making an API request to Paystack to initialize the payment
+        const response = await axios.post(
+            'https://api.paystack.co/transaction/initialize',
+            paystackData,
+            {
+                headers: {
+                    Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,  // Using the secret key directly
+                },
+            }
+        );
+
+        // Checking if the response was successful from Paystack
+        if (response.data.status === 'success') {
+            const authorizationUrl = response.data.data.authorization_url;  // URL to redirect user to Paystack payment page
+
+            // Redirect user to Paystack payment page
+            res.redirect(authorizationUrl);
+        } else {
+            req.flash('error_msg', 'Payment initialization failed. Please try again.');
+            res.redirect('/cart');  // Redirect to the cart page on failure
+        }
+    } catch (error) {
+        console.error(error);  // Log the error for debugging purposes
+        req.flash('error_msg', 'Payment processing failed. Please try again.');
+        res.redirect('/cart');  // Redirect back to the cart page on failure
+    }
+});
+/*router.post('/process', async (req, res) => {
+  try {
+      console.log(req.body)
     // If payment is successful
     req.session.cart = null;  // Clear the cart after successful payment
     req.flash('success_msg', 'Payment processed successfully!');
@@ -32,6 +104,6 @@ router.post('/process', async (req, res) => {
     req.flash('error_msg', 'Payment processing failed. Please try again.');
     res.redirect('/cart');  // Redirect back to the cart page on failure
   }
-});
+});*/
 
 module.exports = router;
