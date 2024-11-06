@@ -2,6 +2,22 @@ const express = require("express");
 const router = express.Router();
 const axios = require('axios');
 const Cart = require('../models');
+const nodemailer = require('nodemailer')
+
+
+ // Nodemailer setup
+    const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'fooddeck3@gmail.com',
+            pass: 'xyca sbvx hifi amzs'  // Replace with actual password
+        }
+    });
+
+
+
+
+
 
 // Payment page route
 router.post('/', (req, res, next) => {
@@ -40,13 +56,54 @@ router.get('/callback', async (req, res) => {
 
 router.post('/process', async (req, res) => {
     console.log(req.body); // Logging the incoming request body for debugging
-
+     const cart = req.session.cart;
     // Paystack keys
     const PAYSTACK_SECRET_KEY = 'sk_test_d754fb2a648e8d822b09aa425d13fc62059ca08e';
 
     const { name, address, mobile, email, ordernotes, amount, paymentmethod } = req.body;
+    
+        // Email options for user and admin
+    
+    // Function to generate email HTML content
+    const generateOrderEmailHTML = (cartItems, orderDetails, isAdmin = false) => {
+        const itemsRows = cartItems.map(item => `
+            <tr style="border: 1px solid gray;">
+                <td style="padding: 10px; text-align: center;"><img src="${item.imageUrl}" alt="${item.name}" width="50"></td>
+                <td style="padding: 10px; text-align: center;">${item.name}</td>
+                <td style="padding: 10px; text-align: center;">${item.quantity}</td>
+                <td style="padding: 10px; text-align: center;">₦${item.price}</td>
+            </tr>
+        `).join('');
 
-    // Prepare the order payload
+        return `
+            <div style="text-align: center; padding: 20px;">
+                <h1><img src="https://firebasestorage.googleapis.com/v0/b/fooddeck-fc840.appspot.com/o/Logo-removebg-preview%20(3).png?alt=media&token=e3635a63-8ba2-40c8-a3fc-1d068979c172" alt="Company Logo" width="100"></h1>
+            </div>
+            <div style="padding: 20px;">
+                <h3>${isAdmin ? 'New Order Notification' : 'Order Confirmation'}</h3>
+                <p>Order Details:</p>
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border: 1px solid gray;">
+                            <th style="padding: 10px; text-align: center;">Image</th>
+                            <th style="padding: 10px; text-align: center;">Name</th>
+                            <th style="padding: 10px; text-align: center;">Quantity</th>
+                            <th style="padding: 10px; text-align: center;">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${itemsRows}
+                    </tbody>
+                </table>
+                <p><strong>Total Quantity:</strong> ${cart.totalQty}</p>
+                <p><strong>Total Amount:</strong> ₦${cart.totalAmount}</p>
+                <p><strong>Order Notes:</strong> ${orderDetails.ordernotes}</p>
+            </div>
+            <div style="text-align: center; padding: 20px; border-top: 1px solid gray;">
+                <p>Contact us: fooddeck3@gmail.com | Website: www.fooddeck.com</p>
+            </div>
+        `;
+    };
     const orderPayload = {
         name,
         address,
@@ -55,8 +112,25 @@ router.post('/process', async (req, res) => {
         ordernotes,
         amount,
         paymentmethod,
-        status: 'processing'  // Default order status
+        status: 'processing'//Default order status
     };
+    
+    const userEmailOptions = {
+        from: 'fooddeck3@gmail.com',
+        to: email,
+        subject: 'Order Confirmation - FoodDeck',
+        html: generateOrderEmailHTML(cart.items, orderPayload)
+    };
+
+    const adminEmailOptions = {
+        from: 'fooddeck3@gmail.com',
+        to: 'fooddeck3@gmail.com',
+        subject: 'New Order Notification - FoodDeck',
+        html: generateOrderEmailHTML(cart.items, orderPayload, true)
+    };
+
+    // Prepare the order payload
+    
 
     // Check if the payment method is 'cashondelivery'
     if (paymentmethod === 'cashondelivery') {
@@ -69,6 +143,9 @@ router.post('/process', async (req, res) => {
                 orderPayload
             );
             console.log(orderResponse.data);  // Logging the response data
+          // Send emails
+                await transporter.sendMail(userEmailOptions);
+                await transporter.sendMail(adminEmailOptions);
 
             // Clear the cart and redirect to success page
             req.session.cart = null;  
@@ -113,6 +190,10 @@ router.post('/process', async (req, res) => {
                     orderPayload
                 );
                 console.log(orderResponse.data);  // Logging the response data
+                 req.session.cart = null;  
+     // Send emails
+                await transporter.sendMail(userEmailOptions);
+                await transporter.sendMail(adminEmailOptions);
 
                 // Redirect user to Paystack payment page
                 return res.redirect(authorizationUrl);
