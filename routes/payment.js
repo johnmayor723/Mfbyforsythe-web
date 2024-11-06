@@ -50,7 +50,7 @@ router.post('/process', async (req, res) => {
         const { name, address, mobile, email, ordernotes, amount, paymentmethod } = req.body;
 
         // Check if the payment method is 'banktransfer' (Cash on Delivery)
-        if (paymentmethod === 'banktransfer') {
+        if (paymentmethod === 'cashondelivery') {
             console.log('Order Successful: Payment method is "Cash on Delivery".');
             
             // Proceed to clear the cart after successful order
@@ -76,34 +76,26 @@ router.post('/process', async (req, res) => {
                 },
             }
         );
-
+          console.log(response.data)
+          console.log(response.data.status)
         // Checking if the response was successful from Paystack
-        if (response.data.status === 'success') {
+        if (response.data.status = true) {
             const authorizationUrl = response.data.data.authorization_url;  // URL to redirect user to Paystack payment page
 
             // Redirect user to Paystack payment page
             res.redirect(authorizationUrl);
         } else {
             req.flash('error_msg', 'Payment initialization failed. Please try again.');
-            res.redirect('/cart');  // Redirect to the cart page on failure
+            console.log("failure")
+            res.redirect('/cart'); 
         }
     } catch (error) {
-        console.error(error);  // Log the error for debugging purposes
+        console.error(error);  
         req.flash('error_msg', 'Payment processing failed. Please try again.');
-        res.redirect('/cart');  // Redirect back to the cart page on failure
+        res.redirect('/cart')
     }
 });
-/*router.post('/process', async (req, res) => {
-  try {
-      console.log(req.body)
-    // If payment is successful
-    req.session.cart = null;  // Clear the cart after successful payment
-    req.flash('success_msg', 'Payment processed successfully!');
-    res.redirect('/');  // Redirect to the home page or a success page
-  } catch (error) {
-    req.flash('error_msg', 'Payment processing failed. Please try again.');
-    res.redirect('/cart');  // Redirect back to the cart page on failure
-  }
-});*/
+
+
 
 module.exports = router;
