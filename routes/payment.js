@@ -38,61 +38,97 @@ router.get('/callback', async (req, res) => {
 });
 
 
-// Express route to handle the payment processing
 router.post('/process', async (req, res) => {
-    try {
-        console.log(req.body); // Logging the incoming request body for debugging
-        // Paystack keys
-        const PAYSTACK_SECRET_KEY = 'sk_test_d754fb2a648e8d822b09aa425d13fc62059ca08e';
-        const PAYSTACK_PUBLIC_KEY = 'pk_test_aaa2a37e07f4dffbc9dfdb2f8418d34243ecb816';
+    console.log(req.body); // Logging the incoming request body for debugging
 
+    // Paystack keys
+    const PAYSTACK_SECRET_KEY = 'sk_test_d754fb2a648e8d822b09aa425d13fc62059ca08e';
 
-        const { name, address, mobile, email, ordernotes, amount, paymentmethod } = req.body;
+    const { name, address, mobile, email, ordernotes, amount, paymentmethod } = req.body;
 
-        // Check if the payment method is 'banktransfer' (Cash on Delivery)
-        if (paymentmethod === 'cashondelivery') {
-            console.log('Order Successful: Payment method is "Cash on Delivery".');
-            
-            // Proceed to clear the cart after successful order
-            req.session.cart = null;  // Clear the cart after successful payment
-            req.flash('success_msg', 'Payment processed successfully!');  // Flash success message
-            return res.redirect('/');  // Redirect to the home page or a success page
+    // Prepare the order payload
+    const orderPayload = {
+        name,
+        address,
+        mobile,
+        email,
+        ordernotes,
+        amount,
+        paymentmethod,
+        status: 'processing'  // Default order status
+    };
+
+    // Check if the payment method is 'cashondelivery'
+    if (paymentmethod === 'cashondelivery') {
+        console.log('Order Successful: Payment method is "Cash on Delivery".');
+        
+        try {
+            // Post order to external server
+            const orderResponse = await axios.post(
+                'https://pantry-hub-server.onrender.com/api/orders',
+                orderPayload
+            );
+            console.log(orderResponse.data);  // Logging the response data
+
+            // Clear the cart and redirect to success page
+            req.session.cart = null;  
+            req.flash('success_msg', 'Order placed successfully with cash on delivery!');
+            return res.redirect('/');
+        } catch (error) {
+            console.error('Error posting order to external server:', error);
+            req.flash('error_msg', 'Order processing failed. Please try again.');
+            return res.redirect('/cart');
         }
+    }
 
-        // If payment method is Paystack (card payment), we need to initiate a Paystack payment
-        const paystackData = {
-            email: email,  // Customer's email
-            amount: amount * 100,  // Amount in kobo (Paystack uses kobo, so we multiply by 100)
-            callback_url: 'http://localhost:5000/payments/callback'
-        };
+    // Proceed with Paystack payment if the method is not 'cashondelivery'
+    const paystackData = {
+        email,  
+        amount: amount * 100,  // Amount in kobo
+        callback_url: 'https://fooddeck-web.onrender.com/payments/callback'
+    };
 
-        // Making an API request to Paystack to initialize the payment
+    try {
+        // Initialize payment with Paystack
         const response = await axios.post(
             'https://api.paystack.co/transaction/initialize',
             paystackData,
             {
                 headers: {
-                    Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,  // Using the secret key directly
+                    Authorization: `Bearer ${PAYSTACK_SECRET_KEY}`,  
                 },
             }
         );
-          console.log(response.data)
-          console.log(response.data.status)
-        // Checking if the response was successful from Paystack
-        if (response.data.status = true) {
-            const authorizationUrl = response.data.data.authorization_url;  // URL to redirect user to Paystack payment page
 
-            // Redirect user to Paystack payment page
-            res.redirect(authorizationUrl);
+        console.log(response.data);
+
+        // Check if Paystack response was successful
+        if (response.data.status) {  // Truthy check for status
+            const authorizationUrl = response.data.data.authorization_url;
+
+            try {
+                // Post order to external server
+                const orderResponse = await axios.post(
+                    'https://pantry-hub-server.onrender.com/api/orders',
+                    orderPayload
+                );
+                console.log(orderResponse.data);  // Logging the response data
+
+                // Redirect user to Paystack payment page
+                return res.redirect(authorizationUrl);
+            } catch (error) {
+                console.error('Error posting order to external server:', error);
+                req.flash('error_msg', 'Order processing failed. Please try again.');
+                return res.redirect('/cart');
+            }
         } else {
             req.flash('error_msg', 'Payment initialization failed. Please try again.');
-            console.log("failure")
-            res.redirect('/cart'); 
+            return res.redirect('/cart'); 
         }
     } catch (error) {
-        console.error(error);  
+        console.error('Error initializing payment with Paystack:', error);  
         req.flash('error_msg', 'Payment processing failed. Please try again.');
-        res.redirect('/cart')
+        return res.redirect('/cart');
     }
 });
 
