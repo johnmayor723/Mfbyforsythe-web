@@ -1,0 +1,72 @@
+        <!-- Single Page Header start -->
+        <div class="container-fluid page-header py-5">
+            <h1 class="text-center text-white display-6">FoodDeck</h1>
+            <ol class="breadcrumb justify-content-center mb-0">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                
+                <li class="breadcrumb-item active text-white">FAQs</li>
+            </ol>
+        </div>
+        <!-- Single Page Header End -->
+
+<section style="font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto 0; padding: 30px;">
+    <h2 style="color: #2E8B57;">Frequently Asked Questions (FAQ)</h2>
+
+    <div style="border-top: 1px solid #ccc; padding-top: 10px;">
+        <div class="faq-item" style="background-color: #ffffff; padding: 10px;">
+            <h3 onclick="toggleAnswer(1)" style="cursor: pointer; color: #2E8B57;">
+                What are your delivery hours?
+            </h3>
+            <p id="answer-1" style="display: none; padding-left: 10px;">
+                Our delivery hours are from 8 AM to 8 PM, Monday through Sunday. We also offer express delivery options in select locations.
+            </p>
+        </div>
+        <hr style="margin: 0; border: 1px solid #ccc;">
+
+        <div class="faq-item" style="background-color: #f9f9f9; padding: 10px;">
+            <h3 onclick="toggleAnswer(2)" style="cursor: pointer; color: #2E8B57;">
+                How can I track my order?
+            </h3>
+            <p id="answer-2" style="display: none; padding-left: 10px;">
+                Once your order is dispatched, you’ll receive a tracking link via email and SMS. You can use this link to monitor your order status in real-time.
+            </p>
+        </div>
+        <hr style="margin: 0; border: 1px solid #ccc;">
+
+        <div class="faq-item" style="background-color: #ffffff; padding: 10px;">
+            <h3 onclick="toggleAnswer(3)" style="cursor: pointer; color: #2E8B57;">
+                What is your return policy for perishable items?
+            </h3>
+            <p id="answer-3" style="display: none; padding-left: 10px;">
+                For perishable items, we accept returns if the item is damaged or spoiled upon delivery. Please report any issues within 24 hours to qualify for a refund or replacement.
+            </p>
+        </div>
+        <hr style="margin: 0; border: 1px solid #ccc;">
+
+        <div class="faq-item" style="background-color: #f9f9f9; padding: 10px;">
+            <h3 onclick="toggleAnswer(4)" style="cursor: pointer; color: #2E8B57;">
+                Do you have a minimum order amount for delivery?
+            </h3>
+            <p id="answer-4" style="display: none; padding-left: 10px;">
+                Yes, we require a minimum order of ₦15,000 for delivery. Orders below this amount may be subject to a delivery fee.
+            </p>
+        </div>
+        <hr style="margin: 0; border: 1px solid #ccc;">
+
+        <div class="faq-item" style="background-color: #ffffff; padding: 10px;">
+            <h3 onclick="toggleAnswer(5)" style="cursor: pointer; color: #2E8B57;">
+                Are there any membership or subscription options?
+            </h3>
+            <p id="answer-5" style="display: none; padding-left: 10px;">
+                Yes, we offer a subscription plan for regular customers with benefits like discounted delivery rates and priority service. Visit our Membership page for details.
+            </p>
+        </div>
+    </div>
+</section>
+
+<script>
+    function toggleAnswer(id) {
+        const answer = document.getElementById(`answer-${id}`);
+        answer.style.display = answer.style.display === 'none' ? 'block' : 'none';
+    }
+</script>
