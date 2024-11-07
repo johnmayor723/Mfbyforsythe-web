@@ -26,6 +26,43 @@ router.get("/products/:id", async (req, res) => {
   }
 });
 
+// Product categories route
+router.get("/products/categories/:categoryName", async (req, res) => {
+    const category = req.params.categoryName;
+    console.log(category)
+
+    try {
+        // Make a GET request to the external API to fetch products
+        const response = await axios.get(`https://pantry-hub-server.onrender.com/api/categories/${category}`);
+
+        // Log the response data (for debugging purposes)
+        console.log("data is:", response.data);
+
+        // Retrieve the products data from response
+        const products = response.data;
+
+        // Check if no products are found for the category
+        if (!products || products.length === 0) {
+            // Set flash message
+            req.flash('error_msg', `No products found for the category: ${category}`);
+            // Redirect to homepage
+            return res.redirect('/');
+        }
+
+        // Send the category data and products to the EJS template
+        res.render('category', {
+            title: category,  // Dynamic title
+            products: products // Products data
+        });
+    } catch (error) {
+        // Handle any errors that might occur during the request
+        //console.error(error);
+        req.flash('error', 'An error occurred while fetching the products.');
+        console.log(error)
+        res.redirect("/")
+    }
+});
+
 // Contact page route
 router.get("/contact", (req, res) => {
   res.render("contact");
@@ -35,5 +72,22 @@ router.get("/contact", (req, res) => {
 router.get("/about", (req, res) => {
   res.render("about");
 });
+// Return policy page route
+router.get("/return-policy", (req, res) => {
+  res.render("return-policy", {title: "Return Policy"});
+});
+// privacy policy page route
+router.get("/privacy-policy", (req, res) => {
+  res.render("privacy-policy", {title: "Privacy Policy"});
+});
+// privacy policy page route
+router.get("/faqs", (req, res) => {
+  res.render("faqs", {title: "FAQ"});
+});
+// privacy policy page route
+router.get("/helpcenter", (req, res) => {
+  res.render("helpcenter", {title: "FAQ"});
+});
+
 
 module.exports = router;
