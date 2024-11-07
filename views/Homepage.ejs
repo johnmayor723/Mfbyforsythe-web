@@ -1,136 +1,130 @@
+<!-- Hero Start -->
+<div class="container-fluid py-5 mb-5 hero-header">
+    <!-- Display success message -->
+    <% if (success_msg.length > 0) { %>
+        <div class="alert alert-success">
+            <%= success_msg %>
+        </div>
+    <% } %>
 
- 
- <!-- Hero Start -->
-        <div class="container-fluid py-5 mb-5 hero-header">
-             <!-- Display success message -->
-<% if (success_msg.length > 0) { %>
-    <div class="alert alert-success">
-        <%= success_msg %>
-    </div>
-<% } %>
+    <!-- Display error message -->
+    <% if (error_msg.length > 0) { %>
+        <div class="alert alert-danger">
+            <%= error_msg %>
+        </div>
+    <% } %>
 
-<!-- Display error message -->
-<% if (error_msg.length > 0) { %>
-    <div class="alert alert-danger">
-        <%= error_msg %>
-    </div>
-<% } %>
-
-            <div class="container py-5">
-                <div class="row g-5 align-items-center">
-                    <div class="col-md-12 col-lg-7">
-                        <h4 style="color:#FE9801" class="mb-3">Quality Groceries Everywhere</h4>
-                        <h1 style="color:#2D7B30;" class="mb-5 display-3 " >Welcome To FoodDeck</h1>
-                        
-                    </div>
-                    <div class="col-md-12 col-lg-5">
-                        <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
-                            <div class="carousel-inner" role="listbox">
-                                <div class="carousel-item active rounded">
-                                    <img src="img/hero-img-1.png" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
-                                    <a href="#" class="btn px-4 py-2 text-white rounded">Fruites</a>
-                                </div>
-                                <div class="carousel-item rounded">
-                                    <img src="img/hero-img-2.jpg" class="img-fluid w-100 h-100 rounded" alt="Second slide">
-                                    <a href="#" class="btn px-4 py-2 text-white rounded">Vesitables</a>
-                                </div>
-                            </div>
-                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
+    <div class="container py-5">
+        <div class="row g-5 align-items-center">
+            <div class="col-md-12 col-lg-7">
+                <h4 style="color:#FE9801" class="mb-3">Quality Groceries Everywhere</h4>
+                <h1 style="color:#2D7B30;" class="mb-5 display-3">Welcome To FoodDeck</h1>
+            </div>
+            <div class="col-md-12 col-lg-5">
+                <div id="carouselId" class="carousel slide position-relative" data-bs-ride="carousel">
+                    <div class="carousel-inner" role="listbox">
+                        <div class="carousel-item active rounded">
+                            <img src="img/hero-img-1.png" class="img-fluid w-100 h-100 bg-secondary rounded" alt="First slide">
+                            <a href="#" class="btn px-4 py-2 text-white rounded">Fruits</a>
+                        </div>
+                        <div class="carousel-item rounded">
+                            <img src="img/hero-img-2.jpg" class="img-fluid w-100 h-100 rounded" alt="Second slide">
+                            <a href="#" class="btn px-4 py-2 text-white rounded">Vegetables</a>
                         </div>
                     </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 </div>
             </div>
         </div>
-        <!-- Hero End -->
+    </div>
+</div>
+<!-- Hero End -->
 
+<!-- Food Categories Start -->
+<h2 style="color: #2D7B30; text-align: center; margin-bottom: 20px;">Food Categories</h2>
+<div class="categories-container">
+  <!-- Repeat similar structure for each category item -->
+  <a href="/products/categories/farm-fresh" class="category-item" style="background-color: #f0f8f0;">
+    <span class="category-icon">&#127793;</span>
+    <span class="category-name">Farm Fresh</span>
+  </a>
+  <a href="/products/categories/tubers-grains" class="category-item" style="background-color: #fff1e6;">
+    <span class="category-icon">&#127844;</span>
+    <span class="category-name">Tubers & Grains</span>
+  </a>
+  <a href="/products/categories/fruits" class="category-item" style="background-color: #f0f8f0;">
+    <span class="category-icon">&#127823;</span>
+    <span class="category-name">Fruits</span>
+  </a>
+  <a href="/products/categories/fish-meat" class="category-item" style="background-color: #fff1e6;">
+    <span class="category-icon">&#129385;</span> <!-- Meat icon -->
+    <span class="category-name">Fish & Meat</span>
+  </a>
+  <a href="/products/categories/food-bundles" class="category-item" style="background-color: #f0f8f0;">
+    <span class="category-icon">&#127828;</span>
+    <span class="category-name">Food Bundles</span>
+  </a>
+  <a href="/products/categories/ingredients-condiments" class="category-item" style="background-color: #fff1e6;">
+    <span class="category-icon">&#127859;</span>
+    <span class="category-name">Ingredients/Condiments</span>
+  </a>
+  <a href="/products/categories/health-foods" class="category-item" style="background-color: #f0f8f0;">
+    <span class="category-icon">&#127808;</span>
+    <span class="category-name">Health Foods</span>
+  </a>
+  <a href="/products/categories/household-items" class="category-item" style="background-color: #fff1e6;">
+    <span class="category-icon">🧺</span>
+    <span class="category-name">Household Items</span>
+  </a>
+  <a href="/products/categories/oil-products" class="category-item" style="background-color: #f0f8f0;">
+    <span class="category-icon">&#129361;</span> <!-- Oil bottle icon -->
+    <span class="category-name">Oil Products</span>
+</a>
+  <a href="/products/categories/baking-products" class="category-item" style="background-color: #f0f8f0;">
+    <span class="category-icon">&#127838;</span> <!-- Bread icon for Baking -->
+    <span class="category-name">Baking Products</span>
+  </a>
+  <a href="/products/categories/dairy-products" class="category-item" style="background-color: #fff1e6;">
+    <span class="category-icon">&#129371;</span> <!-- Milk icon for Dairy -->
+    <span class="category-name">Dairy Products</span>
+  </a>
+  <a href="/products/categories/packaged-foods" class="category-item" style="background-color: #f0f8f0;">
+    <span class="category-icon">&#127851;</span>
+    <span class="category-name">Packaged Foods</span>
+  </a>
+  <!-- Add other category items similarly -->
+</div>
+<!-- Food Categories End -->
 
-
-
-
-        <!-- Fruits Shop Start-->
-        <div class="container-fluid fruite py-5">
-            <div class="container py-5">
-                <div class="tab-class text-center">
-                    <div class="row g-4">
-                        <div class="col-lg-4 text-start">
-                            <h1>Our Featured Products</h1>
-                        </div>
-                        <div class="col-lg-8 text-end">
-                            <ul class="nav nav-pills d-inline-flex text-center mb-5">
-                                <li class="nav-item">
-                                    <a class="d-flex m-2 py-2 bg-light rounded-pill active" data-bs-toggle="pill" href="#tab-1">
-                                        <span class="text-dark" style="width: 130px;">All Products</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="d-flex py-2 m-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-2">
-                                        <span class="text-dark" style="width: 130px;">Vegetables</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-3">
-                                        <span class="text-dark" style="width: 130px;">Fruits</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-4">
-                                        <span class="text-dark" style="width: 130px;">Bread</span>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="d-flex m-2 py-2 bg-light rounded-pill" data-bs-toggle="pill" href="#tab-5">
-                                        <span class="text-dark" style="width: 130px;">Meat</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="tab-content">
-                        <div id="tab-1" class="tab-pane fade show p-0 active">
-                            <div class="row g-4">
-                                <div class="col-lg-12">
-                                    <div class="row g-4">
-                                        
-                         
-                                        
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>      
-            </div>
-        </div>
-        
-<!-- Products Grid Start -->
+<!-- Featured Products Start -->
 <div class="container-fluid py-4">
     <div class="container py-3">
+        <h2 style="color: #2D7B30; text-align: center; margin-bottom: 20px;">Featured Products</h2>
         <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
             <% products.forEach(product => { %>
                 <div class="col">
                     <a href="/products/<%= product._id %>" class="text-decoration-none">
-                        <div class="card border-orange" style="border-color: #FE9801; margin: 0px;">
-                            <img src="<%= product.imageUrl %>" alt="<%= product.title %>" class="card-img-top" style="height: 130px; padding: 2px;">
-                            <div class="card-body" style="background-color:#FAFAFA;padding:7px;height:110px">
-                                <p class="card-title mb-1" style="font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;margin-botom:5px 0px;"><%= product.name %></p>
-                                <p class="card-text mb-2" style="color: #FE9801;margin">&#8358;
-                        <%= product.price %></p><form action="/cart/<%= product._id %>" method="post">
-    <input type="hidden" name="id" value="<%= product._id%>">
-    <input type="hidden" name="name" value="<%= product.name %>">
-    <input type="hidden" name="imageUrl" value="<%= product.imageUrl %>" >
-    <input type="hidden" name="price" value="<%= product.price %>">
-    <button type="submit" class="btn btn-green w-100" style="background-color: #2D7B30; color: white; margin: 0 3px; font-size: 0.875rem;">
-        Add to Cart
-    </button>
-</form>
+                        <div class="card border-orange" style="border-color: #FE9801; margin: 0;">
+                            <img src="<%= product.imageUrl %>" alt="<%= product.name %>" class="card-img-top" style="height: 130px; padding: 2px;">
+                            <div class="card-body" style="background-color:#FAFAFA; padding:7px; height:110px;">
+                                <p class="card-title mb-1" style="font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= product.name %></p>
+                                <p class="card-text mb-2" style="color: #FE9801;">&#8358;<%= product.price %></p>
+                                <form action="/cart/<%= product._id %>" method="post">
+                                    <input type="hidden" name="id" value="<%= product._id %>">
+                                    <input type="hidden" name="name" value="<%= product.name %>">
+                                    <input type="hidden" name="imageUrl" value="<%= product.imageUrl %>">
+                                    <input type="hidden" name="price" value="<%= product.price %>">
+                                    <button type="submit" class="btn btn-green w-100" style="background-color: #2D7B30; color: white; margin: 0 3px; font-size: 0.875rem;">
+                                        Add to Cart
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </a>
@@ -139,56 +133,38 @@
         </div>
     </div>
 </div>
-<!-- Products Grid End -->
+<!-- Featured Products End -->
 
-
-        <!-- Fruits Shop End-->
-
-
-
-
-                   
-
-
-
-        <!-- Bestsaler Product Start -->
-        <div class="container-fluid py-5">
-            <div class="container py-5">
-                <div class="text-center mx-auto mb-5" style="max-width: 700px;">
-                    <h1 class="display-4">Bestseller Products</h1>
-                    <p></p>
-                </div>
-                <div class="row g-4">
-                    <div class="col-lg-6 col-xl-4">
-                        <div class="p-4 rounded bg-light">
-                            <div class="row align-items-center">
-                                <div class="col-6">
-                                    <img src="img/best-product-3.jpg" class="img-fluid rounded-circle w-100" alt="">
-                                </div>
-                                <div class="col-6">
-                                    <a href="#" class="h5">Organic Tomato</a>
-                                    <div class="d-flex my-3">
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star text-primary"></i>
-                                        <i class="fas fa-star"></i>
-                                    </div>
-                                    <h4 class="mb-3">3.12 $</h4>
-                                    <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                                </div>
+<!-- Bestseller Products Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        <div class="text-center mx-auto mb-5" style="max-width: 700px;">
+            <h1 class="display-4">Bestseller Products</h1>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-6 col-xl-4">
+                <div class="p-4 rounded bg-light">
+                    <div class="row align-items-center">
+                        <div class="col-6">
+                            <img src="img/best-product-3.jpg" class="img-fluid rounded-circle w-100" alt="">
+                        </div>
+                        <div class="col-6">
+                            <a href="#" class="h5">Organic Tomato</a>
+                            <div class="d-flex my-3">
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star text-primary"></i>
+                                <i class="fas fa-star"></i>
                             </div>
+                            <h4 class="mb-3">3.12 $</h4>
+                            <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
                         </div>
                     </div>
-
-                   
                 </div>
             </div>
+            <!-- Repeat similar structure for each bestseller product -->
         </div>
-        <!-- Bestsaler Product End -->
-
-
-
-     
-
-
+    </div>
+</div>
+<!-- Bestseller Products End -->
