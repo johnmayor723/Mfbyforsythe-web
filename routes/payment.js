@@ -46,7 +46,7 @@ router.get('/callback', async (req, res) => {
         console.error('Error handling the callback:', error);
         res.status(500).json({
             message: 'An error occurred while processing your order.',
-            error: error.message,
+            error: `Error occured, it is an {error.message}`,
         });
     }
 });
