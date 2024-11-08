@@ -84,10 +84,16 @@ router.get("/privacy-policy", (req, res) => {
 router.get("/faqs", (req, res) => {
   res.render("faqs", {title: "FAQ"});
 });
+// paystack callback route
+router.get("/callback", (req, res) => {
+  res.render("success", {title: "FAQ"});
+});
+
 // privacy policy page route
 router.get("/helpcenter", (req, res) => {
   res.render("helpcenter", {title: "FAQ"});
 });
+
 
 
 module.exports = router;
