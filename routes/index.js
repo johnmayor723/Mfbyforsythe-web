@@ -51,7 +51,7 @@ router.get("/products/categories/:categoryName", async (req, res) => {
 
         // Send the category data and products to the EJS template
         res.render('category', {
-            title: category,  // Dynamic title
+            title: category.toUpperCase(),  // Dynamic title
             products: products // Products data
         });
     } catch (error) {

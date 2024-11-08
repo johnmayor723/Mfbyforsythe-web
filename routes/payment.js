@@ -33,7 +33,7 @@ router.post('/', (req, res, next) => {
   });
 });
 
-router.get('/callback', async (req, res) => {
+/*router.get('/callback', async (req, res) => {
     try {
         // Log the request body, this will contain the transaction data sent by Paystack
         console.log(req.body); // This will log the order details received
@@ -50,9 +50,20 @@ router.get('/callback', async (req, res) => {
             error: error.message,
         });
     }
+});*/
+
+router.post('/callback', async (req, res) => {
+    try {
+        // Assuming 'success' is a view template like 'success.ejs' or 'success.pug'
+        res.render('success', { message: "Payment successful" });
+    } catch (error) {
+        console.error('Error rendering success page:', error);
+        res.status(500).json({
+            message: 'An error occurred while processing your order.',
+            error: error.message,
+        });
+    }
 });
-
-
 /*router.get('/callback', async (req, res) => {
     try {
         // Log the request body, this will contain the transaction data sent by Paystack
