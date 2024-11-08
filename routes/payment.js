@@ -1,20 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const axios = require('axios');
-const Cart = require('../models');
-const nodemailer = require('nodemailer')
+const nodemailer = require('nodemailer');
+const {generateOrderEmailHTML} = require('../helpers')
 
 
- // Nodemailer setup
-    const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        auth: {
-            user: 'fooddeck3@gmail.com',
-            pass: 'xyca sbvx hifi amzs'  // Replace with actual password
-        }
-    });
-
-
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'fooddeck3@gmail.com',
+        pass: 'xyca sbvx hifi amzs'  // Replace with actual password
+    }
+});
 
 
 
@@ -33,7 +30,7 @@ router.post('/', (req, res, next) => {
   });
 });
 
-/*router.get('/callback', async (req, res) => {
+router.get('/callback', async (req, res) => {
     try {
         // Log the request body, this will contain the transaction data sent by Paystack
         console.log(req.body); // This will log the order details received
@@ -50,37 +47,7 @@ router.post('/', (req, res, next) => {
             error: error.message,
         });
     }
-});*/
-
-router.get('/callback', async (req, res) => {
-    try {
-        // Assuming 'success' is a view template like 'success.ejs' or 'success.pug'
-        res.render('success', { message: "Payment successful" });
-    } catch (error) {
-        console.error('Error rendering success page:', error);
-        res.status(500).json({
-            message: 'An error occurred while processing your order.',
-            error: error.message,
-        });
-    }
 });
-/*router.get('/callback', async (req, res) => {
-    try {
-        // Log the request body, this will contain the transaction data sent by Paystack
-        console.log(req.body); // This will log the order details received
-
-        // Send the order object (the request body) to the screen
-        res.send("successfully paid")
-        
-    } catch (error) {
-        console.error('Error handling the callback:', error);
-        res.status(500).json({
-            message: 'An error occurred while processing your order.',
-            error: error.message,
-        });
-    }
-});*/
-
 
 router.post('/process', async (req, res) => {
     console.log(req.body); // Logging the incoming request body for debugging
@@ -93,7 +60,7 @@ router.post('/process', async (req, res) => {
         // Email options for user and admin
     
     // Function to generate email HTML content
-    const generateOrderEmailHTML = (cartItems, orderDetails, isAdmin = false) => {
+  /*  const generateOrderEmailHTML = (cartItems, orderDetails, isAdmin = false) => {
         const itemsRows = cartItems.map(item => `
             <tr style="border: 1px solid gray;">
                 <td style="padding: 10px; text-align: center;"><img src="${item.imageUrl}" alt="${item.name}" width="50"></td>
@@ -107,17 +74,20 @@ router.post('/process', async (req, res) => {
             <div style="text-align: center; padding: 20px;">
                 <h1><img src="https://firebasestorage.googleapis.com/v0/b/fooddeck-fc840.appspot.com/o/Logo-removebg-preview%20(3).png?alt=media&token=e3635a63-8ba2-40c8-a3fc-1d068979c172" alt="Company Logo" width="100"></h1>
             </div>
-            <div style="padding: 20px;">
+            <div style="padding: 20px;>
                 <h3>${isAdmin ? 'New Order Notification' : 'Order Confirmation'}</h3>
                 <p>Order Details:</p>
                 
-                <div style="margin:20px 0">
-                 p>
+                <div style="margin:20px 0;color:#FE9801;font-size:15px; font-style:italic">
+                 <p>
             ${isAdmin 
                 ? 'A new order was made. Please review the order details below:' 
-                : 'Thank you for placing an order! Your order has been successfully placed. You can review your order details below. Our sales agent will contact you soon for confirmation.'
+                : `Hello ${name},<br>
+                
+                   Thank you for placing an order! Your order has been successfully placed. You can review your order details below. Our sales agent will contact you soon for confirmation.`
             }
-        </p></div>
+        </p>
+        </div>
                  
                 
                 <table style="width: 100%; border-collapse: collapse;">
@@ -139,11 +109,15 @@ router.post('/process', async (req, res) => {
                 <p><strong>Order Notes:</strong> ${orderDetails.ordernotes}</p>
             </div>
             <div style="text-align: center; padding: 20px; border-top: 1px solid gray;">
-                <p>Contact us: fooddeck3@gmail.com | Website: www.fooddeck.com</p>
+                <p>Contact us: info@fooddeck.com.ng | Website: www.fooddeck.com.ng</p>
             </div>
         `;
-    };
-    const orderPayload = {
+    };*/
+    
+    // nnnnnnnnnnn###££££££££££//////
+    
+    
+const orderPayload = {
         name,
         address,
         mobile,
@@ -152,20 +126,22 @@ router.post('/process', async (req, res) => {
         amount,
         paymentmethod,
         status: 'processing'//Default order status
-    };
     
-    const userEmailOptions = {
+    
+};
+    
+const userEmailOptions = {
     from: '"FoodDeck" <fooddeck3@gmail.com>', // Display name with email in brackets
     to: email,
     subject: 'Order Confirmation - FoodDeck',
-    html: generateOrderEmailHTML(cart.items, orderPayload)
+    html: generateOrderEmailHTML(cart, orderPayload)
 };
 
 const adminEmailOptions = {
     from: '"FoodDeck" <fooddeck3@gmail.com>',
     to: 'fooddeck3@gmail.com',
     subject: 'New Order Notification - FoodDeck',
-    html: generateOrderEmailHTML(cart.items, orderPayload, true)
+    html: generateOrderEmailHTML(cart, orderPayload, true)
 };
 
     // Prepare the order payload
