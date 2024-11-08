@@ -177,7 +177,7 @@ const adminEmailOptions = {
     const paystackData = {
         email,  
         amount: amount * 100,  // Amount in kobo
-        callback_url: 'https://fooddeck-web.onrender.com/payments/callback'
+        callback_url: 'https://fooddeck-web.onrender.com/callback'
     };
 
     try {
