@@ -30,16 +30,23 @@ router.post('/', (req, res, next) => {
   });
 });
 
+//givin this url: https://fooddeck-web.onrender.com/payments/callback?trxref=joo7tyhe5o&reference=joo7tyhe5o
+
 router.get('/callback', async (req, res) => {
     try {
-        // Log the request body, this will contain the transaction data sent by Paystack
-        console.log(req.body); // This will log the order details received
+        // Extracting trxref and reference from query parameters
+        const trxref = req.query.trxref;
+        const ref = req.query.reference;
 
-        // Send the order object (the request body) to the screen
-        res.json({
-            message: 'Order details received.',
-            order: req.body,  // Sending the order object to the screen
-        });
+        if (trxref && ref) {
+            console.log("Transaction reference (trxref):", trxref);
+            console.log("Payment reference (reference):", ref);
+            res.render("success", { title: "Successful Payment Page" });
+        } else {
+            console.log("No transaction data received");
+            res.render("success", { title: "Successful Payment Page" });
+        }
+        
     } catch (error) {
         console.error('Error handling the callback:', error);
         res.status(500).json({
@@ -57,65 +64,7 @@ router.post('/process', async (req, res) => {
 
     const { name, address, mobile, email, ordernotes, amount, paymentmethod } = req.body;
     
-        // Email options for user and admin
-    
-    // Function to generate email HTML content
-  /*  const generateOrderEmailHTML = (cartItems, orderDetails, isAdmin = false) => {
-        const itemsRows = cartItems.map(item => `
-            <tr style="border: 1px solid gray;">
-                <td style="padding: 10px; text-align: center;"><img src="${item.imageUrl}" alt="${item.name}" width="50"></td>
-                <td style="padding: 10px; text-align: center;">${item.name}</td>
-                <td style="padding: 10px; text-align: center;">${item.quantity}</td>
-                <td style="padding: 10px; text-align: center;">₦${item.price}</td>
-            </tr>
-        `).join('');
 
-        return `
-            <div style="text-align: center; padding: 20px;">
-                <h1><img src="https://firebasestorage.googleapis.com/v0/b/fooddeck-fc840.appspot.com/o/Logo-removebg-preview%20(3).png?alt=media&token=e3635a63-8ba2-40c8-a3fc-1d068979c172" alt="Company Logo" width="100"></h1>
-            </div>
-            <div style="padding: 20px;>
-                <h3>${isAdmin ? 'New Order Notification' : 'Order Confirmation'}</h3>
-                <p>Order Details:</p>
-                
-                <div style="margin:20px 0;color:#FE9801;font-size:15px; font-style:italic">
-                 <p>
-            ${isAdmin 
-                ? 'A new order was made. Please review the order details below:' 
-                : `Hello ${name},<br>
-                
-                   Thank you for placing an order! Your order has been successfully placed. You can review your order details below. Our sales agent will contact you soon for confirmation.`
-            }
-        </p>
-        </div>
-                 
-                
-                <table style="width: 100%; border-collapse: collapse;">
-                
-                    <thead>
-                        <tr style="border: 1px solid gray;">
-                            <th style="padding: 10px; text-align: center;">Image</th>
-                            <th style="padding: 10px; text-align: center;">Name</th>
-                            <th style="padding: 10px; text-align: center;">Quantity</th>
-                            <th style="padding: 10px; text-align: center;">Price</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${itemsRows}
-                    </tbody>
-                </table>
-                <p><strong>Total Quantity:</strong> ${cart.totalQty}</p>
-                <p><strong>Total Amount:</strong> ₦${cart.totalAmount}</p>
-                <p><strong>Order Notes:</strong> ${orderDetails.ordernotes}</p>
-            </div>
-            <div style="text-align: center; padding: 20px; border-top: 1px solid gray;">
-                <p>Contact us: info@fooddeck.com.ng | Website: www.fooddeck.com.ng</p>
-            </div>
-        `;
-    };*/
-    
-    // nnnnnnnnnnn###££££££££££//////
-    
     
 const orderPayload = {
         name,
@@ -177,7 +126,7 @@ const adminEmailOptions = {
     const paystackData = {
         email,  
         amount: amount * 100,  // Amount in kobo
-        callback_url: 'https://fooddeck-web.onrender.com/callback'
+        callback_url: 'https://fooddeck-web.onrender.com/payments/callback'
     };
 
     try {
