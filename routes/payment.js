@@ -80,7 +80,18 @@ router.post('/process', async (req, res) => {
             <div style="padding: 20px;">
                 <h3>${isAdmin ? 'New Order Notification' : 'Order Confirmation'}</h3>
                 <p>Order Details:</p>
+                
+                <div style="margin:20px 0">
+                 p>
+            ${isAdmin 
+                ? 'A new order was made. Please review the order details below:' 
+                : 'Thank you for placing an order! Your order has been successfully placed. You can review your order details below. Our sales agent will contact you soon for confirmation.'
+            }
+        </p></div>
+                 
+                
                 <table style="width: 100%; border-collapse: collapse;">
+                
                     <thead>
                         <tr style="border: 1px solid gray;">
                             <th style="padding: 10px; text-align: center;">Image</th>
