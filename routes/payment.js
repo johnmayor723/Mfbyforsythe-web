@@ -33,23 +33,42 @@ router.post('/', (req, res, next) => {
   });
 });
 
-
 router.get('/callback', async (req, res) => {
     try {
         // Log the request body, this will contain the transaction data sent by Paystack
         console.log(req.body); // This will log the order details received
 
         // Send the order object (the request body) to the screen
-        res.render("success")
+        res.json({
+            message: 'Order details received.',
+            order: req.body,  // Sending the order object to the screen
+        });
+    } catch (error) {
+        console.error('Error handling the callback:', error);
+        res.status(500).json({
+            message: 'An error occurred while processing your order.',
+            error: error.message,
+        });
+    }
+});
+
+
+/*router.get('/callback', async (req, res) => {
+    try {
+        // Log the request body, this will contain the transaction data sent by Paystack
+        console.log(req.body); // This will log the order details received
+
+        // Send the order object (the request body) to the screen
+        res.send("successfully paid")
         
     } catch (error) {
         console.error('Error handling the callback:', error);
         res.status(500).json({
             message: 'An error occurred while processing your order.',
-            error: `Error occured, it is an {error.message}`,
+            error: error.message,
         });
     }
-});
+});*/
 
 
 router.post('/process', async (req, res) => {
