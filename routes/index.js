@@ -8,7 +8,10 @@ const API_URL = "https://pantry-hub-server.onrender.com/api/products";
 router.get("/", async (req, res) => {
   try {
     const { data: products } = await axios.get(API_URL);
-    res.render("Homepage", { products, title: "Home" });
+    const suggestedProducts = products.sort(() => 0.5 - Math.random()).slice(0, 8);
+    res.render("Homepage", { products, title: "Home" ,
+        suggestedProducts
+    });
   } catch (err) {
     res.status(500).send("Error loading products");
   }
@@ -34,12 +37,15 @@ router.get("/products/categories/:categoryName", async (req, res) => {
     try {
         // Make a GET request to the external API to fetch products
         const response = await axios.get(`https://pantry-hub-server.onrender.com/api/categories/${category}`);
+        
 
         // Log the response data (for debugging purposes)
         console.log("data is:", response.data);
 
         // Retrieve the products data from response
         const products = response.data;
+        const { data: allProducts } = await axios.get(API_URL);
+        const suggestedProducts = allProducts.sort(() => 0.5 - Math.random()).slice(0, 8);
 
         // Check if no products are found for the category
         if (!products || products.length === 0) {
@@ -51,8 +57,9 @@ router.get("/products/categories/:categoryName", async (req, res) => {
 
         // Send the category data and products to the EJS template
         res.render('category', {
-            title: category.toUpperCase(),  // Dynamic title
-            products: products // Products data
+            title: category.toUpperCase(),
+        bestSellerProducts:suggestedProducts,
+            products: products 
         });
     } catch (error) {
         // Handle any errors that might occur during the request

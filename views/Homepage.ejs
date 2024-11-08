@@ -1,3 +1,40 @@
+ <style>
+  /* Category Grid Styling */
+  .category-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    max-width: 1000px; /* Center the categories within a reasonable width */
+  }
+
+  .category-item {
+    text-align: center;
+    padding: 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #2D7B30;
+    font-weight: bold;
+    width: 100px;
+    box-sizing: border-box;
+  }
+
+  /* Responsive Layout */
+  @media (min-width: 768px) {
+    .category-grid {
+      gap: 20px;
+    }
+    .category-item {
+      flex: 1 1 calc(33.33% - 20px); /* Three per row */
+    }
+  }
+
+  @media (min-width: 992px) {
+    .category-item {
+      flex: 1 1 calc(16.66% - 20px); /* Six per row on larger screens */
+    }
+  }
+</style
 <!-- Hero Start -->
 <div class="container-fluid py-5 mb-5 hero-header">
     <!-- Display success message -->
@@ -46,62 +83,78 @@
     </div>
 </div>
 <!-- Hero End -->
+<!-- Food Categories Start -->
 
 <!-- Food Categories Start -->
-<h2 style="color: #2D7B30; text-align: center; margin-bottom: 20px;">Food Categories</h2>
-<div class="categories-container">
-  <!-- Repeat similar structure for each category item -->
-  <a href="/products/categories/farm fresh" class="category-item" style="background-color: #f0f8f0;">
-    <span class="category-icon">&#127793;</span>
-    <span class="category-name">Farm Fresh</span>
-  </a>
-  <a href="/products/categories/tubers grains" class="category-item" style="background-color: #fff1e6;">
-    <span class="category-icon">&#127844;</span>
-    <span class="category-name">Tubers & Grains</span>
-  </a>
-  <a href="/products/categories/fruits" class="category-item" style="background-color: #f0f8f0;">
-    <span class="category-icon">&#127823;</span>
-    <span class="category-name">Fruits</span>
-  </a>
-  <a href="/products/categories/fish meat" class="category-item" style="background-color: #fff1e6;">
-    <span class="category-icon">&#129385;</span> <!-- Meat icon -->
-    <span class="category-name">Fish & Meat</span>
-  </a>
-  <a href="/products/categories/food bundles" class="category-item" style="background-color: #f0f8f0;">
-    <span class="category-icon">&#127828;</span>
-    <span class="category-name">Food Bundles</span>
-  </a>
-  <a href="/products/categories/ingredients condiments" class="category-item" style="background-color: #fff1e6;">
-    <span class="category-icon">&#127859;</span>
-    <span class="category-name">Ingredients/Condiments</span>
-  </a>
-  <a href="/products/categories/health foods" class="category-item" style="background-color: #f0f8f0;">
-    <span class="category-icon">&#127808;</span>
-    <span class="category-name">Health Foods</span>
-  </a>
-  <a href="/products/categories/household items" class="category-item" style="background-color: #fff1e6;">
-    <span class="category-icon">🧺</span>
-    <span class="category-name">Household Items</span>
-  </a>
-  <a href="/products/categories/oil products" class="category-item" style="background-color: #f0f8f0;">
-    <span class="category-icon">&#129361;</span> <!-- Oil bottle icon -->
-    <span class="category-name">Oil Products</span>
-</a>
-  <a href="/products/categories/baking products" class="category-item" style="background-color: #f0f8f0;">
-    <span class="category-icon">&#127838;</span> <!-- Bread icon for Baking -->
-    <span class="category-name">Baking Products</span>
-  </a>
-  <a href="/products/categories/dairy-products" class="category-item" style="background-color: #fff1e6;">
-    <span class="category-icon">&#129371;</span> <!-- Milk icon for Dairy -->
-    <span class="category-name">Dairy Products</span>
-  </a>
-  <a href="/products/categories/packaged foods" class="category-item" style="background-color: #f0f8f0;">
-    <span class="category-icon">&#127851;</span>
-    <span class="category-name">Packaged Foods</span>
-  </a>
-  <!-- Add other category items similarly -->
+<h2 style="color: #2D7B30;margin-top:100px; text-align: center; margin-bottom: 20px;">Food Categories</h2>
+<div class="categories-container" style="display: flex; flex-direction: column; align-items: center; gap: 15px;">
+
+  <!-- Visible Categories (First 6) -->
+  <div class="category-grid" id="visibleCategories">
+    <a href="/products/categories/farm fresh" class="category-item" style="background-color: #f0f8f0;">
+      <span class="category-icon">&#127793;</span>
+      <span class="category-name">Farm Fresh</span>
+    </a>
+    <a href="/products/categories/tubers grains" class="category-item" style="background-color: #fff1e6;">
+      <span class="category-icon">&#127844;</span>
+      <span class="category-name">Tubers & Grains</span>
+    </a>
+    <a href="/products/categories/fruits" class="category-item" style="background-color: #f0f8f0;">
+      <span class="category-icon">&#127823;</span>
+      <span class="category-name">Fruits</span>
+    </a>
+    <a href="/products/categories/fish meat" class="category-item" style="background-color: #fff1e6;">
+      <span class="category-icon">&#129385;</span>
+      <span class="category-name">Fish & Meat</span>
+    </a>
+    <a href="/products/categories/food bundles" class="category-item" style="background-color: #f0f8f0;">
+      <span class="category-icon">&#127828;</span>
+      <span class="category-name">Food Bundles</span>
+    </a>
+ <a href="/products/categories/ingredients condiments" class="category-item" style="background-color: #fff1e6;">
+      <span class="category-icon">&#127859;</span>
+      <span style="font-size:8px;" class="category-name">Ingredients/Condiments</span>
+    </a>
+  </div>
+
+  <!-- Hidden Categories (Toggled with button) -->
+  <div class="category-grid" id="hiddenCategories" style="display: none;">
+    <a href="/products/categories/health foods" class="category-item" style="background-color: #f0f8f0;">
+      <span class="category-icon">&#127808;</span>
+      <span class="category-name">Health Foods</span>
+    </a>
+    <a href="/products/categories/household items" class="category-item" style="background-color: #fff1e6;">
+      <span class="category-icon">🧺</span>
+      <span class="category-name">Household Items</span>
+    </a>
+    <a href="/products/categories/oil products" class="category-item" style="background-color: #f0f8f0;">
+      <span class="category-icon">&#129361;</span>
+      <span class="category-name">Oil Products</span>
+    </a>
+    <a href="/products/categories/baking products" class="category-item" style="background-color: #f0f8f0;">
+      <span class="category-icon">&#127838;</span>
+      <span class="category-name">Baking Products</span>
+    </a>
+    <a href="/products/categories/dairy-products" class="category-item" style="background-color: #fff1e6;">
+      <span class="category-icon">&#129371;</span>
+      <span class="category-name">Dairy Products</span>
+    </a>
+    <a href="/products/categories/packaged foods" class="category-item" style="background-color: #f0f8f0;">
+      <span class="category-icon">&#127851;</span>
+      <span class="category-name">Packaged Foods</span>
+    </a>
+  </div>
+
+  <!-- Toggle Button -->
+  <button id="toggleButton" onclick="toggleCategories()" style="padding: 10px 20px; background-color: white; border: 2px solid orange; border-radius: 20px; color: green; font-weight: bold; cursor: pointer;">
+    View More Categories
+  </button>
 </div>
 <!-- Food Categories End -->
+
+
+
+
 
 <!-- Featured Products Start -->
 <div class="container-fluid py-4">
@@ -142,29 +195,49 @@
             <h1 class="display-4">Bestseller Products</h1>
         </div>
         <div class="row g-4">
-            <div class="col-lg-6 col-xl-4">
-                <div class="p-4 rounded bg-light">
-                    <div class="row align-items-center">
-                        <div class="col-6">
-                            <img src="img/best-product-3.jpg" class="img-fluid rounded-circle w-100" alt="">
-                        </div>
-                        <div class="col-6">
-                            <a href="#" class="h5">Organic Tomato</a>
-                            <div class="d-flex my-3">
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star text-primary"></i>
-                                <i class="fas fa-star"></i>
+            <%suggestedProducts.forEach(product => { %>
+                <div class="col-lg-6 col-xl-4">
+                    <div class="p-4 rounded bg-light">
+                        <div class="row align-items-center">
+                            <div class="col-6">
+                                <img src="<%= product.imageUrl %>" class="img-fluid rounded-circle w-100" alt="<%= product.name %>">
                             </div>
-                            <h4 class="mb-3">3.12 $</h4>
-                            <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                            <div class="col-6">
+                                <a href="#" class="h5"><%= product.name %></a>
+                                <div class="d-flex my-3">
+                                    <i class="fas fa-star text-primary"></i>
+                                    <i class="fas fa-star text-primary"></i>
+                                    <i class="fas fa-star text-primary"></i>
+                                    <i class="fas fa-star text-primary"></i>
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <h4 class="mb-3"><%= product.price %> $</h4>
+                        
+                                <a href="/products/<%= product._id %>" class="btn border border-secondary rounded-pill px-3 text-primary">
+                                    <i style="color:white" class="fa fa-shopping-bag me-2 text-primary"></i> view detais
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <!-- Repeat similar structure for each bestseller product -->
+            <% }); %>
         </div>
     </div>
 </div>
 <!-- Bestseller Products End -->
+
+<script>
+  function toggleCategories() {
+    const hiddenCategories = document.getElementById('hiddenCategories');
+    const toggleButton = document.getElementById('toggleButton');
+    
+    if (hiddenCategories.style.display === "none") {
+      hiddenCategories.style.display = "flex";
+      toggleButton.textContent = "View Less Categories";
+    } else {
+      hiddenCategories.style.display = "none";
+      toggleButton.textContent = "View More Categories";
+    }
+  }
+</script>
+

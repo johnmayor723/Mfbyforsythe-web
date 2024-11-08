@@ -38,7 +38,7 @@ router.get('/callback', async (req, res) => {
         const trxref = req.query.trxref;
         const ref = req.query.reference;
 
-        if (trxref && ref) {
+        if (trxref || ref) {
             console.log("Transaction reference (trxref):", trxref);
             console.log("Payment reference (reference):", ref);
             res.render("success", { title: "Successful Payment Page" });
