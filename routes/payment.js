@@ -52,7 +52,7 @@ router.post('/', (req, res, next) => {
     }
 });*/
 
-router.post('/callback', async (req, res) => {
+router.get('/callback', async (req, res) => {
     try {
         // Assuming 'success' is a view template like 'success.ejs' or 'success.pug'
         res.render('success', { message: "Payment successful" });
