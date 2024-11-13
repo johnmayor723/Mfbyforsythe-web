@@ -89,6 +89,38 @@
                                     <div class="tab-pane active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
                                         
                                         <p><%=product.description%>.</p>
+
+                                   <!-- Measurement Section Start -->
+<div class="container-fluid py-5">
+    <h4 class="mb-4" style="color: #2D7B30;">Available Measurements</h4>
+    <div class="row">
+        <% measurements.forEach(function(measurement, index) { %>
+            <div class="col-lg-6 mb-4">
+                <div class="card shadow-sm">
+                    <div class="row g-0 align-items-center">
+                        <div class="col-4">
+                            <img src="<%= measurement.imageUrl %>" class="img-fluid rounded-start" alt="<%= measurement.name %>">
+                        </div>
+                        <div class="col-8">
+                            <div class="card-body">
+                                <h5 class="card-title"><%= measurement.name %></h5>
+                                <p class="card-text fw-bold" style="color: #2D7B30;">₦<%= measurement.price %></p>
+                                <form action="/cart/<%= product._id %>/add-measurement" method="post">
+                                    <input type="hidden" name="measurementId" value="<%= measurement.id %>">
+                                    <button type="submit" class="btn btn-primary rounded-pill px-4 py-2">Add to Cart</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% if ((index + 1) % 2 === 0) { %>
+                </div><div class="row">
+            <% } %>
+        <% }); %>
+    </div>
+</div>
+<!-- Measurement Section End -->
                                         <div class="px-2">
                                             <div class="row g-4">
                                                 <div class="col-6">
