@@ -23,15 +23,17 @@ router.get("/products/:id", async (req, res) => {
     const { data: product } = await axios.get(`${API_URL}/${req.params.id}`);
     const { data: allProducts } = await axios.get(API_URL);
 
+   
     // Extract measurement data from the product
-    const measurement = product.measurement || []; 
+    // measurements
+    const measurements = product.measurement || []; 
 
     const suggestedProducts = allProducts.sort(() => 0.5 - Math.random()).slice(0, 8);
 
     res.render("shop-detail", {
       product,
       products: suggestedProducts,
-      measurement,  // Pass measurement object to the view
+      measurements,  // Pass measurement object to the view
       title: "Product Detail"
     });
   } catch (err) {
