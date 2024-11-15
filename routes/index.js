@@ -26,7 +26,7 @@ router.get("/products/:id", async (req, res) => {
    
     // Extract measurement data from the product
     // measurements
-    const measurements = product.measurement || []; 
+    const measurements = product.measurements || []; 
 
     const suggestedProducts = allProducts.sort(() => 0.5 - Math.random()).slice(0, 8);
 
