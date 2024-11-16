@@ -134,7 +134,7 @@
 <!-- Measurement Section End -->
 
 
-                            <div class="col-lg-12">
+     <div class="col-lg-12">
                                 <nav>
                                     <div class="nav nav-tabs mb-3">
                                         <button class="nav-link active border-white border-bottom-0" type="button" role="tab"
@@ -145,42 +145,6 @@
                                             aria-controls="nav-mission" aria-selected="false">Reviews</button>
                                     </div>
                                 </nav>
-                                <div class="tab-content mb-5">
-                                    <div class="tab-pane active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
-                                        
-                                        <p><%=product.description%>.</p>
- <!-- Measurement Section Start -->
-                                            
+                             </div> 
 
-            <!-- Suggested Products Sidebar -->
-            <div class="col-lg-4 col-xl-3">
-                <div class="row g-4">
-                    <div class="col-lg-12">
-                        <h4 class="mb-4" style="color: #2D7B30;">Suggested Products</h4>
-                        <% products.forEach(function(product) { %>
-                            <div class="d-flex align-items-center justify-content-start mb-4" onclick="window.location.href='/products/<%= product._id %>'" style="cursor: pointer;">
-                                <div class="rounded" style="width: 100px; height: 100px;">
-                                    <img src="<%= product.imageUrl %>" class="img-fluid rounded" alt="Image">
-                                </div>
-                                <div class="ms-3">
-                                    <h6 class="mb-2"><%= product.name %></h6>
-                                    <div class="d-flex mb-2">
-                                        <i class="fa fa-star text-secondary"></i>
-                                        <i class="fa fa-star text-secondary"></i>
-                                        <i class="fa fa-star text-secondary"></i>
-                                        <i class="fa fa-star text-secondary"></i>
-                                        <i class="fa fa-star"></i>
-                                    </div>
-                                    <div class="d-flex">
-                                        <h5 class="fw-bold me-2" style="color: #2D7B30;">₦<%= product.price %></h5>
-                                    </div>
-                                </div>
-                            </div>
-                        <% }) %>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Single Product End -->
+            
