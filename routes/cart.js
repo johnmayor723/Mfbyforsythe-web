@@ -40,6 +40,7 @@ router.post('/:id', (req, res) => {
 router.post("/:id/add-measurement", (req, res) => {
     const id = req.body.id
     console.log ('buying option id:', id)
+    res.send(req.body)
 })
 
 
