@@ -40,7 +40,26 @@ router.post('/:id', (req, res) => {
 router.post("/:id/add-measurement", (req, res) => {
     const id = req.body.id
     console.log ('buying option id:', id)
-    res.send(req.body)
+    try {
+    const { name, price, imageUrl } = req.body;
+    
+    let product = findProductInCart(req.session.cart.items, id);
+
+    if (product) {
+        product.quantity += 1;
+    } else {
+        req.session.cart.items.push({ id, name, imageUrl, price, quantity: 1 });
+    }
+    calculateTotals(req.session.cart);
+    console.log("Cart Items:", req.session.cart.items);
+    req.flash('success_msg', 'Item added to cart!');
+    res.redirect('/cart');
+    } catch (error) {
+    console.error("Error fetching product:", error);
+    req.flash('error_msg', 'Item not added to cart!');
+    res.redirect('/');
+    
+  }
 })
 
 
