@@ -106,7 +106,7 @@
                                 <h5 class="card-title"><%= measurement.name %></h5>
                                 <p class="card-text fw-bold" style="color: #2D7B30;">₦<%= measurement.price %></p>
                                 <form action="/cart/<%= product._id %>/add-measurement" method="post">
-                                    <input type="hidden" name="id" value="<%= measurement.id %>">
+                                    <input type="hidden" name="id" value="<%= measurement._id %>">
                                     <input type="hidden" name="name" value="<%= measurement.name %>">
                                     <input type="hidden" name="price" value="<%= measurement.price %>">
                                     <input type="hidden" name="imageUrl" value="<%= measurement.imageUrl %>">
