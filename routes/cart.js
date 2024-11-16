@@ -36,6 +36,11 @@ router.post('/:id', (req, res) => {
     
   }
 });
+// action="/cart/<%= product._id %>/add-measurement
+router.post("/:id/add-measurement", (req, res) => {
+    const id = req.body.id
+    console.log ('buying option id:', id)
+})
 
 
 // route to get cart
