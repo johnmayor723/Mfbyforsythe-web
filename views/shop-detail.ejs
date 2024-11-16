@@ -1,4 +1,44 @@
- 
+ <style>
+/* General Styles */
+.card img {
+  object-fit: contain;
+}
+
+.card-title {
+  font-size: 1rem; /* Default size */
+  margin-bottom: 0.25rem;
+}
+
+.card-text {
+  font-size: 1rem; /* Default size */
+  color: #2D7B30;
+}
+
+.card button {
+  font-size: 0.85rem; /* Default size */
+  padding: 0.4rem 0.75rem;
+}
+
+/* Mobile-Specific Styles */
+@media (max-width: 768px) {
+  .card img {
+    max-height: 60px; /* Smaller image size for mobile */
+  }
+
+  .card-title {
+    font-size: 0.85rem; /* Smaller text size for mobile */
+  }
+
+  .card-text {
+    font-size: 0.85rem; /* Smaller text size for mobile */
+  }
+
+  .card button {
+    font-size: 0.75rem; /* Smaller button text size for mobile */
+    padding: 0.25rem 0.5rem; /* Smaller button padding for mobile */
+  }
+}
+</style>
  !-- Display success message -->
 <% if (success_msg.length > 0) { %>
     <div class="alert alert-success">
@@ -69,11 +109,42 @@
     <input type="hidden" name="name" value="<%= product.name %>">
     <input type="hidden" name="imageUrl" value="<%= product.imageUrl %>">
     <input type="hidden" name="price" value="<%= product.price %>">
-    <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary" onclick="this.closest('form').submit();">
-        <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
-    </a>
+    
 </form>
                             </div>
+<!-- Measurement Section Start -->
+<div class="container-fluid py-5">
+  <h4 class="mb-4" style="color: #2D7B30;">
+    Buying Options
+  </h4>
+  <div class="row row-cols-2 row-cols-md-4 g-4">
+    <% measurements.forEach(function(measurement) { %>
+      <div class="col">
+        <div class="card shadow-sm h-100">
+          <div class="d-flex align-items-center">
+            <div class="p-2" style="flex: 1;">
+              <img src="<%= measurement.imageUrl %>" class="img-fluid rounded-start" alt="<%= measurement.name %>">
+            </div>
+            <div class="p-2" style="flex: 2;">
+              <h6 class="card-title mb-1"><%= measurement.name %></h6>
+              <p class="card-text fw-bold mb-2" style="color: #2D7B30;">₦<%= measurement.price %></p>
+              <form action="/cart/<%= product._id %>/add-measurement" method="post">
+                <input type="hidden" name="id" value="<%= measurement._id %>">
+                <input type="hidden" name="name" value="<%= measurement.name %>">
+                <input type="hidden" name="price" value="<%= measurement.price %>">
+                <input type="hidden" name="imageUrl" value="<%= measurement.imageUrl %>">
+                <button type="submit" class="btn btn-primary rounded-pill px-3 py-1">Add to Cart</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+</div>
+<!-- Measurement Section End -->
+
+
                             <div class="col-lg-12">
                                 <nav>
                                     <div class="nav nav-tabs mb-3">
@@ -89,41 +160,12 @@
                                     <div class="tab-pane active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
                                         
                                         <p><%=product.description%>.</p>
-
-                                   <!-- Measurement Section Start -->
+ <!-- Measurement Section Start -->
 <div class="container-fluid py-5">
-    <h4 class="mb-4" style="color: #2D7B30;">Available Measurements</h4>
-    <div class="row">
-        <% measurements.forEach(function(measurement, index) { %>
-            <div class="col-lg-6 mb-4">
-                <div class="card shadow-sm">
-                    <div class="row g-0 align-items-center">
-                        <div class="col-4">
-                            <img src="<%= measurement.imageUrl %>" class="img-fluid rounded-start" alt="<%= measurement.name %>">
-                        </div>
-                        <div class="col-8">
-                            <div class="card-body">
-                                <h5 class="card-title"><%= measurement.name %></h5>
-                                <p class="card-text fw-bold" style="color: #2D7B30;">₦<%= measurement.price %></p>
-                                <form action="/cart/<%= product._id %>/add-measurement" method="post">
-                                    <input type="hidden" name="id" value="<%= measurement._id %>">
-                                    <input type="hidden" name="name" value="<%= measurement.name %>">
-                                    <input type="hidden" name="price" value="<%= measurement.price %>">
-                                    <input type="hidden" name="imageUrl" value="<%= measurement.imageUrl %>">
-                                    <button type="submit" class="btn btn-primary rounded-pill px-4 py-2">Add to Cart</button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <% if ((index + 1) % 2 === 0) { %>
-                </div><div class="row">
-            <% } %>
-        <% }); %>
-    </div>
-</div>
-<!-- Measurement Section End -->
+  <h4 class="mb-4" style="color: #2D7B30;">
+   Available Measurements
+  </h4>
+    
                                         <div class="px-2">
                                             <div class="row g-4">
                                                 <div class="col-6">
