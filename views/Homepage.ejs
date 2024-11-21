@@ -245,7 +245,7 @@
             <img src="<%= product.imageUrl %>" alt="<%= product.name %>" class="card-img-top">
             <div class="card-body">
               <p class="card-title mb-1" style="font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= product.name %></p>
-              <p class="card-text mb-2" style="color: #FE9801;">&#8358;<%= product.price %></p>
+              <p class="card-text mb-2" style="color: #FE9801;">From $<%= product.price %></p>
               <form action="/cart/<%= product._id %>" method="post">
                 <button type="submit" class="btn btn-green w-100" style="background-color: #2D7B30; color: white;">
                   Add to Cart
