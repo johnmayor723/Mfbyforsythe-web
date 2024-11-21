@@ -1,11 +1,11 @@
- <style>
+<style>
   /* Category Grid Styling */
   .category-grid {
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
     justify-content: center;
-    max-width: 1000px; /* Center the categories within a reasonable width */
+    max-width: 1200px; /* Adjusted width for desktop */
   }
 
   .category-item {
@@ -15,17 +15,15 @@
     text-decoration: none;
     color: #2D7B30;
     font-weight: bold;
-    width: 100px;
     box-sizing: border-box;
+    background-color: #f8f8f8;
+    width: 120px; /* Standardize width */
   }
 
   /* Responsive Layout */
   @media (min-width: 768px) {
-    .category-grid {
-      gap: 20px;
-    }
     .category-item {
-      flex: 1 1 calc(33.33% - 20px); /* Three per row */
+      flex: 1 1 calc(33.33% - 20px); /* Three per row on tablets */
     }
   }
 
@@ -34,7 +32,36 @@
       flex: 1 1 calc(16.66% - 20px); /* Six per row on larger screens */
     }
   }
-</style
+
+  /* Featured Products Styling */
+  .featured-products .card {
+    margin: 15px; /* Spacing between products */
+  }
+
+  .featured-products .card-img-top {
+    object-fit: cover;
+    height: 180px; /* Fix stretching */
+  }
+
+  .featured-products .card-body {
+    padding: 10px;
+    text-align: center;
+  }
+
+  .featured-products .card-body p {
+    margin: 5px 0;
+  }
+
+  @media (min-width: 992px) {
+    .featured-products .row {
+      margin: 0 -15px; /* Consistent row spacing */
+    }
+
+    .featured-products .col {
+      padding: 15px; /* Add margin around individual cards */
+    }
+  }
+</style>
 <!-- Hero Start -->
 <div class="container-fluid py-5 mb-5 hero-header">
     <!-- Display success message -->
@@ -83,85 +110,64 @@
     </div>
 </div>
 <!-- Hero End -->
-<!-- Food Categories Start -->
 
 <!-- Food Categories Start -->
-<h2 style="color: #2D7B30;margin-top:100px; text-align: center; margin-bottom: 20px;">Food Categories</h2>
+<h2 style="color: #2D7B30; margin-top: 100px; text-align: center; margin-bottom: 20px;">Food Categories</h2>
 <div class="categories-container" style="display: flex; flex-direction: column; align-items: center; gap: 15px;">
 
   <!-- Visible Categories (First 6) -->
   <div class="category-grid" id="visibleCategories">
-    <a href="/products/categories/farm fresh" class="category-item" style="background-color: #f0f8f0;">
+    <a href="/products/categories/farm fresh" class="category-item">
       <span class="category-icon">&#127793;</span>
       <span class="category-name">Farm Fresh</span>
     </a>
-    <a href="/products/categories/tubers grains" class="category-item" style="background-color: #fff1e6;">
+    <a href="/products/categories/tubers grains" class="category-item">
       <span class="category-icon">&#127844;</span>
       <span class="category-name">Tubers & Grains</span>
     </a>
-    <a href="/products/categories/fruits" class="category-item" style="background-color: #f0f8f0;">
+    <a href="/products/categories/fruits" class="category-item">
       <span class="category-icon">&#127823;</span>
       <span class="category-name">Fruits</span>
     </a>
-    <a href="/products/categories/fish meat" class="category-item" style="background-color: #fff1e6;">
+    <a href="/products/categories/fish meat" class="category-item">
       <span class="category-icon">&#129385;</span>
       <span class="category-name">Fish & Meat</span>
     </a>
-    <a href="/products/categories/food bundles" class="category-item" style="background-color: #f0f8f0;">
+    <a href="/products/categories/food bundles" class="category-item">
       <span class="category-icon">&#127828;</span>
       <span class="category-name">Food Bundles</span>
     </a>
- <a href="/products/categories/ingredients condiments" class="category-item" style="background-color: #fff1e6;">
+    <a href="/products/categories/ingredients condiments" class="category-item">
       <span class="category-icon">&#127859;</span>
-      <span style="font-size:8px;" class="category-name">Ingredients/Condiments</span>
+      <span class="category-name">Ingredients/Condiments</span>
     </a>
   </div>
 
-  <!-- Hidden Categories (Toggled with button) -->
+  <!-- Hidden Categories -->
   <div class="category-grid" id="hiddenCategories" style="display: none;">
-    <a href="/products/categories/health foods" class="category-item" style="background-color: #f0f8f0;">
-      <span class="category-icon">&#127808;</span>
-      <span class="category-name">Health Foods</span>
+    <a href="/products/categories/vegetables" class="category-item">
+      <span class="category-icon">&#129385;</span>
+      <span class="category-name">Vegetables</span>
     </a>
-    
-    <a href="/products/categories/household items" class="category-item" style="background-color: #fff1e6;">
-      <span class="category-icon">🧺</span>
-      <span class="category-name">Household Items</span>
+    <a href="/products/categories/drinks" class="category-item">
+      <span class="category-icon">&#127865;</span>
+      <span class="category-name">Drinks</span>
     </a>
-   <a href="/products/categories/vegetables" class="category-item" style="background-color: #e0f7e0;">
-  <span class="category-icon">&#129385;</span> <!-- Vegetable icon for Vegetables -->
-  <span class="category-name">Vegetables</span>
-</a>
-
-<a href="/products/categories/drinks" class="category-item" style="background-color: #fce5d4;">
-  <span class="category-icon">&#127865;</span> <!-- Drink icon for Drinks -->
-  <span class="category-name">Drinks</span>
-</a>
-
-<a href="/products/categories/beverages" class="category-item" style="background-color: #e0f7e0;">
-  <span class="category-icon">&#9749;</span> <!-- Coffee/Tea icon for Beverages -->
-  <span class="category-name">Beverages</span>
-</a>
-
-<a href="/products/categories/cereals" class="category-item" style="background-color: #fce5d4;">
-  <span class="category-icon">&#127838;</span> <!-- Bowl with Spoon icon for Cereals -->
-  <span class="category-name">Cereals</span>
-</a>
-    <a href="/products/categories/oil products" class="category-item" style="background-color: #f0f8f0;">
+    <a href="/products/categories/beverages" class="category-item">
+      <span class="category-icon">&#9749;</span>
+      <span class="category-name">Beverages</span>
+    </a>
+    <a href="/products/categories/cereals" class="category-item">
+      <span class="category-icon">&#127838;</span>
+      <span class="category-name">Cereals</span>
+    </a>
+    <a href="/products/categories/oil products" class="category-item">
       <span class="category-icon">&#129361;</span>
       <span class="category-name">Oil Products</span>
     </a>
-    <a href="/products/categories/baking products" class="category-item" style="background-color: #f0f8f0;">
-      <span class="category-icon">&#127838;</span>
-      <span class="category-name">Baking Products</span>
-    </a>
-    <a href="/products/categories/dairy-products" class="category-item" style="background-color: #fff1e6;">
-      <span class="category-icon">&#129371;</span>
-      <span class="category-name">Dairy Products</span>
-    </a>
-    <a href="/products/categories/packaged foods" class="category-item" style="background-color: #f0f8f0;">
-      <span class="category-icon">&#127851;</span>
-      <span class="category-name">Packaged Foods</span>
+    <a href="/products/categories/household items" class="category-item">
+      <span class="category-icon">&#128717;</span>
+      <span class="category-name">Household Items</span>
     </a>
   </div>
 
@@ -172,42 +178,33 @@
 </div>
 <!-- Food Categories End -->
 
-
-
-
-
 <!-- Featured Products Start -->
-<div class="container-fluid py-4">
-    <div class="container py-3">
-        <h2 style="color: #2D7B30; text-align: center; margin-bottom: 20px;">Featured Products</h2>
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
-            <% products.forEach(product => { %>
-                <div class="col">
-                    <a href="/products/<%= product._id %>" class="text-decoration-none">
-                        <div class="card border-orange" style="border-color: #FE9801; margin: 0;">
-                            <img src="<%= product.imageUrl %>" alt="<%= product.name %>" class="card-img-top" style="height: 130px; padding: 2px;">
-                            <div class="card-body" style="background-color:#FAFAFA; padding:7px; height:110px;">
-                                <p class="card-title mb-1" style="font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= product.name %></p>
-                                <p class="card-text mb-2" style="color: #FE9801;">&#8358;<%= product.price %></p>
-                                <form action="/cart/<%= product._id %>" method="post">
-                                    <input type="hidden" name="id" value="<%= product._id %>">
-                                    <input type="hidden" name="name" value="<%= product.name %>">
-                                    <input type="hidden" name="imageUrl" value="<%= product.imageUrl %>">
-                                    <input type="hidden" name="price" value="<%= product.price %>">
-                                    <button type="submit" class="btn btn-green w-100" style="background-color: #2D7B30; color: white; margin: 0 3px; font-size: 0.875rem;">
-                                        Add to Cart
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            <% }); %>
-        </div>
+<div class="container-fluid py-4 featured-products">
+  <div class="container py-3">
+    <h2 style="color: #2D7B30; text-align: center; margin-bottom: 20px;">Featured Products</h2>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
+      <% products.forEach(product => { %>
+      <div class="col">
+        <a href="/products/<%= product._id %>" class="text-decoration-none">
+          <div class="card border-orange" style="border-color: #FE9801;">
+            <img src="<%= product.imageUrl %>" alt="<%= product.name %>" class="card-img-top">
+            <div class="card-body">
+              <p class="card-title mb-1" style="font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"><%= product.name %></p>
+              <p class="card-text mb-2" style="color: #FE9801;">&#8358;<%= product.price %></p>
+              <form action="/cart/<%= product._id %>" method="post">
+                <button type="submit" class="btn btn-green w-100" style="background-color: #2D7B30; color: white;">
+                  Add to Cart
+                </button>
+              </form>
+            </div>
+          </div>
+        </a>
+      </div>
+      <% }); %>
     </div>
+  </div>
 </div>
 <!-- Featured Products End -->
-
 <!-- Bestseller Products Start -->
 <div class="container-fluid py-5">
     <div class="container py-5">
@@ -250,7 +247,7 @@
   function toggleCategories() {
     const hiddenCategories = document.getElementById('hiddenCategories');
     const toggleButton = document.getElementById('toggleButton');
-    
+
     if (hiddenCategories.style.display === "none") {
       hiddenCategories.style.display = "flex";
       toggleButton.textContent = "View Less Categories";
@@ -260,4 +257,3 @@
     }
   }
 </script>
-
