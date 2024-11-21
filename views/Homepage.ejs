@@ -34,38 +34,32 @@
   }
 
   
-  /* Featured Product Grid */
+/* Featured Product Grid */
   .row-cols-1,
   .row-cols-sm-2,
   .row-cols-md-3,
   .row-cols-lg-4 {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px; /* Adjusted for mobile */
+    gap: 15px; /* Space between products */
     justify-content: space-between;
   }
 
   /* Product Card */
   .col {
-    flex: 1 1 calc(100% - 15px); /* Full width with gap on mobile */
-    max-width: 100%; /* Prevents stretching on small screens */
-  }
-
-  @media (min-width: 576px) {
-    .col {
-      flex: 1 1 calc(50% - 15px); /* Two per row on small screens */
-    }
+    flex: 1 1 calc(50% - 15px); /* Two per row on mobile */
+    max-width: calc(50% - 15px); /* Ensure proper spacing */
   }
 
   @media (min-width: 768px) {
     .col {
-      flex: 1 1 calc(33.33% - 20px); /* Three per row on medium screens */
+      flex: 1 1 calc(33.33% - 20px); /* Three per row on tablets */
     }
   }
 
   @media (min-width: 992px) {
     .col {
-      flex: 1 1 calc(25% - 30px); /* Four per row on larger screens */
+      flex: 1 1 calc(25% - 30px); /* Four per row on desktop */
     }
 
     .row-cols-1,
@@ -73,7 +67,7 @@
     .row-cols-md-3,
     .row-cols-lg-4 {
       gap: 30px; /* Larger gap for desktop */
-      margin: 60px auto; /* Centralized and spacious margin for desktop */
+      margin: 60px auto; /* Centralized margin for desktop */
     }
   }
 
