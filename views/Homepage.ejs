@@ -34,62 +34,71 @@
   }
 
   
-/* Featured Product Grid */
+*/
   .row-cols-1,
   .row-cols-sm-2,
   .row-cols-md-3,
   .row-cols-lg-4 {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px; /* Space between products */
+    gap: 3px; /* Small gap for better alignment */
     justify-content: space-between;
   }
 
   /* Product Card */
   .col {
-    flex: 1 1 calc(50% - 15px); /* Two per row on mobile */
-    max-width: calc(50% - 15px); /* Ensure proper spacing */
+    margin: 3px; /* Card margin for mobile */
   }
 
+  /* Image Styling */
+  .card-img-top {
+    object-fit: cover; /* Ensures image looks consistent */
+    border-radius: 8px; /* Rounded corners */
+    display: block; /* Ensures alignment */
+  }
+
+  /* Mobile: Two per row, fixed image size */
+  @media (max-width: 576px) {
+    .col {
+      flex: 1 1 calc(50% - 6px); /* Two per row on mobile with spacing */
+      max-width: calc(50% - 6px); /* Proper sizing for mobile */
+    }
+    .card-img-top {
+      width: 80px; /* Fixed width for images */
+      height: 80px; /* Fixed height for images */
+      padding: 0; /* No padding on mobile */
+    }
+  }
+
+  /* Tablet: Three per row */
   @media (min-width: 768px) {
     .col {
-      flex: 1 1 calc(33.33% - 20px); /* Three per row on tablets */
+      flex: 1 1 calc(33.33% - 20px); /* Three per row */
+    }
+    .card-img-top {
+      width: 100%; /* Full width within container */
+      height: auto; /* Maintain aspect ratio */
+      padding: 5px; /* Adds padding for better visuals */
     }
   }
 
+  /* Desktop: Four per row, uniform height and spacing */
   @media (min-width: 992px) {
     .col {
-      flex: 1 1 calc(25% - 30px); /* Four per row on desktop */
+      flex: 1 1 calc(25% - 30px); /* Four per row */
     }
-
+    .card-img-top {
+      height: 180px; /* Uniform height on desktop */
+      padding: 10px; /* Adds padding around the image */
+      border-radius: 8px; /* Smooth rounding */
+    }
     .row-cols-1,
     .row-cols-sm-2,
     .row-cols-md-3,
     .row-cols-lg-4 {
       gap: 30px; /* Larger gap for desktop */
-      margin: 60px auto; /* Centralized margin for desktop */
+      margin: 60px auto; /* Proper alignment for desktop */
     }
-  }
-
-  /* Product Images */
-  .card-img-top {
-    width: 100%; /* Ensures images scale properly */
-    height: auto; /* Avoids image stretching */
-    object-fit: cover; /* Keeps image aspect ratio */
-    border-radius: 8px; /* Adds a slight curve for aesthetics */
-  }
-
-  /* Card Styling */
-  .card {
-    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-    border-radius: 10px; /* Rounded corners for card */
-  }
-
-  /* Button Styling */
-  .btn-green {
-    padding: 8px 10px;
-    font-size: 0.875rem;
-    border-radius: 5px;
   }
 </style>
 <!-- Hero Start -->
