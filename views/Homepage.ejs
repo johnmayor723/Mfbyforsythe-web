@@ -33,33 +33,69 @@
     }
   }
 
-  /* Featured Products Styling */
-  .featured-products .card {
-    margin: 15px; /* Spacing between products */
+  
+  /* Featured Product Grid */
+  .row-cols-1,
+  .row-cols-sm-2,
+  .row-cols-md-3,
+  .row-cols-lg-4 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; /* Adjusted for mobile */
+    justify-content: space-between;
   }
 
-  .featured-products .card-img-top {
-    object-fit: cover;
-    height: 180px; /* Fix stretching */
+  /* Product Card */
+  .col {
+    flex: 1 1 calc(100% - 15px); /* Full width with gap on mobile */
+    max-width: 100%; /* Prevents stretching on small screens */
   }
 
-  .featured-products .card-body {
-    padding: 10px;
-    text-align: center;
+  @media (min-width: 576px) {
+    .col {
+      flex: 1 1 calc(50% - 15px); /* Two per row on small screens */
+    }
   }
 
-  .featured-products .card-body p {
-    margin: 5px 0;
+  @media (min-width: 768px) {
+    .col {
+      flex: 1 1 calc(33.33% - 20px); /* Three per row on medium screens */
+    }
   }
 
   @media (min-width: 992px) {
-    .featured-products .row {
-      margin: 0 -15px; /* Consistent row spacing */
+    .col {
+      flex: 1 1 calc(25% - 30px); /* Four per row on larger screens */
     }
 
-    .featured-products .col {
-      padding: 15px; /* Add margin around individual cards */
+    .row-cols-1,
+    .row-cols-sm-2,
+    .row-cols-md-3,
+    .row-cols-lg-4 {
+      gap: 30px; /* Larger gap for desktop */
+      margin: 60px auto; /* Centralized and spacious margin for desktop */
     }
+  }
+
+  /* Product Images */
+  .card-img-top {
+    width: 100%; /* Ensures images scale properly */
+    height: auto; /* Avoids image stretching */
+    object-fit: cover; /* Keeps image aspect ratio */
+    border-radius: 8px; /* Adds a slight curve for aesthetics */
+  }
+
+  /* Card Styling */
+  .card {
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    border-radius: 10px; /* Rounded corners for card */
+  }
+
+  /* Button Styling */
+  .btn-green {
+    padding: 8px 10px;
+    font-size: 0.875rem;
+    border-radius: 5px;
   }
 </style>
 <!-- Hero Start -->
