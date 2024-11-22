@@ -84,7 +84,7 @@ router.get("/products/categories/:categoryName", async (req, res) => {
 
 // Contact page route
 router.get("/contact", (req, res) => {
-  res.render("contact");
+  res.render("contact", {title: 'Contact Page'});
 });
 
 // About page route
