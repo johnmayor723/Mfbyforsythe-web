@@ -84,7 +84,7 @@ router.get("/products/categories/:categoryName", async (req, res) => {
 
 // Contact page route
 router.get("/contact", (req, res) => {
-  cost title = 'Contact Us'
+  const title = 'Contact Us'
   res.render("contact", {title});
 });
 
