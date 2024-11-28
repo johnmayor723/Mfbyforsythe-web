@@ -1,98 +1,91 @@
-<!DOCTYPE html>
-<
-
-        <!-- Modal Search Start -->
-        <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-fullscreen">
-                <div class="modal-content rounded-0">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Search by keyword</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body d-flex align-items-center">
-                        <div class="input-group w-75 mx-auto d-flex">
-                            <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
-                            <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
-                        </div>
-                    </div>
+<!-- Modal Search Start -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+        <div class="modal-content rounded-0">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Search by keyword</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex align-items-center">
+                <div class="input-group w-75 mx-auto d-flex">
+                    <input type="search" class="form-control p-3" placeholder="keywords" aria-describedby="search-icon-1">
+                    <span id="search-icon-1" class="input-group-text p-3"><i class="fa fa-search"></i></span>
                 </div>
             </div>
         </div>
-        <!-- Modal Search End -->
+    </div>
+</div>
+<!-- Modal Search End -->
 
 
-        <!-- Single Page Header start -->
-        <div class="container-fluid page-header py-5">
-            <h1 class="text-center text-white display-6">Contact</h1>
-            <ol class="breadcrumb justify-content-center mb-0">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                <li class="breadcrumb-item active text-white">Contact</li>
-            </ol>
-        </div>
-        <!-- Single Page Header End -->
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">Contact</h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Pages</a></li>
+        <li class="breadcrumb-item active text-white">Contact</li>
+    </ol>
+</div>
+<!-- Single Page Header End -->
 
 
-        <!-- Contact Start -->
-        <div class="container-fluid contact py-5">
-            <div class="container py-5">
-                <div class="p-5 bg-light rounded">
-                    <div class="row g-4">
-                        <div class="col-12">
-                            <div class="text-center mx-auto" style="max-width: 700px;">
-                                <h1 class="text-primary">Get in touch</h1>
-                                <p class="mb-4">Get in touch with us today – we’d love to hear from you!
-
- <a href="https://htmlcodex.com/contact-form"></a>.</p>
-                            </div>
-                        </div>
-                        <div class="col-lg-12">
-                            <div class="h-100 rounded">
+<!-- Contact Start -->
+<div class="container-fluid contact py-5">
+    <div class="container py-5">
+        <div class="p-5 bg-light rounded">
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="text-center mx-auto" style="max-width: 700px;">
+                        <h1 class="text-primary">Get in touch</h1>
+                        <p class="mb-4">Get in touch with us today – we’d love to hear from you!</p>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="h-100 rounded">
                         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3958.421348520137!2d3.405878814495966!3d6.445032025597701!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8b30d8c2db2f%3A0x6e05ec2e4951f80!2sOnikan%20Mall!5e0!3m2!1sen!2sng!4v1697803445432!5m2!1sen!2sng" 
-  width="600" 
-  height="450" 
-  style="border:0;" 
-  allowfullscreen="" 
-  loading="lazy" 
-  referrerpolicy="no-referrer-when-downgrade">
-</iframe>
-                            </div>
+                            width="600" 
+                            height="450" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <form action="/enquiries" method="post" class="">
+                        <input type="text" name="name" class="w-100 form-control border-0 py-3 mb-4" placeholder="Your Name">
+                        <input type="email" name="email" class="w-100 form-control border-0 py-3 mb-4" placeholder="Enter Your Email">
+                        <textarea class="w-100 form-control border-0 mb-4" name="message" rows="5" cols="10" placeholder="Your Message"></textarea>
+                        <button class="w-100 btn form-control border-secondary py-3 bg-white text-primary " type="submit">Submit</button>
+                    </form>
+                </div>
+                <div class="col-lg-5">
+                    <div class="d-flex p-4 rounded mb-4 bg-white">
+                        <i class="fas fa-map-marker-alt fa-2x text-primary me-4"></i>
+                        <div>
+                            <h4>Address</h4>
+                            <p class="mb-2">F2, The City Mall, Onikan, Lagos.</p>
                         </div>
-                        <div class="col-lg-7">
-                            <form action="/enquiries" method="post" class="">
-                                <input type="text" name="name" class="w-100 form-control border-0 py-3 mb-4" placeholder="Your Name">
-                                <input type="email" name="email" class="w-100 form-control border-0 py-3 mb-4" placeholder="Enter Your Email">
-                                <textarea class="w-100 name="message" form-control border-0 mb-4" rows="5" cols="10" placeholder="Your Message"></textarea>
-                                <button class="w-100 btn form-control border-secondary py-3 bg-white text-primary " type="submit">Submit</button>
-                            </form>
+                    </div>
+                    <div class="d-flex p-4 rounded mb-4 bg-white">
+                        <i class="fas fa-envelope fa-2x text-primary me-4"></i>
+                        <div>
+                            <h4>Mail Us</h4>
+                            <p class="mb-2">info@fooddeckpro.com.ng</p>
                         </div>
-                        <div class="col-lg-5">
-                            <div class="d-flex p-4 rounded mb-4 bg-white">
-                                <i class="fas fa-map-marker-alt fa-2x text-primary me-4"></i>
-                                <div>
-                                    <h4>Address</h4>
-                                    <p class="mb-2">F2, The City Mall, Onikan, Lagos.</p>
-                                </div>
-                            </div>
-                            <div class="d-flex p-4 rounded mb-4 bg-white">
-                                <i class="fas fa-envelope fa-2x text-primary me-4"></i>
-                                <div>
-                                    <h4>Mail Us</h4>
-                                    <p class="mb-2">info@fooddeckpro.com.ng</p>
-                                </div>
-                            </div>
-                            <div class="d-flex p-4 rounded bg-white">
-                                <i class="fa fa-phone-alt fa-2x text-primary me-4"></i>
-                                <div>
-                                    <h4>Telephone</h4>
-                                    <p class="mb-2">(+234) 9123 907060</p>
-                                </div>
-                            </div>
+                    </div>
+                    <div class="d-flex p-4 rounded bg-white">
+                        <i class="fa fa-phone-alt fa-2x text-primary me-4"></i>
+                        <div>
+                            <h4>Telephone</h4>
+                            <p class="mb-2">(+234) 9123 907060</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Contact End -->
-
-
+    </div>
+</div>
+<!-- Contact End -->
