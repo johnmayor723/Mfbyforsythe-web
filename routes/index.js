@@ -118,7 +118,9 @@ router.get("/callback", (req, res) => {
   res.render("success", {title: "FAQ"});
 });
 
-// privacy policy page routerouter.post('/enquiries', async (req, res) => {
+// privacy policy page route
+
+router.post('/enquiries', async (req, res) => {
   const { name, email, message } = req.body;
 
   if (!name || !email || !message) {
