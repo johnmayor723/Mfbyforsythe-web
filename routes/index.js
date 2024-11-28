@@ -166,8 +166,8 @@ router.get("/callback", (req, res) => {
     };
 
     // Assuming `mailer` is your configured mailing service
-    await mailer.sendMail(adminMailOptions);
-    await mailer.sendMail(userMailOptions);
+    mailer.sendMail(adminMailOptions);
+    mailer.sendMail(userMailOptions);
 
     res.status(200).json({ success: 'Message sent successfully!' });
   } catch (error) {
