@@ -168,8 +168,8 @@ router.post('/enquiries', async (req, res) => {
     };
 
     // Assuming `mailer` is your configured mailing service
-    mailer.sendMail(adminMailOptions);
-    mailer.sendMail(userMailOptions);
+    await mailer.sendMail(adminMailOptions);
+    await mailer.sendMail(userMailOptions);
 
     res.status(200).json({ success: 'Message sent successfully!' });
   } catch (error) {
