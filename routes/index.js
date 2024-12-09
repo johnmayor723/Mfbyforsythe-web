@@ -11,7 +11,7 @@ const nodemailer = require('nodemailer');
       },
 });
 
-const API_URL = "https://pantry-hub-server.onrender.com/api/products";
+const API_URL = "http://api.fooddeckpro.com.ng/api/products";
 
 // Homepage route
 router.get("/", async (req, res) => {
