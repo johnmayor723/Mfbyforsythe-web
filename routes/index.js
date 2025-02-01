@@ -18,7 +18,7 @@ router.get("/", async (req, res) => {
   try {
     const { data: products } = await axios.get(API_URL);
     const suggestedProducts = products.sort(() => 0.5 - Math.random()).slice(0, 8);
-    res.render("Homepage", { products, title: "Home" ,
+    res.render("index", { products, title: "Home" ,
         suggestedProducts
     });
   } catch (err) {

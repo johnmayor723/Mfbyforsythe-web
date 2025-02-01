@@ -1,0 +1,61 @@
+
+
+  <!-- Category Section -->
+  <section class="mt-5">
+    <h2>Categories</h2>
+    <div class="row">
+      <div class="col-md-6">
+        <a href="/categories/farm-fresh" class="text-decoration-none">
+          <div class="card">
+            <img src="/images/farm-fresh.jpg" class="card-img-top" alt="Farm Fresh">
+            <div class="card-body text-center">
+              <h5 class="card-title">Farm Fresh</h5>
+            </div>
+          </div>
+        </a>
+      </div>
+      <div class="col-md-6">
+        <a href="/categories/dry-groceries" class="text-decoration-none">
+          <div class="card">
+            <img src="/images/dry-groceries.jpg" class="card-img-top" alt="Dry Groceries">
+            <div class="card-body text-center">
+              <h5 class="card-title">Dry Groceries</h5>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products Section -->
+  <section class="mt-5">
+    <h2>Featured Products</h2>
+    <div class="row">
+      <% products.forEach(product => { %>
+        <div class="col-md-3 col-6 mb-4">
+          <div class="card h-100">
+            <img src="<%= product.image %>" class="card-img-top" alt="<%= product.title %>">
+            <div class="card-body">
+              <h5 class="card-title"><%= product.title %></h5>
+              <p class="card-text text-success">$<%= product.price %></p>
+              <p class="text-warning">
+                <!-- Display star ratings -->
+                <% for(let i = 0; i < product.rating; i++) { %>
+                  <i class="fas fa-star"></i>
+                <% } %>
+              </p>
+              <a href="/product/<%= product.id %>" class="btn btn-outline-success btn-sm">View Details</a>
+            </div>
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  </section>
+
+  <!-- Download App Section -->
+  <section class="mt-5 text-center">
+    <h2>Download Our App</h2>
+    <a href="#" class="btn btn-outline-success m-2">Download for Android</a>
+    <a href="#" class="btn btn-outline-success m-2">Download for iOS</a>
+  </section>
+</div>
