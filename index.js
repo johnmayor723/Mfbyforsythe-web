@@ -21,6 +21,8 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 // Serve static files from the public directory
+app.use('/uploads', express.static('uploads')); // Serve uploaded images
+//app.use(express.static('public')); // Serve CSS & frontend assets
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Use express-ejs-layouts
