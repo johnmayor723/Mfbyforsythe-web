@@ -10,8 +10,13 @@ const nodemailer = require('nodemailer');
         pass: 'xyca sbvx hifi amzs',
       },
 });
+const upload = require('../helpers/multer');
 
-const API_URL = "http://api.fooddeckpro.com.ng/api/products";
+const router = express.Router();
+
+// API Base URL (Change this to your API service URL)
+const API_BASE_URL = 'http://mfbyforsythe.foodliie.com/api/products';
+
 
 // Homepage route
 router.get("/", async (req, res) => {
@@ -26,27 +31,72 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Product detail route
-router.get("/products/:id", async (req, res) => {
+
+
+// Fetch single product by ID
+router.get('/products/:id', async (req, res) => {
   try {
-    const { data: product } = await axios.get(`${API_URL}/${req.params.id}`);
-    const { data: allProducts } = await axios.get(API_URL);
+    const response = await axios.get(`${API_BASE_URL}/${req.params.id}`);
+    res.render('products/show', { product: response.data });
+  } catch (error) {
+    res.status(404).send('Product not found');
+  }
+});
 
-   
-    // Extract measurement data from the product
-    // measurements
-    const measurements = product.measurements || []; 
+// Render product creation form
+router.get('/products/new', (req, res) => {
+  res.render('products/new');
+});
 
-    const suggestedProducts = allProducts.sort(() => 0.5 - Math.random()).slice(0, 8);
+// Create new product
+router.post('/products', upload.array('images', 5), async (req, res) => {
+  try {
+    const imageUrls = req.files.map(file => `/uploads/${file.filename}`);
 
-    res.render("shop-detail", {
-      product,
-      products: suggestedProducts,
-      measurements,  // Pass measurement object to the view
-      title: "Product Detail"
-    });
-  } catch (err) {
-    res.status(500).send("Error loading product details");
+    const newProduct = {
+      name: req.body.name,
+      description: req.body.description,
+      size: req.body.size,
+      price: req.body.price,
+      colors: req.body.colors.split(','), // Convert comma-separated colors to array
+      images: imageUrls
+    };
+
+    await axios.post(API_BASE_URL, newProduct);
+    res.redirect('/products');
+  } catch (error) {
+    res.status(500).send('Error creating product');
+  }
+});
+
+// Update product
+router.post('/products/:id/update', upload.array('images', 5), async (req, res) => {
+  try {
+    const imageUrls = req.files.map(file => `/uploads/${file.filename}`);
+
+    const updatedProduct = {
+      name: req.body.name,
+      description: req.body.description,
+      size: req.body.size,
+      price: req.body.price,
+      colors: req.body.colors.split(','),
+      images: imageUrls.length > 0 ? imageUrls : req.body.existingImages.split(',')
+    };
+
+    await axios.put(`${API_BASE_URL}/${req.params.id}`, updatedProduct);
+    res.redirect('/products');
+  } catch (error) {
+    res.status(500).send('Error updating product');
+  }
+});
+
+// Delete product
+router.post('/products/:id/delete', async (req, res) => {
+  try {
+    await axios.delete(`${API_BASE_URL}/${req.params.id}`);
+    res.redirect('/products');
+  } catch (error) {
+    res.status(500).send('Error deleting product');
   }
 });
 
