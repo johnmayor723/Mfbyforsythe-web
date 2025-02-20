@@ -12,6 +12,7 @@ const app = express();
 const indexRouter = require("./routes/index");
 const cartRouter = require("./routes/cart");
 const paymentRouter = require("./routes/payment");
+const managementRouter = require("./routes/management");
 
 // MongoDB Connection URL
 const DBURL = "mongodb+srv://Pantryhubadmin:pantryhub123@cluster0.qjbxk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
@@ -73,9 +74,10 @@ mongoose.connect(DBURL, { useNewUrlParser: true, useUnifiedTopology: true })
 app.use("/", indexRouter);
 app.use("/cart", cartRouter);
 app.use("/payments", paymentRouter); 
+app.use("/management", managementRouter); 
 
 // Start the server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3090;
 app.listen(PORT, () => {
       console.log(`Server is running on https://localhost:${PORT}`);
     });
