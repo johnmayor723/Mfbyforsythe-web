@@ -63,26 +63,64 @@ button:hover {
   <div class="container">
     <h2>Create Product</h2>
     <form action="/management/products" method="POST" enctype="multipart/form-data">
-      <label>Name:</label>
-      <input type="text" name="name" required>
+  <label>Name:</label>
+  <input type="text" name="name" required>
 
-      <label>Description:</label>
-      <textarea name="description" required></textarea>
+  <label>Description:</label>
+  <textarea name="description" required></textarea>
 
-      <label>Size:</label>
-      <input type="text" name="size" required>
+  <label>Size:</label>
+  <input type="text" name="size" required>
 
-      <label>Price:</label>
-      <input type="number" name="price" required>
+  <label>Price:</label>
+  <input type="number" name="price" required>
 
-      <label>Colors (comma-separated):</label>
-      <input type="text" name="colors" required>
-
-      <label>Upload Images (max 5):</label>
-      <input type="file" name="images" multiple accept="image/*" required>
-
-      <button type="submit">Create Product</button>
-    </form>
+  <label>Select Colors:</label>
+  <div id="colorOptions">
+    <label><input type="checkbox" name="colors" value="Black"> Black</label>
+    <label><input type="checkbox" name="colors" value="White"> White</label>
+    <label><input type="checkbox" name="colors" value="Red"> Red</label>
+    <label><input type="checkbox" name="colors" value="Blue"> Blue</label>
+    <label><input type="checkbox" name="colors" value="Green"> Green</label>
+    <label><input type="checkbox" name="colors" value="Yellow"> Yellow</label>
+    <label><input type="checkbox" name="colors" value="Purple"> Purple</label>
+    <label><input type="checkbox" name="colors" value="Pink"> Pink</label>
+    <label><input type="checkbox" name="colors" value="Gray"> Gray</label>
+    <label><input type="checkbox" name="colors" value="Brown"> Brown</label>
+    <label><input type="checkbox" name="colors" value="Beige"> Beige</label>
+    <label><input type="checkbox" name="colors" value="Orange"> Orange</label>
+    <label><input type="checkbox" name="colors" value="Teal"> Teal</label>
+    <label><input type="checkbox" name="colors" value="Navy"> Navy</label>
+    <label><input type="checkbox" name="colors" value="Burgundy"> Burgundy</label>
+    <label><input type="checkbox" name="colors" value="Olive"> Olive</label>
+    <label><input type="checkbox" name="colors" value="Mustard"> Mustard</label>
+    <label><input type="checkbox" name="colors" value="Lavender"> Lavender</label>
+    <label><input type="checkbox" name="colors" value="Turquoise"> Turquoise</label>
   </div>
+
+  <div id="imageUploads">
+    <label>Upload Images:</label>
+    <input type="file" name="images" accept="image/*">
+  </div>
+
+  <button type="button" id="addImage">+ Add More Images</button>
+
+  <button type="submit">Create Product</button>
+</form>
+</div>
+script>
+  document.getElementById('addImage').addEventListener('click', function () {
+    const imageUploads = document.getElementById('imageUploads');
+
+    // Create a new file input
+    const newInput = document.createElement('input');
+    newInput.type = 'file';
+    newInput.name = 'images';
+    newInput.accept = 'image/*';
+
+    // Append the new input field
+    imageUploads.appendChild(newInput);
+  });
+</script>
 </body>
 </html>
