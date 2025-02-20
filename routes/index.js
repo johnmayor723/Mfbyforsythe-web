@@ -12,7 +12,7 @@ const nodemailer = require('nodemailer');
 });
 const upload = require('../helpers/multer');
 
-const router = express.Router();
+//const router = express.Router();
 
 // API Base URL (Change this to your API service URL)
 const API_BASE_URL = 'http://mfbyforsythe.foodliie.com/api/products';
