@@ -101,6 +101,12 @@ router.get("/contact", (req, res) => {
   res.render("contact", {title});
 });
 
+// Contact page route
+router.get("/blog", (req, res) => {
+  const title = 'Blog'
+  res.render("blog", {title});
+});
+
 // About page route
 router.get("/about", (req, res) => {
   res.render("about");
