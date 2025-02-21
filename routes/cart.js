@@ -13,17 +13,19 @@ const calculateTotals = (cart) => {
     cart.totalAmount = cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 };
 
+
 //route to add a product to cart.
 router.post('/:id', (req, res) => {
     try {
-    const { id, name, price, imageUrl } = req.body;
+    const { name, price, imageUrl, qty } = req.body;
+    const id = req.params.id
     
     let product = findProductInCart(req.session.cart.items, id);
 
     if (product) {
-        product.quantity += 1;
+        product.quantity += qty;
     } else {
-        req.session.cart.items.push({ id, name, imageUrl, price, quantity: 1 });
+        req.session.cart.items.push({ id, name, imageUrl, price, quantity: qty });
     }
     calculateTotals(req.session.cart);
     console.log("Cart Items:", req.session.cart.items);
@@ -36,52 +38,14 @@ router.post('/:id', (req, res) => {
     
   }
 });
-// action="/cart/<%= product._id %>/add-measurement
-router.post("/:id/add-measurement", (req, res) => {
-    const id = req.body.id
-    console.log ('buying option id:', id)
-    try {
-    const { name, price, imageUrl } = req.body;
-    
-    let product = findProductInCart(req.session.cart.items, id);
 
-    if (product) {
-        product.quantity += 1;
-    } else {
-        req.session.cart.items.push({ id, name, imageUrl, price, quantity: 1 });
-    }
-    calculateTotals(req.session.cart);
-    console.log("Cart Items:", req.session.cart.items);
-    req.flash('success_msg', 'Item added to cart!');
-    res.redirect('/cart');
-    } catch (error) {
-    console.error("Error fetching product:", error);
-    req.flash('error_msg', 'Item not added to cart!');
-    res.redirect('/');
-    
-  }
-})
 
 
 // route to get cart
 router.get('/', (req, res) => {
-    res.render('cart', { cart: req.session.cart, title: "Cart" });
+     console.log("cart in session:", req.session.cart )
+    res.render('shopping-cart', { cart: req.session.cart, title: "Cart" });
 });
-
-// Increase product quantity by one
-/*router.post('/increase', (req, res, next) => {
-  console.log("increasing")
-  const { id } = req.body;
-    let product = findProductInCart(req.session.cart.items, id);
-
-    if (product) {
-        product.quantity += 1;
-        calculateTotals(req.session.cart);
-    }
-    req.flash('success_msg', ' successfully updated cart.');
-    res.redirect('/cart');
-});*/
-
 
 
 // Reduce product quantity by one
@@ -97,6 +61,10 @@ router.post('/reduce/:id', (req, res) => {
     calculateTotals(req.session.cart);
     res.redirect('/cart');
 });
+
+
+
+
 // increase product quantity by one
 router.post('/increase/:id', (req, res) => {
     const { id } = req.params;
@@ -113,6 +81,7 @@ router.post('/increase/:id', (req, res) => {
     res.redirect('/cart');
 });
 
+
 // Remove product from cart
 router.post('/remove/:id', (req, res) => {
     const { id } = req.params;
@@ -120,6 +89,8 @@ router.post('/remove/:id', (req, res) => {
     calculateTotals(req.session.cart);
     res.redirect('/cart');
 });
+
+
 
 // Route to clear the cart session
 router.get("/clearCart", (req, res) => {
