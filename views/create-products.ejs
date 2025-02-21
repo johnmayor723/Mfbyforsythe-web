@@ -1,0 +1,81 @@
+ <!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Mfbyforsythe</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Products</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Orders</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- Product Form -->
+<div class="container mt-4">
+  <h2>Create Product</h2>
+  <form action="/management" method="POST" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label class="form-label">Name:</label>
+      <input type="text" class="form-control" name="name" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Description:</label>
+      <textarea class="form-control" name="description" required></textarea>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Select Sizes:</label>
+      <div class="d-flex flex-wrap gap-2">
+        <% ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'UK 6', 'UK 8', 'UK 10', 'UK 12', 'UK 14', 'UK 16', 'UK 18'].forEach(size => { %>
+          <label><input type="checkbox" name="size" value="<%= size %>"> <%= size %></label>
+        <% }); %>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Price:</label>
+      <input type="number" class="form-control" name="price" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Select Colors:</label>
+      <div class="d-flex flex-wrap gap-2">
+        <% ['Black', 'White', 'Red', 'Blue', 'Green', 'Yellow', 'Purple', 'Pink', 'Gray', 'Brown', 'Beige', 'Orange', 'Teal', 'Navy', 'Burgundy', 'Olive', 'Mustard', 'Lavender', 'Turquoise'].forEach(color => { %>
+          <label><input type="checkbox" name="colors" value="<%= color %>"> <%= color %></label>
+        <% }); %>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Upload Images:</label>
+      <div id="imageUploads">
+        <input type="file" class="form-control" name="images" accept="image/*">
+      </div>
+      <button type="button" class="btn btn-secondary mt-2" id="addImage">+ Add More Images</button>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Product</button>
+  </form>
+</div>
+
+<script>
+  document.getElementById('addImage').addEventListener('click', function () {
+    const imageUploads = document.getElementById('imageUploads');
+
+    // Create a new file input
+    const newInput = document.createElement('input');
+    newInput.type = 'file';
+    newInput.name = 'images';
+    newInput.accept = 'image/*';
+    newInput.classList.add('form-control', 'mt-2');
+
+    // Append the new input field
+    imageUploads.appendChild(newInput);
+  });
+</script>

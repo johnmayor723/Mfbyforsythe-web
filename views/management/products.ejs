@@ -1,126 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Create Product</title>
-  <link rel="stylesheet" href="/css/style.css">
+<div class="container-fluid">
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Mfbyforsythe Dashboard</a>
+  </nav>
 
-  <styles>
-  body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f4f4f4;
-}
+  <!-- Jumbotron -->
+  <div class="jumbotron mt-4">
+    <h1 class="display-5">Manage Products</h1>
+    <p class="lead">Edit or remove products from the catalog.</p>
+    <a href="/management/products/new" class="btn btn-primary">Create Product</a> 
+  </div>
 
-.container {
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 20px;
-  background: white;
-  border-radius: 5px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
-
-h2 {
-  text-align: center;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-}
-
-label {
-  margin-top: 10px;
-  font-weight: bold;
-}
-
-input, textarea {
-  padding: 8px;
-  margin-top: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-button {
-  margin-top: 15px;
-  padding: 10px;
-  background: #28a745;
-  color: white;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-button:hover {
-  background: #218838;
-}
-  </styles>
-</head>
-<body>
+  <!-- Products Grid -->
   <div class="container">
-    <h2>Create Product</h2>
-    <form action="/management/products" method="POST" enctype="multipart/form-data">
-  <label>Name:</label>
-  <input type="text" name="name" required>
-
-  <label>Description:</label>
-  <textarea name="description" required></textarea>
-
-  <label>Size:</label>
-  <input type="text" name="size" required>
-
-  <label>Price:</label>
-  <input type="number" name="price" required>
-
-  <label>Select Colors:</label>
-  <div id="colorOptions">
-    <label><input type="checkbox" name="colors" value="Black"> Black</label>
-    <label><input type="checkbox" name="colors" value="White"> White</label>
-    <label><input type="checkbox" name="colors" value="Red"> Red</label>
-    <label><input type="checkbox" name="colors" value="Blue"> Blue</label>
-    <label><input type="checkbox" name="colors" value="Green"> Green</label>
-    <label><input type="checkbox" name="colors" value="Yellow"> Yellow</label>
-    <label><input type="checkbox" name="colors" value="Purple"> Purple</label>
-    <label><input type="checkbox" name="colors" value="Pink"> Pink</label>
-    <label><input type="checkbox" name="colors" value="Gray"> Gray</label>
-    <label><input type="checkbox" name="colors" value="Brown"> Brown</label>
-    <label><input type="checkbox" name="colors" value="Beige"> Beige</label>
-    <label><input type="checkbox" name="colors" value="Orange"> Orange</label>
-    <label><input type="checkbox" name="colors" value="Teal"> Teal</label>
-    <label><input type="checkbox" name="colors" value="Navy"> Navy</label>
-    <label><input type="checkbox" name="colors" value="Burgundy"> Burgundy</label>
-    <label><input type="checkbox" name="colors" value="Olive"> Olive</label>
-    <label><input type="checkbox" name="colors" value="Mustard"> Mustard</label>
-    <label><input type="checkbox" name="colors" value="Lavender"> Lavender</label>
-    <label><input type="checkbox" name="colors" value="Turquoise"> Turquoise</label>
+    <div class="row">
+      <% products.forEach(product => { %>
+        <div class="col-md-6 col-lg-3 mb-4">
+          <div class="card text-center shadow-sm">
+            <img src="<%= product.image_url %>" class="card-img-top" alt="<%= product.name %>">
+            <div class="card-body">
+              <h5 class="card-title"><%= product.name %></h5>
+              <p class="card-text">$<%= product.price %></p>
+              <a href="/management/products/edit/<%= product._id %>" class="btn btn-warning btn-sm">Edit</a>
+              <a href="/management/products/delete/<%= product._id %>" class="btn btn-danger btn-sm">Delete</a>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
   </div>
-
-  <div id="imageUploads">
-    <label>Upload Images:</label>
-    <input type="file" name="images" accept="image/*">
-  </div>
-
-  <button type="button" id="addImage">+ Add More Images</button>
-
-  <button type="submit">Create Product</button>
-</form>
 </div>
-script>
-  document.getElementById('addImage').addEventListener('click', function () {
-    const imageUploads = document.getElementById('imageUploads');
-
-    // Create a new file input
-    const newInput = document.createElement('input');
-    newInput.type = 'file';
-    newInput.name = 'images';
-    newInput.accept = 'image/*';
-
-    // Append the new input field
-    imageUploads.appendChild(newInput);
-  });
-</script>
-</body>
-</html>
