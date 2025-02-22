@@ -5,6 +5,8 @@ const axios = require("axios");
 const upload = require('../helpers/multer');
 
 const API_BASE_URL = 'http://93.127.160.233:3060/api/products';
+const BLOGS_URL = "://93.127.160.233:3060/api/blogs"
+
 
 // dashboard page
 router.get("/", (req, res)=>{
@@ -79,6 +81,73 @@ router.post('/products/:id/delete', async (req, res) => {
   } catch (error) {
     res.status(500).send('Error deleting product');
   }
+});
+
+// BLOGS ROUTES
+
+// GET: Render blog management page
+router.get('/blogs', async (req, res) => {
+    try {
+        const response = await axios.get(BLOGS_URL);
+        const blogs = response.data.blogs || [];
+        res.render('management/blog', { blogs });
+    } catch (error) {
+        res.render('management/blog', { blogs: [], error: 'Error fetching blogs' });
+    }
+});
+
+
+
+// POST: Create a new blog
+router.post('/blogs', upload.single('image'), async (req, res) => {
+    const { title, content } = req.body;
+    if (!req.file) return res.status(400).json({ success: false, message: 'Image upload required' });
+
+    const imageUrl = `/uploads/${req.file.filename}`;
+
+    try {
+        await axios.post(BLOGS_URL, { title, content, image: imageUrl });
+        res.redirect('/blogs');
+    } catch (error) {
+        res.status(500).send('Error creating blog');
+    }
+});
+
+// GET: Render edit blog page
+router.get('/blogs/edit/:id', async (req, res) => {
+    try {
+        const response = await axios.get(`${BLOGS_URL}/${req.params.id}`);
+        res.render('management/edit-blog', { blog: response.data });
+    } catch (error) {
+        res.status(500).send('Error fetching blog for editing');
+    }
+});
+
+// POST: Update a blog
+router.post('blogs/update/:id', upload.single('image'), async (req, res) => {
+    const { title, content } = req.body;
+    let updateData = { title, content };
+
+    if (req.file) {
+        updateData.image = `/uploads/${req.file.filename}`;
+    }
+
+    try {
+        await axios.put(`${BLOGS_URL}/${req.params.id}`, updateData);
+        res.redirect('/blogs');
+    } catch (error) {
+        res.status(500).send('Error updating blog');
+    }
+});
+
+// POST: Delete a blog
+router.post('blogs/delete/:id', async (req, res) => {
+    try {
+        await axios.delete(`${BLOGS_URL}/${req.params.id}`);
+        res.redirect('/blogs');
+    } catch (error) {
+        res.status(500).send('Error deleting blog');
+    }
 });
 
 module.exports = router;

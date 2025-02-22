@@ -23,6 +23,7 @@
         </div>
     </section>
     <!-- Breadcrumb Section End -->
+    <% if (session.cart && session.cart.totalQty > 0) { %>
 
     <!-- Shopping Cart Section Begin -->
     <section class="shopping-cart spad">
@@ -84,7 +85,7 @@
                 <div class="col-lg-4">
                     <div class="cart__discount">
                         <h6>Discount codes</h6>
-                        <form action="#">
+                        <form action="#"9>
                             <input type="text" placeholder="Coupon code">
                             <button type="submit">Apply</button>
                         </form>
@@ -92,8 +93,8 @@
                     <div class="cart__total">
                         <h6>Cart total</h6>
                         <ul>
-                            <li>Subtotal <span>£ <%=cart.totaAmount %></span></li>
-                            <li>Total <span>£ <%=cart.items.totaAmount%> </span></li>
+                            <li>Subtotal <span>£ <%=session.cart.totalAmount %></span></li>
+                            <li>Total <span>£ <%=session.cart.totalAmount%> </span></li>
                         </ul>
                         <a href="#" class="primary-btn">Proceed to checkout</a>
                     </div>
@@ -101,3 +102,6 @@
             </div>
         </div>
     </section>
+            <% } else { %>
+        <p>Your cart is empty.</p>
+        <% } %>
