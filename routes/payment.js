@@ -32,6 +32,44 @@ router.post('/', (req, res, next) => {
 
 //givin this url: https://fooddeck-web.onrender.com/payments/callback?trxref=joo7tyhe5o&reference=joo7tyhe5o
 
+
+routet.post('/charge',  function(req, res, next) {
+  
+  if (!req.session.cart) {
+      return res.redirect('/products');
+  }
+  var cart = new Cart(req.session.cart);
+  const cartContents = formatCart(req.session.cart);
+  var stripe = require("stripe")(process.env.STRIPE_SECRET );
+
+  stripe.charges.create({
+      amount: cart.totalPrice * 100 * 1.18,
+      currency: "gbp",
+      source: req.body.token, // obtained with Stripe.js
+      description: "Test Charge"
+  }, function(err, charge) {
+      if (err) {
+          req.flash('error', err.message);
+          return res.redirect('/charge');
+      }
+      var order = new Order({
+         // user: req.user
+          cart: cart,
+          address: req.body.address,
+          name: req.body.name,
+          paymentId: charge.id
+      });
+      sendMail(cartContents)
+      order.save(function(err, result) {
+          req.flash('success', 'Successfully bought product!');
+          req.session.cart = null;
+          res.redirect('/');
+      });
+  }); 
+});
+
+
+
 router.get('/callback', async (req, res) => {
     try {
         // Extracting trxref and reference from query parameters
