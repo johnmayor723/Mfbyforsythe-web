@@ -34,7 +34,7 @@ router.post('/', (req, res, next) => {
 //givin this url: https://fooddeck-web.onrender.com/payments/callback?trxref=joo7tyhe5o&reference=joo7tyhe5o
 
 
-routet.post('/charge',  function(req, res, next) {
+router.post('/charge',  function(req, res, next) {
   
   if (!req.session.cart) {
       return res.redirect('/products');
