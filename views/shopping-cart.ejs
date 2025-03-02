@@ -13,7 +13,7 @@
                     <div class="breadcrumb__text">
                         <h4>Shopping Cart</h4>
                         <div class="breadcrumb__links">
-                            <a href="./index.html">Home</a>
+                            <a href="/">Home</a>
                             <a href="./shop.html">Shop</a>
                             <span>Shopping Cart</span>
                         </div>
@@ -84,10 +84,18 @@
                 </div>
                 <div class="col-lg-4">
                     <div class="cart__discount">
-                        <h6>Discount codes</h6>
-                        <form action="#"9>
-                            <input type="text" placeholder="Coupon code">
-                            <button type="submit">Apply</button>
+                        <h6>Check Out</h6>
+                        <form action="/charge" method="post">
+                            <input type="text" name="name" placeholder="Enter name">
+<input type="text" name="address" placeholder="Enter. Address">
+<input type="text" name="phone" placeholder="EnteriPhone number">
+<div id="card-element">
+                            <!-- A Stripe Element will be inserted here. -->
+                            </div>
+            <input type="hidden" name="totalAmount" value="<%= session.cart.totalPrice %>">
+            <input type="hidden" name="totalQty" value="<%= cart.totalAmount %>">
+            
+                            <button type="submit">Make Payement</button>
                         </form>
                     </div>
                     <div class="cart__total">
@@ -105,3 +113,32 @@
             <% } else { %>
         <p>Your cart is empty.</p>
         <% } %>
+
+<script>
+  let PK = "pk_live_51JJP3QC3AvHrSrpnLqz1xwWCTRjvfVXUQ44mJHFk2PKTZWos5YGQYNKA1czYIYNcRTDlYyw5JdtYdxv23MfB4Pxl00XljiqdpR"
+
+  const elements = stripe.elements();
+  const cardElement = elements.create('card');
+
+  cardElement.mount('#card-element');
+
+  const form = document.getElementById('payment-form');
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const { token, error } = await stripe.createToken(cardElement);
+
+    if (error) {
+      const errorElement = document.getElementById('card-errors');
+      errorElement.textContent = error.message;
+    } else {
+      const hiddenInput = document.createElement('input');
+      hiddenInput.setAttribute('type', 'hidden');
+      hiddenInput.setAttribute('name', 'token');
+      hiddenInput.setAttribute('value', token.id);
+
+      form.appendChild(hiddenInput);
+      form.submit();
+    }
+  });
+</script>
