@@ -60,7 +60,7 @@ routet.post('/charge',  function(req, res, next) {
           name: req.body.name,
           paymentId: charge.id,
           phone: req.body.phone,
-          email. req.body.email
+          email: req.body.email
       });
       sendMail(cartContents)
       order.save(function(err, result) {
