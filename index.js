@@ -12,6 +12,7 @@ const app = express();
 const indexRouter = require("./routes/index");
 const cartRouter = require("./routes/cart");
 const paymentRouter = require("./routes/payment");
+const orderRouter = require("./routes/Order");
 const managementRouter = require("./routes/management");
 
 // MongoDB Connection URL
@@ -74,6 +75,7 @@ mongoose.connect(DBURL, { useNewUrlParser: true, useUnifiedTopology: true })
 app.use("/", indexRouter);
 app.use("/cart", cartRouter);
 app.use("/payments", paymentRouter); 
+app.use("/order", orderRouter); 
 app.use("/management", managementRouter); 
 
 // Start the server
