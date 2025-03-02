@@ -58,8 +58,8 @@ routet.post('/charge',  function(req, res, next) {
           cart: cart,
           address: req.body.address,
           name: req.body.name,
-          paymentId: charge.id
-          phone: req.body.phone
+          paymentId: charge.id,
+          phone: req.body.phone,
           email. req.body.email
       });
       sendMail(cartContents)
