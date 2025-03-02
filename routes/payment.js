@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const axios = require('axios');
+const Order =  require("../models/Order")
 const nodemailer = require('nodemailer');
 const {generateOrderEmailHTML} = require('../helpers')
 
@@ -40,7 +41,7 @@ routet.post('/charge',  function(req, res, next) {
   }
   var cart = new Cart(req.session.cart);
   const cartContents = formatCart(req.session.cart);
-  var stripe = require("stripe")(process.env.STRIPE_SECRET );
+  var stripe = require("stripe")("sk_test_51JJP3QC3AvHrSrpnTHIwGAdjNtZXURE2Ii8rHkMpbqQsxOfHFIcoHNcuZBGzpHX6FdgG1ZPXJoBp4ma8cS743WA500QRAG8n1g")
 
   stripe.charges.create({
       amount: cart.totalPrice * 100 * 1.18,
@@ -58,6 +59,8 @@ routet.post('/charge',  function(req, res, next) {
           address: req.body.address,
           name: req.body.name,
           paymentId: charge.id
+          phone: req.body.phone
+          email. req.body.email
       });
       sendMail(cartContents)
       order.save(function(err, result) {
