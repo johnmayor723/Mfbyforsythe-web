@@ -89,14 +89,12 @@
                             <input type="text" name="name" placeholder="Enter name">
 <input type="text" name="address" placeholder="Enter. Address">
 <input type="text" name="phone" placeholder="EnteriPhone number">
-<div id="card-element">
-                            <!-- A Stripe Element will be inserted here. -->
-                            </div>
+
             <input type="hidden" name="totalAmount" value="<%= session.cart.totalPrice %>">
             <input type="hidden" name="totalQty" value="<%= cart.totalAmount %>">
             
-                            <button type="submit">Make Payement</button>
-                        </form>
+                            
+                        
                     </div>
                     <div class="cart__total">
                         <h6>Cart total</h6>
@@ -104,7 +102,11 @@
                             <li>Subtotal <span>£ <%=session.cart.totalAmount %></span></li>
                             <li>Total <span>£ <%=session.cart.totalAmount%> </span></li>
                         </ul>
-                        <a href="#" class="primary-btn">Proceed to checkout</a>
+                        <div id="card-element">
+                            <!-- A Stripe Element will be inserted here. -->
+                         </div>
+                        <button class="primary-btn">Proceed to checkout</button>
+                       </form>
                     </div>
                 </div>
             </div>
