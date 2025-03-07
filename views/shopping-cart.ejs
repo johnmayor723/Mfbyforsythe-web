@@ -191,8 +191,10 @@
                         <h6>Check Out</h6>
                         <form class="checkout-form" action="/payments/charge" method="post">
                             <input type="text" name="name" placeholder="Enter name">
-<input type="text" name="address" placeholder="Enter. Address">
-<input type="text" name="phone" placeholder="Enter Phone number">
+<input type="text" name="address" placeholder="Enter address">
+<input type="text" name="phone" placeholder="Enter phone number">
+<input type="text" name="email" placeholder="Enter email">
+
 
             <input type="hidden" name="totalAmount" value="<%= session.cart.totalPrice %>">
             <input type="hidden" name="totalQty" value="<%= cart.totalAmount %>">
