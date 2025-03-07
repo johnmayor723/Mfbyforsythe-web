@@ -37,21 +37,26 @@ router.post('/', (req, res, next) => {
 router.post('/charge',  function(req, res, next) {
   
   if (!req.session.cart) {
-      return res.redirect('/products');
+      return res.redirect('/cart');
   }
-  var cart = new Cart(req.session.cart);
-  const cartContents = formatCart(req.session.cart);
+  console.log(req.body)
+  var cart = req.session.cart;
+  var totalAmount = cart.totalAmount;
+  console.log("cart found:", cart)
+  console.log("Total amount is:", totalAmount)
+  
   var stripe = require("stripe")("sk_test_51JJP3QC3AvHrSrpnTHIwGAdjNtZXURE2Ii8rHkMpbqQsxOfHFIcoHNcuZBGzpHX6FdgG1ZPXJoBp4ma8cS743WA500QRAG8n1g")
 
   stripe.charges.create({
-      amount: cart.totalPrice * 100 * 1.18,
+      amount: totalAmount * 100 ,
       currency: "gbp",
       source: req.body.token, // obtained with Stripe.js
       description: "Test Charge"
   }, function(err, charge) {
       if (err) {
           req.flash('error', err.message);
-          return res.redirect('/charge');
+          console.log("error", err)
+          return res.redirect('/cart');
       }
       var order = new Order({
          // user: req.user

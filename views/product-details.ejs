@@ -134,7 +134,7 @@
                             <div class="product__details__cart__option">
                                 <div class="quantity">
                                     <div class="pro-qty">
-                                        <input type="text" name="qty" >
+                                        <input type="text" value="1"  name="qty" >
                                     </div>
                                 </div>
                          
@@ -435,6 +435,24 @@
         </div>
     </section>
     <!-- Related Section End -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const qtyInput = document.getElementById("qtyInput");
+        const incBtn = document.querySelector(".inc");
+        const decBtn = document.querySelector(".dec");
+
+        incBtn.addEventListener("click", function () {
+            qtyInput.value = parseInt(qtyInput.value) + 1;
+        });
+
+        decBtn.addEventListener("click", function () {
+            if (qtyInput.value > 1) {
+                qtyInput.value = parseInt(qtyInput.value) - 1;
+            }
+        });
+    });
+</script>
+
     
     
 
