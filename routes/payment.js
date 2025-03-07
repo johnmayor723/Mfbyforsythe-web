@@ -44,9 +44,7 @@ router.post('/charge',  function(req, res, next) {
   var totalAmount = cart.totalAmount;
   console.log("cart found:", cart)
   console.log("Total amount is:", totalAmount)
-  let sk  = "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"
-  var stripe = require("stripe")("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")
-
+hhhhhhhh
   stripe.charges.create({
       amount: totalAmount * 100 ,
       currency: "gbp",
