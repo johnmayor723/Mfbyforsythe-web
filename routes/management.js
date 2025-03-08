@@ -5,7 +5,7 @@ const axios = require("axios");
 const upload = require('../helpers/multer');
 
 const API_BASE_URL = 'http://93.127.160.233:3060/api/products';
-const BLOGS_URL = "://93.127.160.233:3060/api/blogs"
+const BLOGS_URL = "http://93.127.160.233:3060/api/blogs"
 
 
 // dashboard page
@@ -100,14 +100,17 @@ router.get('/blogs', async (req, res) => {
 
 // POST: Create a new blog
 router.post('/blogs', upload.single('image'), async (req, res) => {
-    const { title, content } = req.body;
+    const { title, content, author } = req.body;
+    console.log(req.body)
     if (!req.file) return res.status(400).json({ success: false, message: 'Image upload required' });
 
     const imageUrl = `/uploads/${req.file.filename}`;
+    console.log("blog details are :", imageUrl)
 
     try {
-        await axios.post(BLOGS_URL, { title, content, image: imageUrl });
-        res.redirect('/blogs');
+        await axios.post(BLOGS_URL, { title, content, image: imageUrl, author });
+        console.log("sent blog to api")
+        res.redirect('/management/blogs');
     } catch (error) {
         res.status(500).send('Error creating blog');
     }

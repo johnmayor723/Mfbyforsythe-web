@@ -16,6 +16,7 @@ const upload = require('../helpers/multer');
 
 // API Base URL (Change this to your API service URL)
 const API_URL = 'http://93.127.160.233:3060/api/products/';
+const BLOG_URL = 'http://93.127.160.233:3060/api/blogs/';
 
 
 // Homepage route
@@ -25,14 +26,19 @@ router.get("/", async (req, res) => {
     const products = response.data; // Extract products correctly
 
     console.log("Fetched products:", products); // Log products
+    
+    const blogresponse = await axios.get(BLOG_URL);
+    const blogs = blogresponse.data.blogs; // Extract blogs correctly
 
+   console.log("found blogs are:",blogs)
     // Shuffle and select 8 random products for suggestions
     const suggestedProducts = products.sort(() => 0.5 - Math.random()).slice(0, 8);
 
     res.render("index", { 
       products, // Correct variable passing
       title: "Home",
-      suggestedProducts
+      suggestedProducts,
+      blogs
     });
   } catch (err) {
     console.error("Error fetching products:", err.message);
@@ -94,17 +100,29 @@ router.get("/products/categories/:categoryName", async (req, res) => {
         res.redirect("/")
     }
 });
-
-// Contact page route
-router.get("/contact", (req, res) => {
-  const title = 'Contact Us'
-  res.render("contact", {title});
+// Get all blogs
+router.get("/blogs", async (req, res) => {
+  try {
+    const response = await axios.get(BLOG_URL);
+    const blogs = response.data.blogs; // Assuming the API returns an array of blogs
+    res.render("blog", { title: "Blog", blogs });
+  } catch (error) {
+    console.error("Error fetching blogs:", error.message);
+    res.render("blog", { title: "Blog", blogs: [] }); // Render with empty blogs on error
+  }
 });
 
-// Contact page route
-router.get("/blog", (req, res) => {
-  const title = 'Blog'
-  res.render("blog", {title});
+// Get a single blog by ID
+router.get("/blogs/:id", async (req, res) => {
+  const blogId = req.params.id;
+  try {
+    const response = await axios.get(`${BLOG_URL}/${blogId}`);
+    const blog = response.data.blog; // Assuming API returns a blog object
+    res.render("blog-details", { title: blog.title, blog });
+  } catch (error) {
+    console.error(`Error fetching blog with ID ${blogId}:`, error.message);
+    res.status(404).render("404", { title: "Blog Not Found" });
+  }
 });
 
 // About page route
