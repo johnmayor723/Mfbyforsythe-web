@@ -21,7 +21,8 @@ const DBURL = "mongodb+srv://Pantryhubadmin:pantryhub123@cluster0.qjbxk.mongodb.
 // Set the view engine to EJS
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
-
+const methodOverride = require('method-override');
+app.use(methodOverride('_method'));
 // Serve static files from the public directory
 app.use('/uploads', express.static('uploads')); // Serve uploaded images
 //app.use(express.static('public')); // Serve CSS & frontend assets

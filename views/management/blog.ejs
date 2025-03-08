@@ -43,10 +43,11 @@
                                 <h5 class="card-title"><%= blog.title %></h5>
                                 <p class="card-text"><%= blog.content.substring(0, 100) %>...</p>
                                 <a href="/management/blogs/edit/<%= blog._id %>" class="btn btn-primary">Edit</a>
-<form action="/management/blogs/<%= blog._id %>?_method=DELETE" method="POST" class="d-inline">
+<form action="/management/blogs/delete/<%= blog._id %>?_method=DELETE" method="POST" class="d-inline">
+    <input type="hidden" name="id" value="<%= blog._id %>">
     <button type="submit" class="btn btn-danger">Delete</button>
-</form>
-                            </div>
+</form>    
+</div>
                         </div>
                     </div>
                 </div>
