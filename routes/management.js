@@ -203,7 +203,7 @@ router.delete('/blogs/delete/:id', async (req, res) => {
 
 // POST: Create a new comment
 router.post('/comments', async (req, res) => {
-  const { blogId, author, text, email} = req.body;
+  const { blogId, name, content, email} = req.body;
 
   if (!blogId || !author || !text) {
     return res.status(400).json({ success: false, message: 'All fields are required' });

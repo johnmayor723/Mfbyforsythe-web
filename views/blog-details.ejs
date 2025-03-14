@@ -72,10 +72,26 @@
              Facebook: </a>
                         </p>
                         </div>
-                        <div class="blog__details__quote">
+                       
+                        <div class="blog__details__option">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6 col-sm-6">
+                                    <div class="blog__details__author">
+                                        <div class="blog__details__author__pic">
+
+                                     </div>
+                                         <div class="blog__details__quote">
                             <i class="fa fa-quote-left"></i>
                             
-                            <h6>_ <%=blog.author%> _</h6>
+                            <h6>Comments</h6>
+                                                                        <% if (blog.comments && blog.comments.length > 0) { %>
+  <% blog.comments.forEach(function(comment) { %>
+    <h5><%= comment.name %></h5>
+    <p><%= comment.content %></p>
+  <% }); %>
+<% } else { %>
+  <p>No comments available.</p>
+<% } %>
                         </div>
                         <div class="blog__details__text">
                           
@@ -88,15 +104,8 @@
 
                                         </div>
                                         <div class="blog__details__author__text">
-                                            <p>Top Comments</p>
-                                            <% if (blog.comments && blog.comments.length > 0) { %>
-  <% blog.comments.forEach(function(comment) { %>
-    <h5><%= comment.author %></h5>
-    <p><%= comment.text %></p>
-  <% }); %>
-<% } else { %>
-  <p>No comments available.</p>
-<% } %>
+                                        
+
                                         </div>
                                     </div>
                                 </div>
@@ -127,10 +136,12 @@
                         </div>
                         <div class="blog__details__comment">
                             <h4>Leave A Comment</h4>
+                            
                             <form action="/management/comments" method="POST">
                                 <div class="row">
                                     <div class="col-lg-4 col-md-4">
-                                        <input type="text" placeholder="Name" name="author">
+                                        <input type="text" placeholder="Name" name="name">
+                                        <input type="hidden" name="blogId" value="<%= blog._id %>">
                                     </div>
                                     <div class="col-lg-4 col-md-4">
                                         <input type="text" placeholder="Email"
@@ -146,6 +157,8 @@
                                     </div>
                                 </div>
                             </form>
+                            
+                            
                         </div>
                     </div>
                 </div>
