@@ -3,9 +3,13 @@
     <div class="offcanvas-menu-wrapper">
         <div class="offcanvas__option">
             <div class="offcanvas__links">
-                <a href="#">Sign in</a>
-                <a href="#">Sign up</a>
-                <a href="#">Log out</a>
+              <% if (!session.currentUser) { %>
+    <a href="#">Sign in</a>
+    <a href="#">Sign up</a>
+<% } else { %>
+    <a href="#">Log out</a>
+<% } %>
+            </div>
             <div class="offcanvas__top__hover">
                 <span>GBP<i class="arrow_carrot-down"></i></span>
                 <ul>
@@ -41,14 +45,17 @@
                     <div class="col-lg-6 col-md-5">
                         <div class="header__top__right">
                             <div class="header__top__links">
-                                            <a href="#">Sign in</a>
-                <a href="#">Sign up</a>
-                <a href="#">Log out</a>
+                                <% if (!session.currentUser) { %>
+    <a href="#">Sign in</a>
+    <a href="#">Sign up</a>
+<% } else { %>
+    <a href="#">Log out</a>
+<% } %>
                             </div>
                             <div class="header__top__hover">
-                                <span>GBP <i class="arrow_carrot-down"></i></span>
+                                <span>Usd <i class="arrow_carrot-down"></i></span>
                                 <ul>
-                                    <li>GBP</li>
+                                    <li>USD</li>
                                     <li>EUR</li>
                                     <li>USD</li>
                                 </ul>
@@ -75,7 +82,7 @@
                             
                         <li><a href="/contact">Contact us</a></li>
                         <li><a href="/blogs">Our blogs</a></li>
-
+                     
                     </ul>
                     </nav>
                 </div>
