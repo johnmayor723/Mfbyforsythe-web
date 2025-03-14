@@ -134,7 +134,7 @@ router.post('/blogs', upload.single('image'), async (req, res) => {
 router.get('/blogs/edit/:id', async (req, res) => {
   try {
     const response = await axios.get(`${BLOGS_URL}/${req.params.id}`);
-    res.render('management/edit-blog', { blog: response.data });
+    res.render('management/edit-blog', { blog: response.data.blog});
   } catch (error) {
     res.status(500).send('Error fetching blog for editing');
   }
@@ -152,7 +152,7 @@ router.put('/blogs/update/:id', upload.single('image'), async (req, res) => {
   }
 
   try {
-    await axios.put(`${BLOGS_URL}/${req.params.id}`, updateData);
+    await axios.put(`${BLOGS_URL}/update/${req.params.id}`, updateData);
     res.redirect('/management/blogs');
   } catch (error) {
     res.status(500).send('Error updating blog');

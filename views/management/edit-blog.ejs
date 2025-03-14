@@ -8,7 +8,7 @@
 
     <div class="card p-4">
         <h3>Edit Blog</h3>
-        <form action="/management/blogs/update/<%= blog._id %>" method="POST" enctype="multipart/form-data">
+        <form action="/management/blogs/update/<%= blog._id %>%>?_method=PUT" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label>Title:</label>
                 <input type="text" class="form-control" name="title" value="<%= blog.title %>" required>
