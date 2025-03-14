@@ -7,25 +7,51 @@
     <!-- Blog Creation Form -->
     <div class="card p-4 mb-4">
         <h3>Create a New Blog</h3>
-        <form action="/management/blogs" method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <label>Title:</label>
-                <input type="text" class="form-control" name="title" required>
-            </div>
-            <div class="form-group">
-                <label>Image:</label>
-                <input type="file" class="form-control" name="image" required>
-            </div>
-            <div class="form-group">
-                <label>Content:</label>
-                <textarea class="form-control" name="content" rows="4" required></textarea>
-            </div>
-            <div class="form-group">
-                <label>Author name:</label>
-                <input type="text" class="form-control" name="author" required>
-            </div>
-            <button type="submit" class="btn btn-success">Create Blog</button>
-        </form>
+ <form action="/management/blogs" method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+        <label>Title:</label>
+        <input type="text" class="form-control" name="title" required>
+    </div>
+    
+    <div class="form-group">
+        <label>Image:</label>
+        <input type="file" class="form-control" name="image" required>
+    </div>
+    
+    <div class="form-group">
+        <label>Introduction:</label>
+        <textarea class="form-control" name="intro" rows="3" required></textarea>
+    </div>
+    
+    <div class="form-group">
+        <label>Paragraph 1:</label>
+        <textarea class="form-control" name="para1" rows="4" required></textarea>
+    </div>
+    
+    <div class="form-group">
+        <label>Paragraph 2:</label>
+        <textarea class="form-control" name="para2" rows="4" required></textarea>
+    </div>
+    
+    <div class="form-group">
+        <label>Paragraph 3:</label>
+        <textarea class="form-control" name="para3" rows="4" required></textarea>
+    </div>
+    
+    <div class="form-group">
+        <label>Paragraph 4:</label>
+        <textarea class="form-control" name="para4" rows="4" required></textarea>
+    </div>
+    
+    <div class="form-group">
+        <label>Author name:</label>
+        <input type="text" class="form-control" name="author" required>
+    </div>
+
+  
+    
+    <button type="submit" class="btn btn-success">Create Blog</button>
+</form>
     </div>
 
     <!-- Display Blogs -->
@@ -41,7 +67,7 @@
                         <div class="col-md-8">
                             <div class="card-body">
                                 <h5 class="card-title"><%= blog.title %></h5>
-                                <p class="card-text"><%= blog.content.substring(0, 100) %>...</p>
+                                <p class="card-text"><%= blog.intro%></p>
                                 <a href="/management/blogs/edit/<%= blog._id %>" class="btn btn-primary">Edit</a>
 <form action="/management/blogs/delete/<%= blog._id %>?_method=DELETE" method="POST" class="d-inline">
     <input type="hidden" name="id" value="<%= blog._id %>">

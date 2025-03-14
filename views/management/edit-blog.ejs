@@ -8,25 +8,56 @@
 
     <div class="card p-4">
         <h3>Edit Blog</h3>
-        <form action="/management/blogs/update/<%= blog._id %>%>?_method=PUT" method="POST" enctype="multipart/form-data">
-            <div class="form-group">
-                <label>Title:</label>
-                <input type="text" class="form-control" name="title" value="<%= blog.title %>" required>
-            </div>
+<form action="/management/blogs/update/<%= blog._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+    <div class="form-group">
+        <label>Title:</label>
+        <input type="text" class="form-control" name="title" value="<%= blog.title %>" required>
+    </div>
 
-            <div class="form-group">
-                <label>Current Image:</label>
-                <img src="<%= blog.image %>" class="img-fluid mb-3" alt="Blog Image">
-                <input type="file" class="form-control" name="image">
-            </div>
+    <div class="form-group">
+        <label>Current Image:</label><br>
+        <img src="<%= blog.image %>" class="img-fluid mb-3" alt="Blog Image" style="max-width: 200px;">
+    </div>
 
-            <div class="form-group">
-                <label>Content:</label>
-                <textarea class="form-control" name="content" rows="4" required><%= blog.content %></textarea>
-            </div>
+    <div class="form-group">
+        <label>Upload New Image (Optional):</label>
+        <input type="file" class="form-control" name="image">
+    </div>
 
-            <button type="submit" class="btn btn-success">Update Blog</button>
-        </form>
+    <div class="form-group">
+        <label>Introduction:</label>
+        <textarea class="form-control" name="intro" rows="3" required><%= blog.intro %></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Paragraph 1:</label>
+        <textarea class="form-control" name="para1" rows="4" required><%= blog.para1 %></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Paragraph 2:</label>
+        <textarea class="form-control" name="para2" rows="4" required><%= blog.para2 %></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Paragraph 3:</label>
+        <textarea class="form-control" name="para3" rows="4" required><%= blog.para3 %></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Paragraph 4:</label>
+        <textarea class="form-control" name="para4" rows="4" required><%= blog.para4 %></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Author Name:</label>
+        <input type="text" class="form-control" name="author" value="<%= blog.author %>" required>
+    </div>
+
+  
+
+    <button type="submit" class="btn btn-success">Update Blog</button>
+</form>
     </div>
 </div>
 

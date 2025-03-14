@@ -6,6 +6,7 @@ const upload = require('../helpers/multer');
 
 const API_BASE_URL = 'http://93.127.160.233:3060/api/products';
 const BLOGS_URL = "http://93.127.160.233:3060/api/blogs";
+const COMMENT_URL = "http://93.127.160.233:3060/api/comments"
 
 // Dashboard page
 router.get("/", (req, res) => {
@@ -116,19 +117,37 @@ router.get('/blogs', async (req, res) => {
 });
 
 // POST: Create a new blog
+// POST: Create a new blog
 router.post('/blogs', upload.single('image'), async (req, res) => {
-  const { title, content, author } = req.body;
-  if (!req.file) return res.status(400).json({ success: false, message: 'Image upload required' });
+  const { title, intro, para1, para2, para3, para4, author } = req.body;
+  
+  if (!req.file) {
+    return res.status(400).json({ success: false, message: 'Image upload required' });
+  }
 
   const imageUrl = `/uploads/${req.file.filename}`;
 
   try {
-    await axios.post(BLOGS_URL, { title, content, image: imageUrl, author });
+    await axios.post(BLOGS_URL, {
+      title,
+      intro,
+      para1,
+      para2,
+      para3,
+      para4,
+      image: imageUrl,
+      author,
+      
+     
+    });
+
     res.redirect('/management/blogs');
   } catch (error) {
+    console.error('Error creating blog:', error.message);
     res.status(500).send('Error creating blog');
   }
 });
+
 
 // GET: Render edit blog page
 router.get('/blogs/edit/:id', async (req, res) => {
@@ -140,13 +159,12 @@ router.get('/blogs/edit/:id', async (req, res) => {
   }
 });
 
-// POST: Update a blog
-
-
 router.put('/blogs/update/:id', upload.single('image'), async (req, res) => {
-  const { title, content } = req.body;
-  let updateData = { title, content };
+  const { title, intro, para1, para2, para3, para4, author } = req.body;
 
+  let updateData = { title, intro, para1, para2, para3, para4, author };
+
+  // If a new image is uploaded, update the image field
   if (req.file) {
     updateData.image = `/uploads/${req.file.filename}`;
   }
@@ -155,6 +173,7 @@ router.put('/blogs/update/:id', upload.single('image'), async (req, res) => {
     await axios.put(`${BLOGS_URL}/update/${req.params.id}`, updateData);
     res.redirect('/management/blogs');
   } catch (error) {
+    console.error('Error updating blog:', error.message);
     res.status(500).send('Error updating blog');
   }
 });
@@ -181,4 +200,35 @@ router.delete('/blogs/delete/:id', async (req, res) => {
     res.status(500).send('Error deleting blog');
   }
 });
+
+// POST: Create a new comment
+router.post('/comments', async (req, res) => {
+  const { blogId, author, text, email} = req.body;
+
+  if (!blogId || !author || !text) {
+    return res.status(400).json({ success: false, message: 'All fields are required' });
+  }
+
+  try {
+    await axios.post(COMMENT_URL, { blogId, author, text , email});
+    res.redirect(`/blogs/${blogId}`); // Redirect to the blog post after commenting
+  } catch (error) {
+    console.error('Error adding comment:', error.message);
+    res.status(500).send('Error adding comment');
+  }
+});
+
+// DELETE: Remove a comment
+router.delete('/comments/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    await axios.delete(`${COMMENT_URL}/${id}`);
+    res.json({ success: true, message: 'Comment deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting comment:', error.message);
+    res.status(500).send('Error deleting comment');
+  }
+});
+
 module.exports = router;
