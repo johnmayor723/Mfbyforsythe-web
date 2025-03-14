@@ -19,7 +19,7 @@ router.get("/admin", (req, res) => {
 
 // Dummy user credentials
 const DUMMY_USER = {
-  email: "admin@mfbyforsythe.com",
+  email: "admin@mfbyforesythe.com",
   password: "password123"
 };
 
