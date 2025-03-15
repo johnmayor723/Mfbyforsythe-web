@@ -205,12 +205,13 @@ router.delete('/blogs/delete/:id', async (req, res) => {
 router.post('/comments', async (req, res) => {
   const { blogId, name, content, email} = req.body;
 
-  if (!blogId || !author || !text) {
+  if (!blogId || !name || !content) {
     return res.status(400).json({ success: false, message: 'All fields are required' });
   }
 
   try {
-    await axios.post(COMMENT_URL, { blogId, author, text , email});
+      await axios.post(`http://93.127.160.233:3060/api/comments/${blogId}`, { name, content, email });
+    
     res.redirect(`/blogs/${blogId}`); // Redirect to the blog post after commenting
   } catch (error) {
     console.error('Error adding comment:', error.message);
