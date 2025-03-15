@@ -22,9 +22,7 @@ const API_URL = 'http://93.127.160.233:3060/api/products/';
 const BLOG_URL = 'http://93.127.160.233:3060/api/blogs/';
 
 
-const express = require("express");
-const axios = require("axios");
-const router = express.Router();
+
 
 router.get("/", async (req, res) => {
   try {
