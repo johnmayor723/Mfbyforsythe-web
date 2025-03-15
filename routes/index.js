@@ -158,6 +158,10 @@ router.get("/about", (req, res) => {
 router.get("/contact", (req, res) => {
   res.render("contact");
 });
+// Contavt page route
+router.get("/help-center", (req, res) => {
+  res.render("helpcenter");
+});
 // Return policy page route
 router.get("/return-policy", (req, res) => {
   res.render("return-policy", {title: "Return Policy"});
