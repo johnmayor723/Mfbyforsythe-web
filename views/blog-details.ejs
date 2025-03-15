@@ -1,4 +1,90 @@
+<style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+        }
 
+        /* Container */
+        .comments-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        /* Comment Section */
+        .comments-section {
+            flex: 1;
+            min-width: 300px;
+            background: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .comment-name {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .comment-text {
+            margin-top: 5px;
+        }
+
+        /* Comment Form */
+        .comment-form {
+            flex: 1;
+            min-width: 300px;
+            background: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment-form form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .comment-form input,
+        .comment-form textarea {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        .comment-form textarea {
+            height: 100px;
+        }
+
+        .comment-form button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .comment-form button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .comments-container {
+                flex-direction: column;
+            }
+        }
+    </style>
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
@@ -14,9 +100,9 @@
                     <div class="blog__hero__text">
                         <h2><%=blog.title%></h2>
                         <ul>
-                            <li>By: <%blog.author%></li>
+                            <li>By: <%=blog.author%></li>
                             <li><%=blog.createdAt %></li>
-                            <li>8 Comments
+                            <li><%=blog.comments.length%> comments
                             </li>
                         </ul>
                     </div>
@@ -65,34 +151,46 @@
                           <%=blog.para4%><br>
                           <br>
                        </p>
-                        <p>
-          📍 Stay inspired by                      following us on<br>
-             @mfbyforesythebrand on 🔹 <a href="www.instagram.com/mfbyforesythebrand"> "Instagram:</a><br>
-             Also on 🔹  <a href="https://facebook.com/mfbyforesythebrand">
-             Facebook: </a>
+                      
+          📍 Stay inspired by                      following us:<br>
+             @mfbyforesythebrand on 🔹
+             <a href="https://instagram.com/mfbyforesythebrand"> Instagram</a><br>
+             Mfbyforesythebrand on 🔹 <a href="https://facebook.com/mfbyforesythebrand">
+             Facebook </a>
                         </p>
                         </div>
-                       
-                        <div class="blog__details__option">
-                            <div class="row">
-                                <div class="col-lg-6 col-md-6 col-sm-6">
-                                    <div class="blog__details__author">
-                                        <div class="blog__details__author__pic">
+                        
+                        <div class="comments-container">
+    <!-- Left: Comment Section -->
+    <div class="comments-section">
+        <h3>Comments</h3>
 
-                                     </div>
-                                         <div class="blog__details__quote">
-                            <i class="fa fa-quote-left"></i>
-                            
-                            <h6>Comments</h6>
-                                                                        <% if (blog.comments && blog.comments.length > 0) { %>
-  <% blog.comments.forEach(function(comment) { %>
-    <h5><%= comment.name %></h5>
-    <p><%= comment.content %></p>
-  <% }); %>
-<% } else { %>
-  <p>No comments available.</p>
-<% } %>
-                        </div>
+        <% if (blog.comments.length > 0) { %>
+            <% blog.comments.forEach(comment => { %>
+                <div class="comment">
+                    <p class="comment-name"><%= comment.name %></p>
+                    <p class="comment-text"><%= comment.content %></p>
+                </div>
+            <% }); %>
+        <% } else { %>
+            <p>No comments on this post.</p>
+        <% } %>
+    </div>
+
+    <!-- Right: Comment Form -->
+    <div class="comment-form">
+        <h3>Leave a Comment</h3>
+        <form action="/management/comments" method="POST">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="hidden" name="blogId" value="<%= blog._id %>">
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="text" placeholder="Your Comment" required></textarea>
+            <button type="submit">Post Comment</button>
+        </form>
+    </div>
+</div>
+                       
+                        
                         <div class="blog__details__text">
                           
                         </div>
@@ -122,44 +220,22 @@
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <a href="" class="blog__details__btns__item">
-                                        <p><span class="arrow_left"></span> Previous Pod</p>
-                                        <h5>It S Classified How To Utilize Free Classified Ad Sites</h5>
+                                        <p>
+                        <a href="/blogs/<%= before._id %>">                  <span class="arrow_left"></span> Previous Post</a></p>
+                                        <h5><%=before.title%></h5>
                                     </a>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     <a href="" class="blog__details__btns__item blog__details__btns__item--next">
-                                        <p>Next Pod <span class="arrow_right"></span></p>
-                                        <h5>Tips For Choosing The Perfect Gloss For Your Lips</h5>
+                                        <p>
+                             <a href="/blogs/<%= after._id %>">                       Next Post <span class="arrow_right"></span>
+                             </a></p>
+                                        <h5><%=after.title%></h5>
                                     </a>
                                 </div>
                             </div>
                         </div>
-                        <div class="blog__details__comment">
-                            <h4>Leave A Comment</h4>
-                            
-                            <form action="/management/comments" method="POST">
-                                <div class="row">
-                                    <div class="col-lg-4 col-md-4">
-                                        <input type="text" placeholder="Name" name="name">
-                                        <input type="hidden" name="blogId" value="<%= blog._id %>">
-                                    </div>
-                                    <div class="col-lg-4 col-md-4">
-                                        <input type="text" placeholder="Email"
-                         name="email"               >
-                                    </div>
-                                    <div class="col-lg-4 col-md-4">
-                                       
-                                    </div>
-                                    <div class="col-lg-12 text-center">
-                                        <textarea placeholder="Comment"
-                                        name="text"></textarea>
-                                        <button type="submit" class="site-btn">Post Comment</button>
-                                    </div>
-                                </div>
-                            </form>
-                            
-                            
-                        </div>
+                       
                     </div>
                 </div>
             </div>

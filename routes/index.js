@@ -4,12 +4,15 @@ const axios = require("axios");
 const nodemailer = require('nodemailer');
 
  const mailer = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: 'fooddeck3@gmail.com',
-        pass: 'xyca sbvx hifi amzs',
-      },
+     host: "smtp.zoho.com",
+     port: 465,
+     secure: "true",
+     auth: {
+      user: "support@marketspick.com",
+      pass: "#@T1onal_Mayor",
+    },
 });
+
 const upload = require('../helpers/multer');
 
 //const router = express.Router();
@@ -113,15 +116,52 @@ router.get("/blogs", async (req, res) => {
 });
 
 // Get a single blog by ID
-router.get("/blogs/:id", async (req, res) => {
+/*router.get("/blogs/:id", async (req, res) => {
   const blogId = req.params.id;
   try {
+      const blogresponse = await axios.get(BLOG_URL);
+    const blogs = blogresponse.data.blogs; //
     const response = await axios.get(`${BLOG_URL}/${blogId}`);
     const blog = response.data.blog; // Assuming API returns a blog object
     res.render("blog-details", { title: blog.title, blog });
   } catch (error) {
     console.error(`Error fetching blog with ID ${blogId}:`, error.message);
     res.status(404).render("404", { title: "Blog Not Found" });
+  }
+});*/
+
+
+router.get("/blogs/:id", async (req, res) => {
+  const blogId = req.params.id;
+
+  try {
+    const blogResponse = await axios.get(BLOG_URL);
+    const blogs = blogResponse.data.blogs; // Assuming API returns an array of blogs
+
+    // Find the requested blog
+    const index = blogs.findIndex((b) => b._id === blogId);
+
+    if (index === -1) {
+      return res.status(404).render("404", { title: "Blog Not Found" });
+    }
+
+    const blog = blogs[index];
+
+    let before, after;
+    
+    if (blogs.length === 1) {
+      // If there's only one blog, before and after should be the same blog
+      before = after = blog;
+    } else {
+      // Determine before and after blogs
+      before = index === 0 ? blogs[blogs.length - 1] : blogs[index - 1];
+      after = index === blogs.length - 1 ? blogs[0] : blogs[index + 1];
+    }
+
+    res.render("blog-details", { title: blog.title, blog, before, after });
+  } catch (error) {
+    console.error(`Error fetching blog with ID ${blogId}:`, error.message);
+    res.status(500).render("500", { title: "Server Error" });
   }
 });
 
@@ -145,6 +185,9 @@ router.get("/faqs", (req, res) => {
 router.get("/callback", (req, res) => {
   res.render("success", {title: "FAQ"});
 });
+router.post("/newsletter", (req, res)=>{
+    const {email} = req.body
+})
 
 // privacy policy page route
 
