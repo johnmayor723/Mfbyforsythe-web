@@ -115,21 +115,6 @@ router.get("/blogs", async (req, res) => {
   }
 });
 
-// Get a single blog by ID
-/*router.get("/blogs/:id", async (req, res) => {
-  const blogId = req.params.id;
-  try {
-      const blogresponse = await axios.get(BLOG_URL);
-    const blogs = blogresponse.data.blogs; //
-    const response = await axios.get(`${BLOG_URL}/${blogId}`);
-    const blog = response.data.blog; // Assuming API returns a blog object
-    res.render("blog-details", { title: blog.title, blog });
-  } catch (error) {
-    console.error(`Error fetching blog with ID ${blogId}:`, error.message);
-    res.status(404).render("404", { title: "Blog Not Found" });
-  }
-});*/
-
 
 router.get("/blogs/:id", async (req, res) => {
   const blogId = req.params.id;
@@ -168,6 +153,10 @@ router.get("/blogs/:id", async (req, res) => {
 // About page route
 router.get("/about", (req, res) => {
   res.render("about");
+});
+// Contavt page route
+router.get("/contact", (req, res) => {
+  res.render("contact");
 });
 // Return policy page route
 router.get("/return-policy", (req, res) => {
