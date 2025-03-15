@@ -22,32 +22,44 @@ const API_URL = 'http://93.127.160.233:3060/api/products/';
 const BLOG_URL = 'http://93.127.160.233:3060/api/blogs/';
 
 
-// Homepage route
+const express = require("express");
+const axios = require("axios");
+const router = express.Router();
+
 router.get("/", async (req, res) => {
   try {
-    const response = await axios.get(API_URL);
-    const products = response.data; // Extract products correctly
+    // Fetch products and blogs concurrently
+    const [productResponse, blogResponse] = await Promise.all([
+      axios.get(API_URL),
+      axios.get(BLOG_URL),
+    ]);
 
-    console.log("Fetched products:", products); // Log products
-    
-    const blogresponse = await axios.get(BLOG_URL);
-    const blogs = blogresponse.data.blogs; // Extract blogs correctly
+    const products = productResponse.data;
+    const blogs = blogResponse.data.blogs;
 
-   console.log("found blogs are:",blogs)
+    console.log("Fetched products:", products);
+    console.log("Found blogs:", blogs);
+
+    // Pick a random product for the deal of the day
+    const dealOfTheDay = products.length ? products[Math.floor(Math.random() * products.length)] : null;
+
     // Shuffle and select 8 random products for suggestions
-    const suggestedProducts = products.sort(() => 0.5 - Math.random()).slice(0, 8);
+    const suggestedProducts = [...products].sort(() => 0.5 - Math.random()).slice(0, 8);
 
-    res.render("index", { 
-      products, // Correct variable passing
+    res.render("index", {
       title: "Home",
+      products,
+      blogs,
       suggestedProducts,
-      blogs
+      dealOfTheDay, // Pass deal to render
     });
   } catch (err) {
-    console.error("Error fetching products:", err.message);
-    res.status(500).send("Error loading products");
+    console.error("Error fetching data:", err.message);
+    res.status(500).send("Error loading homepage");
   }
 });
+
+module.exports = router;
 
 
 

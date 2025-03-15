@@ -164,14 +164,14 @@
                         <img src="img/product-sale.png" alt="">
                         <div class="hot__deal__sticker">
                             <span>Sale Of</span>
-                            <h5>$29.99</h5>
+                            <h5>£<%=dealOfTheDay.price%></h5>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 offset-lg-1">
                     <div class="categories__deal__countdown">
                         <span>Deal Of The Week</span>
-                        <h2>Multi-pocket Chest Bag Black</h2>
+                        <h2><%=dealOfTheDay.title%></h2>
                         <div class="categories__deal__countdown__timer" id="countdown">
                             <div class="cd-item">
                                 <span>3</span>
@@ -190,7 +190,10 @@
                                 <p>Seconds</p>
                             </div>
                         </div>
-                        <a href="#" class="primary-btn">Shop now</a>
+                       <form action="/cart/<%= dealOfTheDay._id %>" method="POST">
+    <input type="hidden" name="quantity" value="1">
+    <button type="submit" class="primary-btn">Add to Cart</button>
+</form>
                     </div>
                 </div>
             </div>
