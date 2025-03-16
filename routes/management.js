@@ -117,10 +117,15 @@ router.get('/blogs', async (req, res) => {
 });
 
 // POST: Create a new blog
-// POST: Create a new blog
 router.post('/blogs', upload.single('image'), async (req, res) => {
-  const { title, intro, para1, para2, para3, para4, author } = req.body;
-  
+  const { 
+    title, 
+    intro, 
+    para1, para2, para3, para4, para5, para6, para7, para8, para9, para10, 
+    para11, para12, para13, para14, para15, para16, para17, para18, para19, para20, 
+    author 
+  } = req.body;
+
   if (!req.file) {
     return res.status(400).json({ success: false, message: 'Image upload required' });
   }
@@ -131,14 +136,10 @@ router.post('/blogs', upload.single('image'), async (req, res) => {
     await axios.post(BLOGS_URL, {
       title,
       intro,
-      para1,
-      para2,
-      para3,
-      para4,
+      para1, para2, para3, para4, para5, para6, para7, para8, para9, para10, 
+      para11, para12, para13, para14, para15, para16, para17, para18, para19, para20, 
       image: imageUrl,
-      author,
-      
-     
+      author
     });
 
     res.redirect('/management/blogs');
@@ -147,7 +148,6 @@ router.post('/blogs', upload.single('image'), async (req, res) => {
     res.status(500).send('Error creating blog');
   }
 });
-
 
 // GET: Render edit blog page
 router.get('/blogs/edit/:id', async (req, res) => {
@@ -160,9 +160,21 @@ router.get('/blogs/edit/:id', async (req, res) => {
 });
 
 router.put('/blogs/update/:id', upload.single('image'), async (req, res) => {
-  const { title, intro, para1, para2, para3, para4, author } = req.body;
+  const { 
+    title, 
+    intro, 
+    para1, para2, para3, para4, para5, para6, para7, para8, para9, para10, 
+    para11, para12, para13, para14, para15, para16, para17, para18, para19, para20, 
+    author 
+  } = req.body;
 
-  let updateData = { title, intro, para1, para2, para3, para4, author };
+  let updateData = { 
+    title, 
+    intro, 
+    para1, para2, para3, para4, para5, para6, para7, para8, para9, para10, 
+    para11, para12, para13, para14, para15, para16, para17, para18, para19, para20, 
+    author 
+  };
 
   // If a new image is uploaded, update the image field
   if (req.file) {

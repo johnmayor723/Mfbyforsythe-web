@@ -208,16 +208,16 @@ router.post('/enquiries', async (req, res) => {
       to: 'fooddeck3@gmail.com',
       subject: 'New Contact Form Submission',
       html: `
-        <h3>New Message from Contact Form</h3>
+        <h3>New newsletter subscriber</h3>
         <p><strong>Name:</strong> ${name}</p>
         <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Message:</strong> ${message}</p>
+
       `,
     };
 
     // Acknowledge sender with a styled HTML email
     const userMailOptions = {
-      from: '"FoodDeck Support" <no-reply@fooddeckpro.com.ng>',
+      from: '"mfbyforesythebrand Support" <no-reply@fooddeckpro.com.ng>',
       to: email,
       subject: 'Thanks for Contacting FoodDeck!',
       html: `

@@ -1,3 +1,44 @@
+<style>
+    /* Change green to reddish purple */
+    .faq-title {
+        color: #8B0055; /* Reddish Purple */
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .faq-item {
+        border-bottom: 1px solid #ddd;
+        padding: 10px 0;
+    }
+
+    /* Remove background color of question tabs */
+    .faq-question {
+        background-color: transparent !important; /* No Background */
+        color: #8B0055; /* Reddish Purple */
+        font-weight: bold;
+        cursor: pointer;
+        padding: 10px;
+        border: none;
+        width: 100%;
+        text-align: left;
+        font-size: 18px;
+    }
+
+    .faq-answer {
+        display: none;
+        padding: 10px;
+        color: #333;
+    }
+
+    /* Show answer when active */
+    .faq-item.active .faq-answer {
+        display: block;
+    }
+</style>
+
+
 <!-- Single Page Header start -->
 <div class="container-fluid page-header py-5">
     <h1 class="text-center text-white display-6">Mfbyforsythebrand</h1>
@@ -8,64 +49,98 @@
 </div>
 <!-- Single Page Header End -->
 
-<section style="font-family: Arial, sans-serif; max-width: 600px; margin: 50px auto 0; padding: 30px;">
-    <h2 style="color: #2E8B57;">Frequently Asked Questions (FAQ)</h2>
-
-    <div style="border-top: 1px solid #ccc; padding-top: 10px;">
-        <div class="faq-item" style="background-color: #ffffff; padding: 10px;">
-            <h3 onclick="toggleAnswer(1)" style="cursor: pointer; color: #2E8B57;">
-                What sizes do you offer?
-            </h3>
-            <p id="answer-1" style="display: none; padding-left: 10px;">
-                We offer a wide range of sizes from XS to XXL. Please check our size guide for accurate measurements before placing an order.
-            </p>
+<section >
+  <h2 class="faq-title">Frequently Asked Questions</h2>
+  <div class="faq-item">
+        <button class="faq-question">What materials do you use?</button>
+        <div class="faq-answer">
+            <p>We use high-quality African fabrics like Ankara, Kente, and Aso-Oke, ensuring durability and authenticity.</p>
         </div>
-        <hr style="margin: 0; border: 1px solid #ccc;">
+    </div>
 
-        <div class="faq-item" style="background-color: #f9f9f9; padding: 10px;">
-            <h3 onclick="toggleAnswer(2)" style="cursor: pointer; color: #2E8B57;">
-                How do I place an order?
-            </h3>
-            <p id="answer-2" style="display: none; padding-left: 10px;">
-                Simply browse our catalog, add your favorite items to the cart, and proceed to checkout. You can pay using various secure payment options.
-            </p>
+    <div class="faq-item">
+        <button class="faq-question">Do you ship internationally?</button>
+        <div class="faq-answer">
+            <p>Yes, we ship worldwide! Delivery times vary depending on your location.</p>
         </div>
-        <hr style="margin: 0; border: 1px solid #ccc;">
+    </div>
 
-        <div class="faq-item" style="background-color: #ffffff; padding: 10px;">
-            <h3 onclick="toggleAnswer(3)" style="cursor: pointer; color: #2E8B57;">
-                What is your return and exchange policy?
-            </h3>
-            <p id="answer-3" style="display: none; padding-left: 10px;">
-                We accept returns and exchanges within 14 days of delivery. Items must be unworn, in their original condition, and with all tags attached.
-            </p>
+    <div class="faq-item">
+        <button class="faq-question">How do I place an order?</button>
+        <div class="faq-answer">
+            <p>Simply browse our catalog, add your favorite items to the cart, and proceed to checkout. You can pay using various secure payment options.</p>
         </div>
-        <hr style="margin: 0; border: 1px solid #ccc;">
+    </div>
 
-        <div class="faq-item" style="background-color: #f9f9f9; padding: 10px;">
-            <h3 onclick="toggleAnswer(4)" style="cursor: pointer; color: #2E8B57;">
-                How long does shipping take?
-            </h3>
-            <p id="answer-4" style="display: none; padding-left: 10px;">
-                Standard shipping takes 5-7 business days, while express shipping takes 2-3 business days. International delivery times may vary.
-            </p>
+    <div class="faq-item">
+        <button class="faq-question">What is your return and exchange policy?</button>
+        <div class="faq-answer">
+            <p>We accept returns and exchanges within 14 days of delivery. Items must be unworn, in their original condition, and with all tags attached.</p>
         </div>
-        <hr style="margin: 0; border: 1px solid #ccc;">
+    </div>
 
-        <div class="faq-item" style="background-color: #ffffff; padding: 10px;">
-            <h3 onclick="toggleAnswer(5)" style="cursor: pointer; color: #2E8B57;">
-                Do you offer custom or made-to-measure outfits?
-            </h3>
-            <p id="answer-5" style="display: none; padding-left: 10px;">
-                Yes, we offer custom tailoring for select designs. Contact our customer support team for details on made-to-measure options.
-            </p>
+    <div class="faq-item">
+        <button class="faq-question">How long does shipping take?</button>
+        <div class="faq-answer">
+            <p>Standard shipping takes 5-7 business days, while express shipping takes 2-3 business days. International delivery times may vary.</p>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">Do you offer custom or made-to-measure outfits?</button>
+        <div class="faq-answer">
+            <p>Yes, we offer custom tailoring for select designs. Contact our customer support team for details on made-to-measure options.</p>
+        </div>
+    </div> 
+    <div class="faq-item">
+        <button class="faq-question">What materials do you use?</button>
+        <div class="faq-answer">
+            <p>We use high-quality African fabrics like Ankara, Kente, and Aso-Oke, ensuring durability and authenticity.</p>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">Do you ship internationally?</button>
+        <div class="faq-answer">
+            <p>Yes, we ship worldwide! Delivery times vary depending on your location.</p>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">How do I place an order?</button>
+        <div class="faq-answer">
+            <p>Simply browse our catalog, add your favorite items to the cart, and proceed to checkout. You can pay using various secure payment options.</p>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">What is your return and exchange policy?</button>
+        <div class="faq-answer">
+            <p>We accept returns and exchanges within 14 days of delivery. Items must be unworn, in their original condition, and with all tags attached.</p>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">How long does shipping take?</button>
+        <div class="faq-answer">
+            <p>Standard shipping takes 5-7 business days, while express shipping takes 2-3 business days. International delivery times may vary.</p>
+        </div>
+    </div>
+
+    <div class="faq-item">
+        <button class="faq-question">Do you offer custom or made-to-measure outfits?</button>
+        <div class="faq-answer">
+            <p>Yes, we offer custom tailoring for select designs. Contact our customer support team for details on made-to-measure options.</p>
         </div>
     </div>
 </section>
 
+
 <script>
-    function toggleAnswer(id) {
-        const answer = document.getElementById(`answer-${id}`);
-        answer.style.display = answer.style.display === 'none' ? 'block' : 'none';
-    }
+    // Toggle FAQ answers
+    document.querySelectorAll(".faq-question").forEach(button => {
+        button.addEventListener("click", function() {
+            this.parentElement.classList.toggle("active");
+        });
+    });
 </script>
