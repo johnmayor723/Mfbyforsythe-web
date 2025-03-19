@@ -178,7 +178,7 @@ router.get("/return-policy", (req, res) => {
 });
 // privacy policy page route
 router.get("/privacy-policy", (req, res) => {
-  res.render("privacy-policy", {title: "Privacy Policy"});
+  res.redirect("https://www.termsfeed.com/live/0530beea-5482-4fe2-805a-0f05f3a33326");
 });
 // privacy policy page route
 router.get("/faqs", (req, res) => {
@@ -188,28 +188,25 @@ router.get("/faqs", (req, res) => {
 router.get("/callback", (req, res) => {
   res.render("success", {title: "FAQ"});
 });
-router.post("/newsletter", (req, res)=>{
-    const {email} = req.body
-})
 
 // privacy policy page route
 
-router.post('/enquiries', async (req, res) => {
-  const { name, email, message } = req.body;
+router.post('/newsletter', async (req, res) => {
+  const {  email } = req.body;
 
-  if (!name || !email || !message) {
+  if (!email) {
     return res.status(400).json({ error: 'All fields (name, email, message) are required.' });
   }
 
   try {
     // Send email to admin
     const adminMailOptions = {
-      from: '"FoodDeck Contact Form" <no-reply@fooddeckpro.com.ng>',
-      to: 'fooddeck3@gmail.com',
+      from: '"mfbyforesythebrand" <support@marketspick.com>',
+      to: 'mayowaandrews723@gmail.com',
       subject: 'New Contact Form Submission',
       html: `
         <h3>New newsletter subscriber</h3>
-        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Name:</strong> </p>
         <p><strong>Email:</strong> ${email}</p>
 
       `,
@@ -217,25 +214,24 @@ router.post('/enquiries', async (req, res) => {
 
     // Acknowledge sender with a styled HTML email
     const userMailOptions = {
-      from: '"mfbyforesythebrand Support" <no-reply@fooddeckpro.com.ng>',
+      from: '"mfbyforesythebrand Support" <support@marketspick.com>',
       to: email,
-      subject: 'Thanks for Contacting FoodDeck!',
+      subject: 'Thanks for Subscribing to our newsletter!',
       html: `
         <div style="font-family: Arial, sans-serif; border: 1px solid #ddd; padding: 20px; border-radius: 8px; max-width: 600px; margin: auto;">
           <div style="text-align: center; margin-bottom: 20px;">
-            <img src="https://firebasestorage.googleapis.com/v0/b/fooddeck-fc840.appspot.com/o/Logo12.png?alt=media&token=56208343-49c1-4664-853f-68e904b1eb7c" alt="FoodDeck Logo" style="max-width: 200px;">
+            <img src="">
           </div>
           <div>
-            <h2 style="color: #2D7B30;">Hello, ${name}!</h2>
-            <p style="font-size: 16px; color: #333;">Thank you for reaching out to FoodDeck. We’ve received your message and will get back to you as soon as possible.</p>
-            <p style="font-size: 16px; color: #333;">Your Message:</p>
-            <blockquote style="font-size: 14px; font-style: italic; background: #f9f9f9; padding: 10px; border-left: 4px solid #2D7B30; margin: 20px 0;">${message}</blockquote>
+            <h2 style="color: #2D7B30;">Hello, !</h2>
+            <p style="font-size: 16px; color: #333;">Thank you for Subscribing to our newsletter.</p>
+            
           </div>
           <footer style="text-align: center; margin-top: 30px; border-top: 1px solid #ddd; padding-top: 20px; font-size: 14px; color: #666;">
-            <p>FoodDeck</p>
-            <p>The City Mall, Onikan, Lagos</p>
-            <p>Email: info@fooddeckpro.com.ng | Phone: +234 912 390 7060</p>
-            <p>Website: <a href="https://www.fooddeckpro.com.ng" style="color: #2D7B30;">www.fooddeckpro.com.ng</a></p>
+            <p>mfbyforesythebrand</p>
+            <p></p>
+            <p>Email: info@mfbyforesythebrand.com</p>
+            <p>Website: <a href="https://www.mfbyforesythebrand.com" style="color: #2D7B30;">www.mfbyforesythebrand.com</a></p>
           </footer>
         </div>
       `,
@@ -244,7 +240,7 @@ router.post('/enquiries', async (req, res) => {
     // Assuming `mailer` is your configured mailing service
     await mailer.sendMail(adminMailOptions);
     await mailer.sendMail(userMailOptions);
-
+   // req.flash("")
     res.status(200).json({ success: 'Message sent successfully!' });
   } catch (error) {
     console.error(error);
