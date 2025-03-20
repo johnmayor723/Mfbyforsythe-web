@@ -249,7 +249,7 @@ const BASE_URL = 'http://93.127.160.233:3060/api/orders';
 router.get('/orders', async (req, res) => {
   try {
     const response = await axios.get(BASE_URL);
-    res.render('orders.ejs', { orders: response.data });
+    res.render('management/orders.ejs', { orders: response.data });
   } catch (error) {
     res.status(500).send('Failed to fetch orders');
   }
@@ -262,7 +262,7 @@ router.post('/orders', async (req, res) => {
   try {
     await axios.post(BASE_URL, { name, email, shippingAddress, paymentReference, totalAmount });
     const response = await axios.get(BASE_URL); // Fetch updated orders
-    res.render('orders.ejs', { orders: response.data });
+    res.render('management/orders.ejs', { orders: response.data });
   } catch (error) {
     res.status(500).send('Failed to create order');
   }
@@ -272,7 +272,7 @@ router.post('/orders', async (req, res) => {
 router.get('/orders/:orderId', async (req, res) => {
   try {
     const response = await axios.get(`${BASE_URL}/${req.params.orderId}`);
-    res.render('order.ejs', { order: response.data });
+    res.render('management/order.ejs', { order: response.data });
   } catch (error) {
     res.status(500).send('Failed to fetch order');
   }
@@ -282,7 +282,7 @@ router.get('/orders/:orderId', async (req, res) => {
 router.post('/orders/:orderId', async (req, res) => {
   try {
     const response = await axios.post(`${BASE_URL}/${req.params.orderId}`, req.body);
-    res.render('order.ejs', { order: response.data });
+    res.render('management/order.ejs', { order: response.data });
   } catch (error) {
     res.status(500).send('Failed to update order');
   }
