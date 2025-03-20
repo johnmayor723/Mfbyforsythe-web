@@ -243,7 +243,7 @@ router.delete('/comments/:id', async (req, res) => {
     res.status(500).send('Error deleting comment');
   }
 });
-const BASE_URL = 'https://mfbyforesythebrand.com/api/orders';
+const BASE_URL = 'http://93.127.160.233:3060/api/orders';
 
 // GET all orders & render orders.ejs
 router.get('/orders', async (req, res) => {
