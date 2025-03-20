@@ -243,5 +243,50 @@ router.delete('/comments/:id', async (req, res) => {
     res.status(500).send('Error deleting comment');
   }
 });
+const BASE_URL = 'https://mfbyforesythebrand.com/api/orders';
+
+// GET all orders & render orders.ejs
+router.get('/orders', async (req, res) => {
+  try {
+    const response = await axios.get(BASE_URL);
+    res.render('orders.ejs', { orders: response.data });
+  } catch (error) {
+    res.status(500).send('Failed to fetch orders');
+  }
+});
+
+// CREATE order & render orders.ejs
+router.post('/orders', async (req, res) => {
+  const { name, email, shippingAddress, paymentReference, totalAmount } = req.body;
+
+  try {
+    await axios.post(BASE_URL, { name, email, shippingAddress, paymentReference, totalAmount });
+    const response = await axios.get(BASE_URL); // Fetch updated orders
+    res.render('orders.ejs', { orders: response.data });
+  } catch (error) {
+    res.status(500).send('Failed to create order');
+  }
+});
+
+// GET single order & render order.ejs
+router.get('/orders/:orderId', async (req, res) => {
+  try {
+    const response = await axios.get(`${BASE_URL}/${req.params.orderId}`);
+    res.render('order.ejs', { order: response.data });
+  } catch (error) {
+    res.status(500).send('Failed to fetch order');
+  }
+});
+
+// UPDATE order & render order.ejs
+router.post('/orders/:orderId', async (req, res) => {
+  try {
+    const response = await axios.post(`${BASE_URL}/${req.params.orderId}`, req.body);
+    res.render('order.ejs', { order: response.data });
+  } catch (error) {
+    res.status(500).send('Failed to update order');
+  }
+});
+
 
 module.exports = router;

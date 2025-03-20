@@ -220,7 +220,7 @@ router.post('/newsletter', async (req, res) => {
       html: `
         <div style="font-family: Arial, sans-serif; border: 1px solid #ddd; padding: 20px; border-radius: 8px; max-width: 600px; margin: auto;">
           <div style="text-align: center; margin-bottom: 20px;">
-            <img src="">
+            <img src="https://firebasestorage.googleapis.com/v0/b/fooddeck-fc840.appspot.com/o/mfico.jpg?alt=media&token=eefddae4-e98f-46cf-a375-515d8688eb55">
           </div>
           <div>
             <h2 style="color: #2D7B30;">Hello, !</h2>
@@ -240,8 +240,8 @@ router.post('/newsletter', async (req, res) => {
     // Assuming `mailer` is your configured mailing service
     await mailer.sendMail(adminMailOptions);
     await mailer.sendMail(userMailOptions);
-   // req.flash("")
-    res.status(200).json({ success: 'Message sent successfully!' });
+    req.flash("sucess_msg", "successfully subscribed to newsletter")
+    res.redirect("/");
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'An error occurred while sending the message.' });

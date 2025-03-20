@@ -4,7 +4,19 @@
         <div class="loader"></div>
     </div>
 
-   
+       <!-- Display success message -->
+    <% if (success_msg.length > 0) { %>
+        <div class="alert alert-success">
+            <%= success_msg %>
+        </div>
+    <% } %>
+
+    <!-- Display error message -->
+    <% if (error_msg.length > 0) { %>
+        <div class="alert alert-danger">
+            <%= error_msg %>
+        </div>
+    <% } %>
     <!-- Header Section End -->
 
     <!-- Map Begin -->
