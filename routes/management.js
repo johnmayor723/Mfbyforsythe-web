@@ -271,6 +271,7 @@ router.post('/orders', async (req, res) => {
 // GET single order & render order.ejs
 router.get('/orders/:orderId', async (req, res) => {
   try {
+      console.log(req.params.orderId)
     const response = await axios.get(`${BASE_URL}/${req.params.orderId}`);
     res.render('management/order.ejs', { order: response.data });
   } catch (error) {
@@ -279,8 +280,9 @@ router.get('/orders/:orderId', async (req, res) => {
 });
 
 // UPDATE order & render order.ejs
-router.post('/orders/:orderId', async (req, res) => {
+router.put('/orders/:orderId', async (req, res) => {
   try {
+      
     const response = await axios.post(`${BASE_URL}/${req.params.orderId}`, req.body);
     res.render('management/order.ejs', { order: response.data });
   } catch (error) {
