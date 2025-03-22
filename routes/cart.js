@@ -1,8 +1,14 @@
 const express = require("express");
 const router = express.Router();
 
-
-
+// Middleware to check for current user
+const isLogin = (req, res, next) => {
+  if (!req.session.currentUser) {
+    req.flash("error_msg", "Access denied. Please log in."); // Flash a message for the user
+    return res.redirect("/login"); // Redirect to the login page
+  }
+  next();
+};
 // Helper functions
 const findProductInCart = (cartItems, productId) => {
     return cartItems.find(item => item.id === productId);
@@ -42,7 +48,7 @@ router.post('/:id', (req, res) => {
 
 
 // route to get cart
-router.get('/', (req, res) => {
+router.get('/', isLogin, (req, res) => {
      console.log("cart in session:", req.session.cart )
     res.render('shopping-cart', { cart: req.session.cart, title: "Cart" });
 });

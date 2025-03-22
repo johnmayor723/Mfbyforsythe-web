@@ -59,6 +59,60 @@ router.get("/", async (req, res) => {
 
 module.exports = router;
 
+// Auth routes
+
+// Render Login Form with Success Message for Password Reset
+router.get('/success-password-reset-login', (req, res) => {
+    res.render('success-password-reset-login');
+});
+
+// Render Login Form with Success Message for Email Verification
+router.get('/verified-email-login', (req, res) => {
+    res.render('verified-email-login');
+});
+
+// Render Login Form
+router.get('/login', (req, res) => {
+    res.render('login');
+});
+
+// Render Register Form
+router.get('/register', (req, res) => {
+    res.render('register');
+});
+
+// Handle Login Submission
+router.post('/login', async (req, res) => {
+    try {
+        const response = await axios.post('http://93.127.160.233:3060/api/auth/login', req.body);
+        
+        if (response.status === 200) {
+            req.session.currentUser = response.data.user; // Store user in session
+            return res.redirect('/');
+        }
+        
+        res.render('login', { error_msg: 'Login failed. Please try again.' });
+    } catch (error) {
+        res.render('login', { error_msg: 'Invalid credentials. Please try again.' });
+    }
+});
+
+// Handle Register Submission
+router.post('/register', async (req, res) => {
+    try {
+        const {email, name , password} = req.body;
+        const response = await axios.post('http://93.127.160.233:3060/api/auth/register', req.body);
+        
+        if (response.status === 201) {
+            req.session.currentUser = response.data.user; // Store user in session
+            return res.redirect('/');
+        }
+        
+        res.render('register', { error_msg: 'Registration failed. Please try again.' });
+    } catch (error) {
+        res.render('register', { error_msg: 'An error occurred during registration.' });
+    }
+});
 
 
 // Fetch single product by ID
@@ -113,6 +167,51 @@ router.get("/products/categories/:categoryName", async (req, res) => {
         res.redirect("/")
     }
 });
+
+// logout route
+router.get('/logout', (req, res) => {
+    req.session.currentUser = null; // Clear the user session
+    res.redirect('/login'); // Redirect to login page after logout
+});
+
+// Render Reset Password Page
+router.get('/reset-password', (req, res) => {
+    res.render('reset-password');
+});
+
+// Handle Reset Password Request
+router.post('/reset-password', async (req, res) => {
+    try {
+        const response = await axios.post('http://93.127.160.233:3060/api/auth/reset-password', req.body);
+        res.render('reset-password', { success_msg: 'Password reset link sent to your email.' });
+    } catch (error) {
+        res.render('reset-password', { error_msg: 'Failed to send reset link. Try again.' });
+    }
+});
+
+// confirm reset password
+
+router.get('/verify-reset-password/:token', (req, res) => {
+    res.render('verify-reset-password', { token: req.params.token });
+});
+
+router.post('/verify-reset-password/:token', async (req, res) => {
+    if (req.body.password !== req.body.confirmPassword) {
+        return res.render('verify-reset-password', { token: req.params.token });
+    }
+
+    try {
+        await axios.post('http://93.127.160.233:3060/api/auth/verify-reset-password', {
+            token: req.params.token,
+            password: req.body.password
+        });
+
+        res.redirect('/login');
+    } catch (error) {
+        res.render('verify-reset-password', { token: req.params.token });
+    }
+});
+
 // Get all blogs
 router.get("/blogs", async (req, res) => {
   try {
