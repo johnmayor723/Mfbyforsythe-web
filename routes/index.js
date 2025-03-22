@@ -8,8 +8,8 @@ const nodemailer = require('nodemailer');
      port: 465,
      secure: "true",
      auth: {
-      user: "support@marketspick.com",
-      pass: "#@T1onal_Mayor",
+      user: "info@mfbyforesythebrand.com",
+      pass: "#@T1onal",
     },
 });
 
@@ -300,8 +300,8 @@ router.post('/newsletter', async (req, res) => {
   try {
     // Send email to admin
     const adminMailOptions = {
-      from: '"mfbyforesythebrand" <support@marketspick.com>',
-      to: 'mayowaandrews723@gmail.com',
+      from: '"mfbyforesythebrand" <info@mfbyforesythebrand.com>',
+      to: 'mayowaandrews723@gmail.com',"mblforesythe@gmail.com",
       subject: 'New Contact Form Submission',
       html: `
         <h3>New newsletter subscriber</h3>
@@ -313,7 +313,7 @@ router.post('/newsletter', async (req, res) => {
 
     // Acknowledge sender with a styled HTML email
     const userMailOptions = {
-      from: '"mfbyforesythebrand Support" <support@marketspick.com>',
+      from: '"mfbyforesythebrand" <info@mfbyforesythebrand.com>',
       to: email,
       subject: 'Thanks for Subscribing to our newsletter!',
       html: `
