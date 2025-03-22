@@ -309,9 +309,7 @@ router.post('/newsletter', async (req, res) => {
             <p><strong>Email:</strong> ${email}</p>
         `,
     };
-} catch (error) {
-    console.error('Error sending email:', error);
-}
+
 
     // Acknowledge sender with a styled HTML email
     const userMailOptions = {
