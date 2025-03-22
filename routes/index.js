@@ -297,19 +297,21 @@ router.post('/newsletter', async (req, res) => {
     return res.status(400).json({ error: 'All fields (name, email, message) are required.' });
   }
 
-  try {
+ try {
     // Send email to admin
     const adminMailOptions = {
-      from: '"mfbyforesythebrand" <info@mfbyforesythebrand.com>',
-      to: 'mayowaandrews723@gmail.com',"mblforesythe@gmail.com",
-      subject: 'New Contact Form Submission',
-      html: `
-        <h3>New newsletter subscriber</h3>
-        <p><strong>Name:</strong> </p>
-        <p><strong>Email:</strong> ${email}</p>
-
-      `,
+        from: '"mfbyforesythebrand" <info@mfbyforesythebrand.com>',
+        to: ['mayowaandrews723@gmail.com', 'mblforesythe@gmail.com'], // Corrected syntax
+        subject: 'New Contact Form Submission',
+        html: `
+            <h3>New newsletter subscriber</h3>
+            <p><strong>Name:</strong> </p>
+            <p><strong>Email:</strong> ${email}</p>
+        `,
     };
+} catch (error) {
+    console.error('Error sending email:', error);
+}
 
     // Acknowledge sender with a styled HTML email
     const userMailOptions = {
