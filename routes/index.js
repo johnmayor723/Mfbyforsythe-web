@@ -301,7 +301,7 @@ router.post('/newsletter', async (req, res) => {
     // Send email to admin
     const adminMailOptions = {
         from: '"mfbyforesythebrand" <info@mfbyforesythebrand.com>',
-        to: ['mayowaandrews723@gmail.com', 'mblforesythe@gmail.com'], // Corrected syntax
+        to: ['mayowaandrews723@gmail.com', 'mfbyforesythebrand@gmail.com'], // Corrected syntax
         subject: 'New Contact Form Submission',
         html: `
             <h3>New newsletter subscriber</h3>
