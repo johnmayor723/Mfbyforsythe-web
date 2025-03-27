@@ -2,8 +2,9 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 const nodemailer = require('nodemailer');
+const Subscriber = require("../models/Subscriber");
 
- const mailer = nodemailer.createTransport({
+const mailer = nodemailer.createTransport({
      host: "smtp.zoho.com",
      port: 465,
      secure: "true",
@@ -57,7 +58,7 @@ router.get("/", async (req, res) => {
   }
 });
 
-module.exports = router;
+
 
 // Auth routes
 
@@ -290,6 +291,67 @@ router.get("/callback", (req, res) => {
 
 // privacy policy page route
 
+// POST: Add a new subscriber (Render index-sub.js)
+
+
+router.post("/subscribe", async (req, res) => {
+  try {
+    // Fetch products and blogs concurrently
+    const [productResponse, blogResponse] = await Promise.all([
+      axios.get(API_URL),
+      axios.get(BLOG_URL),
+    ]);
+
+    const products = productResponse.data;
+    const blogs = blogResponse.data.blogs;
+
+    console.log("Fetched products:", products);
+    console.log("Found blogs:", blogs);
+
+    // Pick a random product for the deal of the day
+    const dealOfTheDay = products.length
+      ? products[Math.floor(Math.random() * products.length)]
+      : null;
+
+    // Shuffle and select 8 random products for suggestions
+    const suggestedProducts = [...products]
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 8);
+
+    // Handle subscription logic
+    const { email } = req.body;
+    let success_msg = null;
+    let error_msg = null;
+
+    if (!email) {
+      error_msg = "Email is required";
+    } else {
+      const existingSubscriber = await Subscriber.findOne({ email });
+      if (existingSubscriber) {
+        error_msg = "Email already subscribed";
+      } else {
+        const newSubscriber = new Subscriber({ email });
+        await newSubscriber.save();
+        success_msg = "Subscription successful";
+      }
+    }
+
+    res.render("index-sub", {
+      title: "Home",
+      products,
+      blogs,
+      suggestedProducts,
+      dealOfTheDay, // Pass deal to render
+      success_msg,
+      error_msg,
+    });
+  } catch (err) {
+    console.error("Error fetching data:", err.message);
+    res.status(500).send("Error processing subscription");
+  }
+});
+
+
 router.post('/newsletter', async (req, res) => {
   const {  email } = req.body;
 
@@ -301,7 +363,7 @@ router.post('/newsletter', async (req, res) => {
     // Send email to admin
     const adminMailOptions = {
         from: '"mfbyforesythebrand" <info@mfbyforesythebrand.com>',
-        to: ['mayowaandrews723@gmail.com', 'mfbyforesythe@gmail.com'], // Corrected syntax
+        to:  'info@mfbyforesythebrand.com', // Corrected syntax
         subject: 'New Contact Form Submission',
         html: `
             <h3>New newsletter subscriber</h3>

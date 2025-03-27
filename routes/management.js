@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
+const Subscriber = require('../models/Subscriber');
+
 
 const upload = require('../helpers/multer');
 
@@ -93,6 +95,24 @@ router.post('/products/:id/update', upload.array('images', 5), async (req, res) 
   }
 });
 
+// GET: Render subscribers list in management/subscribers.ejs
+router.get('/subscribers', async (req, res) => {
+    try {
+        const subscribers = await Subscriber.find().sort({ createdAt: -1 });
+        res.render('management/subscribers', { subscribers });
+    } catch (error) {
+        res.render('management/subscribers', { error_msg: 'Server error. Please try again.' });
+    }
+});
+// delete subscriber
+router.delete("/subscriber/delete/:id", async (req, res) => {
+  try {
+    await Subscriber.findByIdAndDelete(req.params.id);
+    res.redirect("/management/subscribers"); // Redirect back to the subscribers list
+  } catch (error) {
+    res.render("management/subscribers", { error_msg: "Server error. Please try again." });
+  }
+});
 // Delete product
 router.post('/products/:id/delete', async (req, res) => {
   try {
