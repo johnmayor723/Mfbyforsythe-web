@@ -19,8 +19,8 @@ const upload = require('../helpers/multer');
 //const router = express.Router();
 
 // API Base URL (Change this to your API service URL)
-const API_URL = 'http://93.127.160.233:3060/api/products/';
-const BLOG_URL = 'http://93.127.160.233:3060/api/blogs/';
+const API_URL = 'http://62.113.200.64:3060/api/products/';
+const BLOG_URL = 'http://62.113.200.64:3060/api/blogs/';
 
 
 
