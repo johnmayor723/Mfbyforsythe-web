@@ -6,9 +6,9 @@ const Subscriber = require('../models/Subscriber');
 
 const upload = require('../helpers/multer');
 
-const API_BASE_URL = 'http://93.127.160.233:3060/api/products';
-const BLOGS_URL = "http://93.127.160.233:3060/api/blogs";
-const COMMENT_URL = "http://93.127.160.233:3060/api/comments"
+const API_BASE_URL = 'http://62.113.200.64:3060/api/products';
+const BLOGS_URL = "http://62.113.200.64:3060/api/blogs";
+const COMMENT_URL = "http://62.113.200.64:3060/api/comments"
 
 // Dashboard page
 router.get("/", (req, res) => {
