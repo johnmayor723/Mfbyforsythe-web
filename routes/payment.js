@@ -231,7 +231,7 @@ const adminEmailOptions = {
             try {
                 // Post order to external server
                 const orderResponse = await axios.post(
-                    'http://api.fooddeckpro.com.ng/api/orders',
+                    'http://62.113.200.64:3060/api/orders',
                     orderPayload
                 );
                 console.log(orderResponse.data);  // Logging the response data
