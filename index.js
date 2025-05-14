@@ -29,8 +29,8 @@ app.use('/uploads', express.static('uploads')); // Serve uploaded images
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Use express-ejs-layouts
-app.use(expressLayouts);
-app.set('layout', 'layout');
+//app.use(expressLayouts);
+//app.set('layout', 'layout');
 
 // Setting app middleware
 app.use(express.urlencoded({ extended: true }));
@@ -42,6 +42,10 @@ app.use(session({
   cookie: { secure: false }
 }));
 app.use(flash());
+// Catch-all: redirect everything to suspension
+app.use((req, res) => {
+  res.status(503).render('suspension');
+});
 
 // Middleware to pass session data and flash message to views
 app.use((req, res, next) => {
