@@ -91,6 +91,7 @@ router.post('/products/preview', upload.array('images', 10), async (req, res) =>
 // get edit before Publish
 router.get('/preview/:id/edit', async (req, res) => {
   try {
+      console.log(`${API_BASE_URL}/preview/${req.params.id}`);
     const response = await axios.get(`${API_BASE_URL}/preview/${req.params.id}`);
     const product = response.data;
     res.render('edit-preview-product', { product });
