@@ -1,3 +1,52 @@
+
+<!-- Product Drafts Section -->
+<div class="container mt-5">
+  <h3 class="mb-3">Product Drafts</h3>
+  
+  <% if (drafts && drafts.length > 0) { %>
+    <div class="row">
+      <% drafts.forEach(draft => { %>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <% if (draft.images && draft.images.length > 0) { %>
+              <img src="<%= draft.images[0] %>" class="card-img-top" alt="<%= draft.name %>">
+            <% } else { %>
+              <img src="/images/placeholder.png" class="card-img-top" alt="No Image">
+            <% } %>
+         <div class="card-body">
+  <h5 class="card-title"><%= draft.name %></h5>
+  <p class="card-text"><%= draft.description.substring(0, 100) %>...</p>
+  <p><strong>Price:</strong> ₦<%= draft.price %></p>
+  
+  <!-- Category & Subcategory -->
+  <p><strong>Category:</strong> <%= draft.category %></p>
+  <% if (draft.subcategory) { %>
+    <p><strong>Subcategory:</strong> <%= draft.subcategory %></p>
+  <% } %>
+
+  <div class="d-flex justify-content-between">
+    <a href="/management/preview/<%= draft._id %>/edit" class="btn btn-sm btn-outline-primary">Edit</a>
+    <form action="/management/preview/<%= draft._id %>/delete" method="POST" onsubmit="return confirm('Are you sure?');">
+      <input type="hidden" name="_method" value="DELETE">
+      <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+    </form>
+  </div>
+</div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+    <!-- Publish Button -->
+    <div class="text-end">
+      <form action="/management/products/publish" method="POST">
+        <button type="submit" class="btn btn-success">Publish Products</button>
+      </form>
+    </div>
+  <% } else { %>
+    <div class="alert alert-info">No product drafts to preview.</div>
+  <% } %>
+</div>
+
 <!-- Product Form -->
 <div class="container mt-4 mb-5">
   <h2>Create Product</h2>
@@ -53,70 +102,105 @@
     <div id="imagePreviews" class="mt-3 d-flex flex-wrap gap-2"></div>
 
     <!-- Category & Subcategory -->
-    <div class="mb-3">
-      <label class="form-label">Category:</label>
-      <select id="categorySelect" class="form-select" required>
-        <option value="">Select Category</option>
-        <option value="Handbags">Handbags</option>
-        <option value="Jackets">Jackets</option>
-        <option value="Others">Other Categories</option>
-      </select>
-    </div>
-
-    <div class="mb-3">
-      <label class="form-label">Sub Category:</label>
-      <select id="subcategorySelect" class="form-select" name="category" required>
-        <option value="">Select Sub Category</option>
-      </select>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Create Product</button>
-  </form>
+   <!-- Category Buttons -->
+<div class="mb-3">
+  <label class="form-label">Select A Category:</label>
+  <div id="categoryButtons" class="d-flex gap-2 flex-wrap">
+    <button type="button" class="btn btn-outline-primary" data-category="Handbags">Handbags</button>
+    <button type="button" class="btn btn-outline-primary" data-category="Jackets">Jackets</button>
+    <button type="button" class="btn btn-outline-primary" data-category="Others">Other Categories</button>
+  </div>
 </div>
+
+<!-- Hidden category input -->
+<input type="hidden" name="category" id="hiddenCategory">
+
+<!-- Subcategory select gets rendered here -->
+<div id="subcategorySelectContainer" class="mb-3"></div>
+
+<!-- Submit Button -->
+<button type="submit" class="btn btn-primary">Create Product</button>
+
+</form>
+</div> <!-- end of .container -->
+
+
 
 <!-- Script -->
 <script>
-  const categoryMap = {
-    Handbags: [
-      { value: "crossbody-bag", label: "Crossbody Bag" },
-      { value: "shoulder-bag", label: "Shoulder Bag" },
-      { value: "clutch", label: "Clutch" },
-      { value: "backpack", label: "Backpack" },
-      { value: "duffel-bag", label: "Duffel Bag" },
-      { value: "travel-set", label: "Travel Set" }
-    ],
-    Jackets: [
-      { value: "blazer", label: "Blazer" },
-      { value: "denim-jacket", label: "Denim Jacket" },
-      { value: "winter-jacket", label: "Winter Jacket" },
-      { value: "bomber-jacket", label: "Bomber Jacket" }
-    ],
-    Others: [
-      { value: "t-shirt", label: "T-shirt" },
-      { value: "dresses", label: "Dresses" },
-      { value: "sets", label: "Sets" },
-      { value: "kimono", label: "Kimono" },
-      { value: "sweatshirts-hoodies", label: "Sweatshirts & Hoodies" },
-      { value: "shirts", label: "Shirts" },
-      { value: "sales", label: "Sales" }
-    ]
-  };
+  document.addEventListener('DOMContentLoaded', () => {
+    const categoryMap = {
+      Handbags: [
+        { value: "crossbody-bag", label: "Crossbody Bag" },
+        { value: "shoulder-bag", label: "Shoulder Bag" },
+        { value: "clutch", label: "Clutch" },
+        { value: "backpack", label: "Backpack" },
+        { value: "duffel-bag", label: "Duffel Bag" },
+        { value: "travel-set", label: "Travel Set" }
+      ],
+      Jackets: [
+        { value: "blazer", label: "Blazer" },
+        { value: "denim-jacket", label: "Denim Jacket" },
+        { value: "winter-jacket", label: "Winter Jacket" },
+        { value: "bomber-jacket", label: "Bomber Jacket" }
+      ],
+      Others: [
+        { value: "t-shirt", label: "T-shirt" },
+        { value: "dresses", label: "Dresses" },
+        { value: "sets", label: "Sets" },
+        { value: "kimono", label: "Kimono" },
+        { value: "sweatshirts-hoodies", label: "Sweatshirts & Hoodies" },
+        { value: "shirts", label: "Shirts" },
+        { value: "sales", label: "Sales" }
+      ]
+    };
 
-  const categorySelect = document.getElementById("categorySelect");
-  const subcategorySelect = document.getElementById("subcategorySelect");
+    const buttons = document.querySelectorAll('#categoryButtons button');
+    const subcategoryContainer = document.getElementById('subcategorySelectContainer');
+    const hiddenCategoryInput = document.getElementById('hiddenCategory');
 
-  categorySelect.addEventListener("change", () => {
-    const selected = categorySelect.value;
-    subcategorySelect.innerHTML = `<option value="">Select Sub Category</option>`;
-    if (categoryMap[selected]) {
-      categoryMap[selected].forEach(sub => {
-        const option = document.createElement("option");
-        option.value = sub.value;
-        option.textContent = sub.label;
-        subcategorySelect.appendChild(option);
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const selectedCategory = button.getAttribute('data-category');
+        hiddenCategoryInput.value = selectedCategory;
+
+        const subcategories = categoryMap[selectedCategory] || [];
+
+        const select = document.createElement('select');
+        select.name = 'subcategory';
+        select.className = 'form-select';
+        select.required = true;
+
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = 'Select Sub Category';
+        select.appendChild(defaultOption);
+
+        subcategories.forEach(sub => {
+          const option = document.createElement('option');
+          option.value = sub.value;
+          option.textContent = sub.label;
+          select.appendChild(option);
+        });
+
+        subcategoryContainer.innerHTML = ''; // Clear previous
+        const label = document.createElement('label');
+        label.className = 'form-label';
+        label.textContent = 'Subcategory:';
+        subcategoryContainer.appendChild(label);
+        subcategoryContainer.appendChild(select);
+
+        // Optional: Highlight selected category button
+        buttons.forEach(b => b.classList.remove('btn-primary'));
+        buttons.forEach(b => b.classList.add('btn-outline-primary'));
+        button.classList.remove('btn-outline-primary');
+        button.classList.add('btn-primary');
       });
-    }
+    });
   });
+</script>
+<script>
+  
 
   function createPreview(file) {
     const reader = new FileReader();

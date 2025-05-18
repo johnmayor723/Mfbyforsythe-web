@@ -73,9 +73,11 @@ router.post('/products/preview', upload.array('images', 10), async (req, res) =>
       price: req.body.price,
       colors: Array.isArray(req.body.colors) ? req.body.colors : [req.body.colors],
       category: req.body.category,
+      subcategory : req.body.subcategory,
       images: imageUrls
     };
-
+ 
+  console.log('New product', newProduct)
     const response = await axios.post(`${API_BASE_URL}/preview`, newProduct); // Staging endpoint
 
     if (response.status === 201 || response.status === 200) {
