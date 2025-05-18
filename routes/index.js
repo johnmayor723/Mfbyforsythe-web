@@ -57,8 +57,50 @@ router.get("/", async (req, res) => {
     res.status(500).send("Error loading homepage");
   }
 });
+router.get('/products/:category/:subcategory', async (req, res) => {
+  const { category, subcategory } = req.params;
 
+  try {
+    // Fetch all products
+    const response = await axios.get(API_URL);
+    const allProducts = response.data;
 
+    // Filter products by subcategory (case-insensitive)
+    const filteredProducts = allProducts.filter(product =>
+      product.subcategory?.toLowerCase() === subcategory.toLowerCase()
+    );
+
+    if (filteredProducts.length > 0) {
+      // Render 'categories' view if matching products found
+      res.render('categories', {
+        products: filteredProducts,
+        category,
+        subcategory,
+        success_msg: '',
+        error_msg: ''
+      });
+    } else {
+      // Render 'category-2' view with all products and a helpful message
+      res.render('category-2', {
+        products: allProducts,
+        category,
+        subcategory,
+        success_msg: '',
+        error_msg: `No products found in the "${subcategory}" subcategory. Here are some other products you might be interested in.`
+      });
+    }
+
+  } catch (error) {
+    console.error('Error fetching products:', error.message);
+    res.render('category-2', {
+      products: [],
+      category,
+      subcategory,
+      success_msg: '',
+      error_msg: 'Unable to load products at the moment. Please try again later.'
+    });
+  }
+});
 
 // Auth routes
 

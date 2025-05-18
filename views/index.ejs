@@ -1,4 +1,23 @@
+<style>
+  .subcategory-badge {
+#subcategoryContainer a.subcategory-badge {
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  background-color: #f8f9fa;
+  color: #212529;
+  text-decoration: none;
+  border: 1px solid #ced4da;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
 
+#subcategoryContainer a.subcategory-badge:hover {
+  background-color: #0d6efd;
+  color: #fff;
+  border-color: #0d6efd;
+}
+</style>
 
 <!-- Page Preloder -->
     <div id="preloder">
@@ -65,6 +84,22 @@
         </div>
     </section>
     <!-- Hero Section End -->
+    
+<div class="container py-4">
+  <h4 class="mb-3">Browse by Category</h4>
+
+  <!-- Category Buttons -->
+  <div id="categoryButtons" class="d-flex flex-wrap gap-3 mb-4">
+    <button class="btn btn-outline-primary" data-category="Handbags">Handbags</button>
+    <button class="btn btn-outline-success" data-category="Jackets">Jackets</button>
+    <button class="btn btn-outline-dark" data-category="Others">Other Categories</button>
+  </div>
+
+  <!-- Subcategories Section -->
+  <div id="subcategoryContainer" class="d-flex flex-wrap gap-3"></div>
+</div>
+
+
 
     <!-- Banner Section Begin -->
     <section class="banner spad">
@@ -269,3 +304,48 @@
     </section>
     <!-- Latest Blog Section End -->
 
+
+
+<script>
+  const subcategories = {
+    Handbags: [
+      { label: "Crossbody Bag", value: "crossbody-bag" },
+      { label: "Shoulder Bag", value: "shoulder-bag" },
+      { label: "Clutch", value: "clutch" },
+      { label: "Backpack", value: "backpack" },
+      { label: "Duffel Bag", value: "duffel-bag" },
+      { label: "Travel Set", value: "travel-set" }
+    ],
+    Jackets: [
+      { label: "Blazer", value: "blazer" },
+      { label: "Denim Jacket", value: "denim-jacket" },
+      { label: "Winter Jacket", value: "winter-jacket" },
+      { label: "Bomber Jacket", value: "bomber-jacket" }
+    ],
+    Others: [
+      { label: "T-shirt", value: "t-shirt" },
+      { label: "Dresses", value: "dresses" },
+      { label: "Sets", value: "sets" },
+      { label: "Kimono", value: "kimono" },
+      { label: "Sweatshirts & Hoodies", value: "sweatshirts-hoodies" },
+      { label: "Shirts", value: "shirts" },
+      { label: "Sales", value: "sales" }
+    ]
+  };
+
+  document.querySelectorAll('#categoryButtons button').forEach(button => {
+    button.addEventListener('click', () => {
+      const category = button.getAttribute('data-category');
+      const container = document.getElementById('subcategoryContainer');
+      container.innerHTML = ''; // Clear previous
+
+      (subcategories[category] || []).forEach(sub => {
+        const a = document.createElement('a');
+        a.href = `/products/${category}/${sub.value}`;
+        a.textContent = sub.label;
+        a.className = 'btn btn-outline-primary rounded-pill px-3 py-1';
+        container.appendChild(a);
+      });
+    });
+  });
+</script>

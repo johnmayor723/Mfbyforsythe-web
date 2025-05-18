@@ -1,0 +1,165 @@
+
+<style>
+  .subcategory-badge {
+#subcategoryContainer a.subcategory-badge {
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  background-color: #f8f9fa;
+  color: #212529;
+  text-decoration: none;
+  border: 1px solid #ced4da;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+#subcategoryContainer a.subcategory-badge:hover {
+  background-color: #0d6efd;
+  color: #fff;
+  border-color: #0d6efd;
+}
+</style>
+
+<!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+<div class="container py-4">
+    <!-- Display success message -->
+    <% if (success_msg.length > 0) { %>
+        <div class="alert alert-success">
+            <%= success_msg %>
+        </div>
+    <% } %>
+
+    <!-- Display error message -->
+    <% if (error_msg.length > 0) { %>
+        <div class="alert alert-danger">
+            <%= error_msg %>
+        </div>
+    <% } %>
+</div>
+  
+<div class="container py-4">
+  <h4 class="mb-3">Browse by Category</h4>
+
+  <!-- Category Buttons -->
+  <div id="categoryButtons" class="d-flex flex-wrap gap-3 mb-4">
+    <button class="btn btn-outline-primary" data-category="Handbags">Handbags</button>
+    <button class="btn btn-outline-success" data-category="Jackets">Jackets</button>
+    <button class="btn btn-outline-dark" data-category="Others">Other Categories</button>
+  </div>
+
+  <!-- Subcategories Section -->
+  <div id="subcategoryContainer" class="d-flex flex-wrap gap-3"></div>
+</div>
+
+
+
+
+<!-- Product Section Begin -->
+<section class="product spad">
+    <div class="container">
+        <div class="row">
+          <div class="col-lg-12">
+    <div class="filter__controls">
+        <% if (error_msg.length === 0) { %>
+            <h4><%= subcategory %> Products</h4>
+        <% } else { %>
+            <h4>All Products</h4>
+        <% } %>
+    </div>
+</div>
+        </div>
+        <div class="row product__filter">
+            <% products.forEach(function(product) { %>
+                <div class="col-lg-3 col-md-6 col-sm-6 mix <%= product.category ? product.category : 'new-arrivals' %>">
+                    <div class="product__item">
+                        <!-- Use product.image[0] as the main image URL -->
+                        <div class="product__item__pic set-bg" data-setbg="<%= product.images && product.images.length ? product.images[0] : 'img/default.jpg' %>">
+                            <% if(product.label) { %>
+                                <span class="label"><%= product.label %></span>
+                            <% } %>
+                            <ul class="product__hover">
+                                <li><a href="#"><img src="/img/icon/heart.png" alt="Heart"></a></li>
+                                <li><a href="#"><img src="/img/icon/compare.png" alt="Compare"> <span>Compare</span></a></li>
+                                <li><a href="#"><img src="/img/icon/search.png" alt="Search"></a></li>
+                            </ul>
+                        </div>
+                        <div class="product__item__text">
+                            <h6><%= product.name %></h6>
+                            <a href="/products/<%= product._id %>" class="add-cart">+ Add To Cart</a>
+                            <div class="rating">
+                                <% for(var i = 0; i < 5; i++) { %>
+                                    <i class="fa <%= i < (product.rating || 0) ? 'fa-star' : 'fa-star-o' %>"></i>
+                                <% } %>
+                            </div>
+                            <h5>£<%= product.price %></h5>
+                            <p><%= product.description %></p>
+                            <div class="product__color__select">
+                                <% if(product.colors && product.colors.length) { %>
+                                    <% product.colors.forEach(function(color, index) { %>
+                                        <label for="pc-<%= product._id %>-<%= index %>" class="<%= color.toLowerCase() %>">
+                                            <input type="radio" id="pc-<%= product._id %>-<%= index %>" name="color-<%= product._id %>">
+                                        </label>
+                                    <% }); %>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+</section>
+<!-- Product Section End -->
+
+
+
+
+
+
+<script>
+  const subcategories = {
+    Handbags: [
+      { label: "Crossbody Bag", value: "crossbody-bag" },
+      { label: "Shoulder Bag", value: "shoulder-bag" },
+      { label: "Clutch", value: "clutch" },
+      { label: "Backpack", value: "backpack" },
+      { label: "Duffel Bag", value: "duffel-bag" },
+      { label: "Travel Set", value: "travel-set" }
+    ],
+    Jackets: [
+      { label: "Blazer", value: "blazer" },
+      { label: "Denim Jacket", value: "denim-jacket" },
+      { label: "Winter Jacket", value: "winter-jacket" },
+      { label: "Bomber Jacket", value: "bomber-jacket" }
+    ],
+    Others: [
+      { label: "T-shirt", value: "t-shirt" },
+      { label: "Dresses", value: "dresses" },
+      { label: "Sets", value: "sets" },
+      { label: "Kimono", value: "kimono" },
+      { label: "Sweatshirts & Hoodies", value: "sweatshirts-hoodies" },
+      { label: "Shirts", value: "shirts" },
+      { label: "Sales", value: "sales" }
+    ]
+  };
+
+  document.querySelectorAll('#categoryButtons button').forEach(button => {
+    button.addEventListener('click', () => {
+      const category = button.getAttribute('data-category');
+      const container = document.getElementById('subcategoryContainer');
+      container.innerHTML = ''; // Clear previous
+
+      (subcategories[category] || []).forEach(sub => {
+        const a = document.createElement('a');
+        a.href = `/products/${category}/${sub.value}`;
+        a.textContent = sub.label;
+        a.className = 'btn btn-outline-primary rounded-pill px-3 py-1';
+        container.appendChild(a);
+      });
+    });
+  });
+</script>
