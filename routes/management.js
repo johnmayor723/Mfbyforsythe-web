@@ -69,9 +69,10 @@ router.post('/products/preview', upload.array('images', 10), async (req, res) =>
     const newProduct = {
       name: req.body.name,
       description: req.body.description,
-      size: req.body.size,
+      size: Array.isArray(req.body.size) ? req.body.size : [req.body.size],
       price: req.body.price,
       colors: Array.isArray(req.body.colors) ? req.body.colors : [req.body.colors],
+      category: req.body.category,
       images: imageUrls
     };
 
@@ -88,6 +89,8 @@ router.post('/products/preview', upload.array('images', 10), async (req, res) =>
     res.status(500).send('Error creating preview product');
   }
 });
+
+
 // get edit before Publish
 router.get('/preview/:id/edit', async (req, res) => {
   try {
