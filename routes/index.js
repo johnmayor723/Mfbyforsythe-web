@@ -72,7 +72,7 @@ router.get('/products/:category/:subcategory', async (req, res) => {
 
     if (filteredProducts.length > 0) {
       // Render 'categories' view if matching products found
-      res.render('categories', {
+      res.render('category-2', {
         products: filteredProducts,
         category,
         subcategory,
