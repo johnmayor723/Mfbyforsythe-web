@@ -1,8 +1,7 @@
-
 <!-- Product Drafts Section -->
 <div class="container mt-5">
   <h3 class="mb-3">Product Drafts</h3>
-  
+
   <% if (drafts && drafts.length > 0) { %>
     <div class="row">
       <% drafts.forEach(draft => { %>
@@ -13,30 +12,26 @@
             <% } else { %>
               <img src="/images/placeholder.png" class="card-img-top" alt="No Image">
             <% } %>
-         <div class="card-body">
-  <h5 class="card-title"><%= draft.name %></h5>
-  <p class="card-text"><%= draft.description.substring(0, 100) %>...</p>
-  <p><strong>Price:</strong> ₦<%= draft.price %></p>
-  
-  <!-- Category & Subcategory -->
-  <p><strong>Category:</strong> <%= draft.category %></p>
-  <% if (draft.subcategory) { %>
-    <p><strong>Subcategory:</strong> <%= draft.subcategory %></p>
-  <% } %>
-
-  <div class="d-flex justify-content-between">
-    <a href="/management/preview/<%= draft._id %>/edit" class="btn btn-sm btn-outline-primary">Edit</a>
-    <form action="/management/preview/<%= draft._id %>/delete" method="POST" onsubmit="return confirm('Are you sure?');">
-      <input type="hidden" name="_method" value="DELETE">
-      <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-    </form>
-  </div>
-</div>
+            <div class="card-body">
+              <h5 class="card-title"><%= draft.name %></h5>
+              <p class="card-text"><%= draft.description.substring(0, 100) %>...</p>
+              <p><strong>Price:</strong> ₦<%= draft.price %></p>
+              <p><strong>Category:</strong> <%= draft.category %></p>
+              <% if (draft.subcategory) { %>
+                <p><strong>Subcategory:</strong> <%= draft.subcategory %></p>
+              <% } %>
+              <div class="d-flex justify-content-between">
+                <a href="/management/preview/<%= draft._id %>/edit" class="btn btn-sm btn-outline-primary">Edit</a>
+                <form action="/management/preview/<%= draft._id %>/delete" method="POST" onsubmit="return confirm('Are you sure?');">
+                  <input type="hidden" name="_method" value="DELETE">
+                  <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       <% }); %>
     </div>
-    <!-- Publish Button -->
     <div class="text-end">
       <form action="/management/products/publish" method="POST">
         <button type="submit" class="btn btn-success">Publish Products</button>
@@ -50,7 +45,7 @@
 <!-- Product Form -->
 <div class="container mt-4 mb-5">
   <h2>Create Product</h2>
-  <form action="/management/products/preview" method="POST" enctype="multipart/form-data" class="mb-5">
+  <form action="/management/products/preview" method="POST" enctype="multipart/form-data">
     <!-- Name -->
     <div class="mb-3">
       <label class="form-label">Name:</label>
@@ -83,50 +78,39 @@
     <div class="mb-3">
       <label class="form-label">Select Colors:</label>
       <div class="d-flex flex-wrap gap-2">
-        <% ['Black', 'White', 'Red', 'Blue', 'Green', 'Yellow', 'Purple', 'Pink', 'Gray', 'Brown', 'Beige', 'Orange', 'Teal', 'Navy', 'Burgundy', 'Olive', 'Mustard', 'Lavender', 'Turquoise'].forEach(color => { %>
+        <% ['Black', 'White', 'Red', 'Blue', 'Green', 'Yellow', 'Purple'].forEach(color => { %>
           <label><input type="checkbox" name="colors" value="<%= color %>"> <%= color %></label>
         <% }); %>
       </div>
     </div>
 
-    <!-- Image Upload -->
+    <!-- Images Upload -->
     <div class="mb-3">
       <label class="form-label">Upload Images:</label>
       <div id="imageUploads">
-        <input type="file" class="form-control" name="images" accept="image/*">
+        <input type="file" class="form-control" name="images[]" accept="image/*" required>
       </div>
       <button type="button" class="btn btn-secondary mt-2" id="addImage">+ Add More Images</button>
     </div>
 
-    <!-- Image Previews -->
     <div id="imagePreviews" class="mt-3 d-flex flex-wrap gap-2"></div>
 
-    <!-- Category & Subcategory -->
-   <!-- Category Buttons -->
-<div class="mb-3">
-  <label class="form-label">Select A Category:</label>
-  <div id="categoryButtons" class="d-flex gap-2 flex-wrap">
-    <button type="button" class="btn btn-outline-primary" data-category="Handbags">Handbags</button>
-    <button type="button" class="btn btn-outline-primary" data-category="Jackets">Jackets</button>
-    <button type="button" class="btn btn-outline-primary" data-category="Others">Other Categories</button>
-  </div>
+    <!-- Category -->
+    <div class="mb-3">
+      <label class="form-label">Select A Category:</label>
+      <div id="categoryButtons" class="d-flex gap-2 flex-wrap">
+        <button type="button" class="btn btn-outline-primary" data-category="Handbags">Handbags</button>
+        <button type="button" class="btn btn-outline-primary" data-category="Jackets">Jackets</button>
+        <button type="button" class="btn btn-outline-primary" data-category="Others">Other Categories</button>
+      </div>
+    </div>
+    <input type="hidden" name="category" id="hiddenCategory">
+    <div id="subcategorySelectContainer" class="mb-3"></div>
+
+    <button type="submit" class="btn btn-primary">Create Product</button>
+  </form>
 </div>
 
-<!-- Hidden category input -->
-<input type="hidden" name="category" id="hiddenCategory">
-
-<!-- Subcategory select gets rendered here -->
-<div id="subcategorySelectContainer" class="mb-3"></div>
-
-<!-- Submit Button -->
-<button type="submit" class="btn btn-primary">Create Product</button>
-
-</form>
-</div> <!-- end of .container -->
-
-
-
-<!-- Script -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const categoryMap = {
@@ -183,59 +167,53 @@
           select.appendChild(option);
         });
 
-        subcategoryContainer.innerHTML = ''; // Clear previous
+        subcategoryContainer.innerHTML = '';
         const label = document.createElement('label');
         label.className = 'form-label';
         label.textContent = 'Subcategory:';
         subcategoryContainer.appendChild(label);
         subcategoryContainer.appendChild(select);
 
-        // Optional: Highlight selected category button
         buttons.forEach(b => b.classList.remove('btn-primary'));
         buttons.forEach(b => b.classList.add('btn-outline-primary'));
         button.classList.remove('btn-outline-primary');
         button.classList.add('btn-primary');
       });
     });
-  });
-</script>
-<script>
-  
 
-  function createPreview(file) {
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      const img = document.createElement('img');
-      img.src = e.target.result;
-      img.style.maxWidth = '150px';
-      img.style.maxHeight = '150px';
-      img.classList.add('img-thumbnail');
-      document.getElementById('imagePreviews').appendChild(img);
-    };
-    reader.readAsDataURL(file);
-  }
+    function createPreview(file) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.style.maxWidth = '150px';
+        img.style.maxHeight = '150px';
+        img.classList.add('img-thumbnail');
+        document.getElementById('imagePreviews').appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    }
 
-  function setupImagePreview(input) {
-    input.addEventListener('change', function () {
-      for (let file of input.files) {
-        createPreview(file);
-      }
+    function setupImagePreview(input) {
+      input.addEventListener('change', function () {
+        for (let file of input.files) {
+          createPreview(file);
+        }
+      });
+    }
+
+    const initialInput = document.querySelector('#imageUploads input[type="file"]');
+    setupImagePreview(initialInput);
+
+    document.getElementById('addImage').addEventListener('click', function () {
+      const imageUploads = document.getElementById('imageUploads');
+      const newInput = document.createElement('input');
+      newInput.type = 'file';
+      newInput.name = 'images[]';
+      newInput.accept = 'image/*';
+      newInput.classList.add('form-control', 'mt-2');
+      imageUploads.appendChild(newInput);
+      setupImagePreview(newInput);
     });
-  }
-
-  // Setup for initial file input
-  const initialInput = document.querySelector('#imageUploads input[type="file"]');
-  setupImagePreview(initialInput);
-
-  // Add new file input
-  document.getElementById('addImage').addEventListener('click', function () {
-    const imageUploads = document.getElementById('imageUploads');
-    const newInput = document.createElement('input');
-    newInput.type = 'file';
-    newInput.name = 'images';
-    newInput.accept = 'image/*';
-    newInput.classList.add('form-control', 'mt-2');
-    imageUploads.appendChild(newInput);
-    setupImagePreview(newInput);
   });
 </script>

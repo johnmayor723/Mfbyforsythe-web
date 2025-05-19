@@ -19,76 +19,84 @@
 <div class="container mt-4">
   <h2>Edit Product Draft</h2>
   <form action="/management/preview/<%= product._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+    <!-- Name -->
     <div class="mb-3">
       <label class="form-label">Name:</label>
       <input type="text" class="form-control" name="name" value="<%= product.name %>" required>
     </div>
 
+    <!-- Description -->
     <div class="mb-3">
       <label class="form-label">Description:</label>
       <textarea class="form-control" name="description" required><%= product.description %></textarea>
     </div>
 
+    <!-- Sizes -->
     <div class="mb-3">
       <label class="form-label">Select Sizes:</label>
       <div class="d-flex flex-wrap gap-2">
         <% ['XS', 'S', 'M', 'L', 'XL', 'XXL', 'UK 6', 'UK 8', 'UK 10', 'UK 12', 'UK 14', 'UK 16', 'UK 18'].forEach(size => { %>
           <label>
-            <input type="checkbox" name="size" value="<%= size %>" <%= product.size.includes(size) ? 'checked' : '' %>>
-            <%= size %>
+            <input type="checkbox" name="size" value="<%= size %>" <%= product.size.includes(size) ? 'checked' : '' %>> <%= size %>
           </label>
         <% }); %>
       </div>
     </div>
 
+    <!-- Price -->
     <div class="mb-3">
       <label class="form-label">Price:</label>
       <input type="number" class="form-control" name="price" value="<%= product.price %>" required>
     </div>
 
+    <!-- Colors -->
     <div class="mb-3">
       <label class="form-label">Select Colors:</label>
       <div class="d-flex flex-wrap gap-2">
         <% ['Black', 'White', 'Red', 'Blue', 'Green', 'Yellow', 'Purple', 'Pink', 'Gray', 'Brown', 'Beige', 'Orange', 'Teal', 'Navy', 'Burgundy', 'Olive', 'Mustard', 'Lavender', 'Turquoise'].forEach(color => { %>
           <label>
-            <input type="checkbox" name="colors" value="<%= color %>" <%= product.colors.includes(color) ? 'checked' : '' %>>
-            <%= color %>
+            <input type="checkbox" name="colors" value="<%= color %>" <%= product.colors.includes(color) ? 'checked' : '' %>> <%= color %>
           </label>
         <% }); %>
       </div>
     </div>
 
+    <!-- Upload New Images -->
     <div class="mb-3">
       <label class="form-label">Upload New Images:</label>
       <div id="imageUploads">
-        <input type="file" class="form-control" name="images" accept="image/*">
+        <input type="file" class="form-control" name="images" accept="image/*" multiple>
       </div>
       <button type="button" class="btn btn-secondary mt-2" id="addImage">+ Add More Images</button>
     </div>
 
-    <!-- Show Existing Images -->
+    <!-- Existing Images -->
     <div class="mb-3">
       <label class="form-label">Existing Images:</label>
       <div class="d-flex flex-wrap gap-2">
         <% if (product.images && product.images.length) { %>
           <% product.images.forEach(img => { %>
-            <img src="<%= img %>" style="max-width: 100px;" class="img-thumbnail">
+            <div class="text-center">
+              <img src="<%= img %>" style="max-width: 100px;" class="img-thumbnail mb-1">
+              <div>
+                <input type="checkbox" name="keepImages" value="<%= img %>" checked> Keep
+              </div>
+            </div>
           <% }); %>
         <% } else { %>
           <p>No images uploaded.</p>
         <% } %>
       </div>
-      <input type="hidden" name="existingImages" value="<%= product.images.join(',') %>">
     </div>
 
-    <!-- Image Previews -->
+    <!-- New Image Previews -->
     <div id="imagePreviews" class="mt-3 d-flex flex-wrap gap-2"></div>
 
     <button type="submit" class="btn btn-primary">Update Product</button>
   </form>
 </div>
 
-<!-- Preview Script -->
+<!-- Image Preview Script -->
 <script>
   function createPreview(file) {
     const reader = new FileReader();
@@ -103,16 +111,12 @@
     reader.readAsDataURL(file);
   }
 
-  function setupImagePreview(input) {
-    input.addEventListener('change', function () {
-      for (let file of input.files) {
-        createPreview(file);
-      }
-    });
-  }
-
-  const initialInput = document.querySelector('#imageUploads input[type="file"]');
-  setupImagePreview(initialInput);
+  document.querySelector('#imageUploads input[type="file"]').addEventListener('change', function () {
+    document.getElementById('imagePreviews').innerHTML = '';
+    for (let file of this.files) {
+      createPreview(file);
+    }
+  });
 
   document.getElementById('addImage').addEventListener('click', function () {
     const imageUploads = document.getElementById('imageUploads');
@@ -121,7 +125,13 @@
     newInput.name = 'images';
     newInput.accept = 'image/*';
     newInput.classList.add('form-control', 'mt-2');
+
+    newInput.addEventListener('change', function () {
+      for (let file of this.files) {
+        createPreview(file);
+      }
+    });
+
     imageUploads.appendChild(newInput);
-    setupImagePreview(newInput);
   });
 </script>
