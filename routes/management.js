@@ -62,7 +62,7 @@ router.get('/products/new', async (req, res) => {
 
 
 // Create new product (staged)
-router.post('/products/preview', upload.array('images', 10), async (req, res) => {
+router.post('/products/preview', upload.array('images'), async (req, res) => {
   try {
     const imageUrls = req.files.map(file => `/uploads/${file.filename}`);
 
@@ -133,7 +133,7 @@ router.get('/preview/:id/edit', async (req, res) => {
   }
 });
 
-router.put('/preview/:id/', upload.array('images', 5), async (req, res) => {
+router.put('/preview/:id/', upload.array('images'), async (req, res) => {
   try {
     console.log('Updating product...');
     console.log('Files:', req.files);
