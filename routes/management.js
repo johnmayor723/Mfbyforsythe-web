@@ -62,82 +62,57 @@ router.get('/products/new', async (req, res) => {
 
 
 // Create new product (staged)
-router.post('/products/preview', upload.array('images[]', 10), async (req, res) => {
+router.post('/products/preview', upload.array('images', 10), async (req, res) => {
   try {
     const imageUrls = req.files.map(file => `/uploads/${file.filename}`);
 
     const newProduct = {
       name: req.body.name,
       description: req.body.description,
-      size: Array.isArray(req.body.size) ? req.body.size : [req.body.size],
+      size: req.body.size,
       price: req.body.price,
       colors: Array.isArray(req.body.colors) ? req.body.colors : [req.body.colors],
-      category: req.body.category,
-      subcategory: req.body.subcategory,
       images: imageUrls
     };
 
-    const response = await axios.post(`${API_BASE_URL}/preview`, newProduct);
+    const response = await axios.post(`${API_BASE_URL}/preview`, newProduct); // Staging endpoint
 
     if (response.status === 201 || response.status === 200) {
+      console.log('Draft created:', response.data);
       res.redirect('/management/products/new');
     } else {
       res.status(response.status).send('Failed to create draft product');
     }
   } catch (error) {
-    console.error('Error:', error.message);
-    res.status(500).send('Server error');
+    console.error('Error creating preview product:', error.message);
+    res.status(500).send('Error creating preview product');
   }
 });
-
-/*
-*/
-
-
-// PUT route to update product draft
-  router.put('/preview/:id', upload.array('images'), async (req, res) => {
-      console.log(`${API_BASE_URL}/preview/${req.params.id}`);
+// get edit before Publish
+router.get('/preview/:id/edit', async (req, res) => {
   try {
-    const { name, description, price, size, colors, keepImages } = req.body;
-
-    const preservedImages = Array.isArray(keepImages)
-      ? keepImages
-      : keepImages ? [keepImages] : [];
-
-    const newImages = req.files.map(file => `/uploads/${file.filename}`);
-    const images = [...preservedImages, ...newImages];
-
-    const payload = {
-      name,
-      description,
-      price,
-      size: Array.isArray(size) ? size : [size],
-      colors: Array.isArray(colors) ? colors : [colors],
-      images
-    };
-
-    console.log('Payload to API:', payload);
-
-    await axios.put(`${API_BASE_URL}/preview/${req.params.id}`, payload);
-
-    // Redirect to product creation page
-    res.redirect('/management/products/new');
+    const response = await axios.get(`${API_BASE_URL}/preview/${req.params.id}`);
+    const product = response.data;
+    res.render('edit-preview-product', { product });
   } catch (error) {
-    console.error(error);
-    res.status(500).send('Server error');
+    console.error('Error fetching preview product:', error.message);
+    res.status(500).send('Error fetching preview product');
   }
 });
 
-// Publish all preview products
+
+
 router.post('/products/publish', async (req, res) => {
   try {
     await axios.post(`${API_BASE_URL}/publish`);
-    res.redirect('/management/products'); // Redirect to live products
+    req.flash('success_msg', 'Products published successfully');
+    res.redirect('/management/products');
   } catch (error) {
-    res.status(500).send('Error publishing products');
+    const errorMsg = error.response?.data?.message || 'Error publishing products';
+    req.flash('error_msg', errorMsg);
+    res.redirect('/management/products/new');
   }
 });
-
 
 router.post('/preview/:id/delete', async (req, res) => {
   try {
@@ -158,28 +133,57 @@ router.get('/preview/:id/edit', async (req, res) => {
   }
 });
 
-
-// Update preview product
-/*
 router.put('/preview/:id/', upload.array('images', 5), async (req, res) => {
   try {
-    const imageUrls = req.files.map(file => `/uploads/${file.filename}`);
+    console.log('Updating product...');
+    console.log('Files:', req.files);
+    console.log('Body:', req.body);
+
+    // New uploaded image URLs
+    const newImageUrls = req.files.map(file => `/uploads/${file.filename}`);
+
+    // Images user wants to keep from existing images
+    // If only one checkbox selected, req.body.keepImages can be a string, else array
+    let keptImages = [];
+    if (req.body.keepImages) {
+      if (Array.isArray(req.body.keepImages)) {
+        keptImages = req.body.keepImages;
+      } else {
+        keptImages = [req.body.keepImages];
+      }
+    }
+
+    // Combine kept existing images + newly uploaded images
+    const combinedImages = [...keptImages, ...newImageUrls];
+
+    // Handle size and colors to always be arrays
+    const sizes = Array.isArray(req.body.size) ? req.body.size : req.body.size ? [req.body.size] : [];
+    const colors = Array.isArray(req.body.colors) ? req.body.colors : req.body.colors ? [req.body.colors] : [];
 
     const updatedProduct = {
       name: req.body.name,
       description: req.body.description,
-      size: req.body.size,
+      size: sizes,
       price: req.body.price,
-      colors: Array.isArray(req.body.colors) ? req.body.colors : [req.body.colors],
-      images: imageUrls.length > 0 ? imageUrls : req.body.existingImages.split(',')
+      colors: colors,
+      images: combinedImages,
+      category: req.body.category,
+      subcategory: req.body.subcategory
     };
 
-    await axios.put(`${API_BASE_URL}/preview/${req.params.id}`, updatedProduct);
-    res.redirect('/management/products');
+    console.log('Payload to API:', updatedProduct);
+    const response = await axios.put(`${API_BASE_URL}/preview/${req.params.id}`, updatedProduct);
+    console.log('API Response:', response.data);
+
+    res.redirect('/management/products/new');
   } catch (error) {
+    console.error('Update Error:', error.message);
+    if (error.response) {
+      console.error('Backend Response:', error.response.data);
+    }
     res.status(500).send('Error updating preview product');
   }
-});*/
+});
 
 // Create new product
 router.post('/products', upload.array('images', 10), async (req, res) => {
