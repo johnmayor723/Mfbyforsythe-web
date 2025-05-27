@@ -85,19 +85,6 @@
     </section>
     <!-- Hero Section End -->
     
-<div class="container py-4">
-  <h4 class="mb-3">Browse by Category</h4>
-
-  <!-- Category Buttons -->
-  <div id="categoryButtons" class="d-flex flex-wrap gap-3 mb-4">
-    <button class="btn btn-outline-primary" data-category="Handbags">Handbags</button>
-    <button class="btn btn-outline-success" data-category="Jackets">Jackets</button>
-    <button class="btn btn-outline-dark" data-category="Others">Other Categories</button>
-  </div>
-
-  <!-- Subcategories Section -->
-  <div id="subcategoryContainer" class="d-flex flex-wrap gap-3"></div>
-</div>
 
 
 
@@ -178,7 +165,7 @@
                                 <% } %>
                             </div>
                             <h5>£<%= product.price %></h5>
-                            <p><%= product.description %></p>
+                           
                             <div class="product__color__select">
                                 <% if(product.colors && product.colors.length) { %>
                                     <% product.colors.forEach(function(color, index) { %>
@@ -307,45 +294,108 @@
 
 
 <script>
-  const subcategories = {
-    Handbags: [
-      { label: "Crossbody Bag", value: "crossbody-bag" },
-      { label: "Shoulder Bag", value: "shoulder-bag" },
-      { label: "Clutch", value: "clutch" },
-      { label: "Backpack", value: "backpack" },
-      { label: "Duffel Bag", value: "duffel-bag" },
-      { label: "Travel Set", value: "travel-set" }
+  const categoryMap = {
+    Bags: [
+      { value: "crossbody-bag", label: "Crossbody Bag" },
+      { value: "shoulder-bag", label: "Shoulder Bag" },
+      { value: "clutch", label: "Clutch" },
+      { value: "backpack", label: "Backpack" },
+      { value: "duffel-bag", label: "Duffel Bag" },
+      { value: "travel-set", label: "Travel Set" }
     ],
     Jackets: [
-      { label: "Blazer", value: "blazer" },
-      { label: "Denim Jacket", value: "denim-jacket" },
-      { label: "Winter Jacket", value: "winter-jacket" },
-      { label: "Bomber Jacket", value: "bomber-jacket" }
+      { value: "blazer", label: "Blazer" },
+      { value: "denim-jacket", label: "Denim Jacket" },
+      { value: "winter-jacket", label: "Winter Jacket" },
+      { value: "bomber-jacket", label: "Bomber Jacket" }
     ],
-    Others: [
-      { label: "T-shirt", value: "t-shirt" },
-      { label: "Dresses", value: "dresses" },
-      { label: "Sets", value: "sets" },
-      { label: "Kimono", value: "kimono" },
-      { label: "Sweatshirts & Hoodies", value: "sweatshirts-hoodies" },
-      { label: "Shirts", value: "shirts" },
-      { label: "Sales", value: "sales" }
-    ]
+    Dresses: [],
+    Suits: [
+      { value: "trouser-suit", label: "Trouser Suit" },
+      { value: "skirt-suit", label: "Skirt Suit" }
+    ],
+    Gym: [
+      { value: "active-wears", label: "Active Wears" },
+      { value: "yoga-mats", label: "Yoga Mats" }
+    ],
+    Sets: [
+      { value: "travel-set", label: "Travel Set" },
+      { value: "beach-set", label: "Beach Set" },
+      { value: "short-and-top-set", label: "Short and Top Set" },
+      { value: "kimono-set", label: "Kimono Set" }
+    ],
+    Shirts: [
+      { value: "t-shirt", label: "T-shirt" },
+      { value: "long-sleeve-shirts", label: "Long Sleeve Shirts" },
+      { value: "short-sleeve-shirts", label: "Short Sleeve Shirts" }
+    ],
+    Skirts: [],
+    Kimono: [],
+    Sweatshirts: [],
+    Hoodies: [],
+    Glasses: [],
+    "Beach hats": [],
+    Sales: [],
+    "Clearance sales": []
   };
 
-  document.querySelectorAll('#categoryButtons button').forEach(button => {
-    button.addEventListener('click', () => {
-      const category = button.getAttribute('data-category');
-      const container = document.getElementById('subcategoryContainer');
-      container.innerHTML = ''; // Clear previous
+  function renderCategoryModal() {
+    const container = document.getElementById('modalCategoryContent');
+    container.innerHTML = '';
 
-      (subcategories[category] || []).forEach(sub => {
+    Object.entries(categoryMap).forEach(([category, subcategories]) => {
+      const col = document.createElement('div');
+      col.className = 'col';
+
+      const heading = document.createElement('h6');
+      heading.textContent = category;
+      heading.className = 'fw-bold text-black';
+
+      const list = document.createElement('ul');
+      list.className = 'list-unstyled';
+
+      if (subcategories.length === 0) {
+        const li = document.createElement('li');
         const a = document.createElement('a');
-        a.href = `/products/${category}/${sub.value}`;
-        a.textContent = sub.label;
-        a.className = 'btn btn-outline-primary rounded-pill px-3 py-1';
-        container.appendChild(a);
-      });
+        a.href = `/products/${category}/`;
+        a.textContent = category;
+        a.className = 'fw-bold';
+        a.style.color = '#9b2c9b'; // reddish-purple
+        li.appendChild(a);
+        list.appendChild(li);
+      } else {
+        subcategories.forEach(sub => {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = `/products/${category}/${sub.value}`;
+          a.textContent = sub.label;
+          a.className = 'fw-bold';
+          a.style.color = '#9b2c9b'; // reddish-purple
+          li.appendChild(a);
+          list.appendChild(li);
+        });
+      }
+
+      col.appendChild(heading);
+      col.appendChild(list);
+      container.appendChild(col);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('categoryModal');
+    const shopLink = document.getElementById('shopLink');
+
+    shopLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      renderCategoryModal();
+      modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!modal.contains(e.target) && !shopLink.contains(e.target)) {
+        modal.style.display = 'none';
+      }
     });
   });
 </script>

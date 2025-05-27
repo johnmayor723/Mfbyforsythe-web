@@ -90,7 +90,7 @@
           <ul>
             <li class="active"><a href="/">Home</a></li>
             <li><a href="/about">About us</a></li>
-<li<li><a href="#" id="shopLink">Shop</a></li>
+<li><a href="#" id="desktopShopLink">Shop</a></li>
             <li class="nav-category" data-category="Bags"><a href="#">Bags</a></li>
             <li class="nav-category" data-category="Jackets"><a href="#">Jackets</a></li>
             <li class="nav-category" data-category="Shirts"><a href="#">Shirts</a></li>
@@ -114,16 +114,17 @@
 </header>
 <!-- Header Section End -->
 
-<!-- Category Modal -->
-<div id="categoryModal" class="position-fixed w-100 bg-white shadow-lg" style="top:100px; display:none; z-index:1050;">
+<!-- Desktop Category Modal -->
+<div id="desktopCategoryModal" class="position-fixed w-100 bg-white shadow-lg" style="top:100px; display:none; z-index:1050;">
   <div class="container py-4">
-    <div class="row row-cols-1 row-cols-md-3 g-4" id="modalCategoryContent">
-      <!-- Filled by JS -->
+    <div class="row row-cols-1 row-cols-md-3 g-4" id="desktopModalContent">
+      <!-- Filled dynamically -->
     </div>
   </div>
 </div>
 
-<script>
+
+  <script>
   const categoryMap = {
     Bags: ["crossbody-bag", "shoulder-bag", "clutch", "backpack", "duffel-bag", "travel-set"],
     Jackets: ["blazer", "denim-jacket", "winter-jacket", "bomber-jacket"],
@@ -146,9 +147,9 @@
     return str.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
   }
 
-  function renderModalContent() {
-    const content = document.getElementById('modalCategoryContent');
-    content.innerHTML = '';
+  function renderDesktopModal() {
+    const container = document.getElementById('desktopModalContent');
+    container.innerHTML = '';
 
     Object.entries(categoryMap).forEach(([category, subcats]) => {
       const col = document.createElement('div');
@@ -156,7 +157,6 @@
 
       const title = document.createElement('h6');
       title.textContent = category;
-      title.style.color = 'black';
 
       const list = document.createElement('ul');
       list.className = 'list-unstyled';
@@ -167,7 +167,6 @@
         a.href = `/products/${category}/`;
         a.textContent = category;
         a.className = 'fw-bold';
-        a.style.color = '#9b2c9b';
         li.appendChild(a);
         list.appendChild(li);
       } else {
@@ -177,7 +176,6 @@
           a.href = `/products/${category}/${sub}`;
           a.textContent = capitalize(sub);
           a.className = 'fw-bold';
-          a.style.color = '#9b2c9b';
           li.appendChild(a);
           list.appendChild(li);
         });
@@ -185,24 +183,71 @@
 
       col.appendChild(title);
       col.appendChild(list);
-      content.appendChild(col);
+      container.appendChild(col);
     });
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    const shopLink = document.getElementById('shopLink');
-    const modal = document.getElementById('categoryModal');
+    const shopLink = document.getElementById('desktopShopLink');
+    const modal = document.getElementById('desktopCategoryModal');
 
     shopLink.addEventListener('click', (e) => {
       e.preventDefault();
-      renderModalContent();
-      modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+      if (window.innerWidth >= 992) {
+        renderDesktopModal();
+        modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+      }
     });
 
     document.addEventListener('click', (e) => {
       if (!modal.contains(e.target) && !shopLink.contains(e.target)) {
         modal.style.display = 'none';
       }
+    });
+  });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const mobileCats = document.querySelectorAll('.mobile-cat');
+    const mobileCatList = document.getElementById('mobileSubList');
+    const mobileCatsContainer = document.getElementById('mobile-categories');
+    const mobileSubcatsContainer = document.getElementById('mobile-subcategories');
+    const backToCats = document.getElementById('backToCats');
+
+    mobileCats.forEach(el => {
+      el.addEventListener('click', () => {
+        const cat = el.getAttribute('data-category');
+        const subs = categoryMap[cat] || [];
+
+        mobileCatList.innerHTML = '';
+        if (subs.length === 0) {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = `/products/${cat}/`;
+          a.textContent = cat;
+          a.className = 'fw-bold';
+          li.appendChild(a);
+          mobileCatList.appendChild(li);
+        } else {
+          subs.forEach(sub => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = `/products/${cat}/${sub}`;
+            a.textContent = capitalize(sub);
+            a.className = 'fw-bold';
+            li.appendChild(a);
+            mobileCatList.appendChild(li);
+          });
+        }
+
+        mobileCatsContainer.style.display = 'none';
+        mobileSubcatsContainer.style.display = 'block';
+      });
+    });
+
+    backToCats.addEventListener('click', () => {
+      mobileSubcatsContainer.style.display = 'none';
+      mobileCatsContainer.style.display = 'block';
     });
   });
 </script>

@@ -113,22 +113,32 @@
   <!-- Image Previews -->
   <div id="imagePreviews" class="mt-3 d-flex flex-wrap gap-2"></div>
 
-  <!-- Category & Subcategory -->
-  <div class="mb-3">
-    <label class="form-label">Select A Category:</label>
-    <div id="categoryButtons" class="d-flex gap-2 flex-wrap">
-      <button type="button" class="btn btn-outline-primary" data-category="Handbags">Handbags</button>
-      <button type="button" class="btn btn-outline-primary" data-category="Jackets">Jackets</button>
-      <button type="button" class="btn btn-outline-primary" data-category="Others">Other Categories</button>
-    </div>
+<div class="mb-3">
+  <label class="form-label">Select A Category:</label>
+  <div id="categoryButtons" class="d-flex gap-2 flex-wrap">
+    <button type="button" class="btn btn-outline-primary" data-category="Bags">Bags</button>
+    <button type="button" class="btn btn-outline-primary" data-category="Jackets">Jackets</button>
+    <button type="button" class="btn btn-outline-primary" data-category="Shirts">Shirts</button>
+    <button type="button" class="btn btn-outline-primary" data-category="Suits">Suits</button>
+    <button type="button" class="btn btn-outline-primary" data-category="Dresses">Dresses</button>
+    <button type="button" class="btn btn-outline-primary" data-category="Skirts">Skirts</button>
+    <button type="button" class="btn btn-outline-primary" data-category="Sets">Sets</button>
+    <button type="button" class="btn btn-outline-primary" data-category="Kimono">Kimono</button>
+    <button type="button" class="btn btn-outline-primary" data-category="Sweatshirts">Sweatshirts</button>
+    <button type="button" class="btn btn-outline-primary" data-category="Hoodies">Hoodies</button>
+    <button type="button" class="btn btn-outline-primary" data-category="Glasses">Glasses</button>
+    <button type="button" class="btn btn-outline-primary" data-category="Beach Hats">Beach Hats</button>
+    <button type="button" class="btn btn-outline-primary" data-category="Gym">Gym</button>
+    <button type="button" class="btn btn-outline-primary" data-category="Sales">Sales</button>
+    <button type="button" class="btn btn-outline-primary" data-category="Clearance Sales">Clearance Sales</button>
   </div>
+</div>
 
-  <!-- Hidden category input -->
-  <input type="hidden" name="category" id="hiddenCategory">
+<!-- Hidden category input -->
+<input type="hidden" name="category" id="hiddenCategory">
 
-  <!-- Subcategory select gets rendered here -->
-  <div id="subcategorySelectContainer" class="mb-3"></div>
-
+<!-- Subcategory select gets rendered here -->
+<div id="subcategorySelectContainer" class="mb-3"></div>
   <!-- Submit Button -->
   <button type="submit" class="btn btn-primary">Create Product</button>
 </form>
@@ -140,7 +150,7 @@
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const categoryMap = {
-      Handbags: [
+      Bags: [
         { value: "crossbody-bag", label: "Crossbody Bag" },
         { value: "shoulder-bag", label: "Shoulder Bag" },
         { value: "clutch", label: "Clutch" },
@@ -154,15 +164,34 @@
         { value: "winter-jacket", label: "Winter Jacket" },
         { value: "bomber-jacket", label: "Bomber Jacket" }
       ],
-      Others: [
+      Shirts: [
         { value: "t-shirt", label: "T-shirt" },
-        { value: "dresses", label: "Dresses" },
-        { value: "sets", label: "Sets" },
-        { value: "kimono", label: "Kimono" },
-        { value: "sweatshirts-hoodies", label: "Sweatshirts & Hoodies" },
-        { value: "shirts", label: "Shirts" },
-        { value: "sales", label: "Sales" }
-      ]
+        { value: "long-sleeve-shirts", label: "Long Sleeve Shirts" },
+        { value: "short-sleeve-shirts", label: "Short Sleeve Shirts" }
+      ],
+      Suits: [
+        { value: "trouser-suit", label: "Trouser Suit" },
+        { value: "skirt-suit", label: "Skirt Suit" }
+      ],
+      Dresses: [],
+      Skirts: [],
+      Sets: [
+        { value: "travel-set", label: "Travel Set" },
+        { value: "beach-set", label: "Beach Set" },
+        { value: "short-top-set", label: "Short and Top Set" },
+        { value: "kimono-set", label: "Kimono Set" }
+      ],
+      Kimono: [],
+      Sweatshirts: [],
+      Hoodies: [],
+      Glasses: [],
+      "Beach Hats": [],
+      Gym: [
+        { value: "active-wears", label: "Active Wears" },
+        { value: "yoga-mats", label: "Yoga Mats" }
+      ],
+      Sales: [],
+      "Clearance Sales": []
     };
 
     const buttons = document.querySelectorAll('#categoryButtons button');
@@ -176,33 +205,38 @@
 
         const subcategories = categoryMap[selectedCategory] || [];
 
-        const select = document.createElement('select');
-        select.name = 'subcategory';
-        select.className = 'form-select';
-        select.required = true;
-
-        const defaultOption = document.createElement('option');
-        defaultOption.value = '';
-        defaultOption.textContent = 'Select Sub Category';
-        select.appendChild(defaultOption);
-
-        subcategories.forEach(sub => {
-          const option = document.createElement('option');
-          option.value = sub.value;
-          option.textContent = sub.label;
-          select.appendChild(option);
-        });
-
         subcategoryContainer.innerHTML = ''; // Clear previous
-        const label = document.createElement('label');
-        label.className = 'form-label';
-        label.textContent = 'Subcategory:';
-        subcategoryContainer.appendChild(label);
-        subcategoryContainer.appendChild(select);
 
-        // Optional: Highlight selected category button
-        buttons.forEach(b => b.classList.remove('btn-primary'));
-        buttons.forEach(b => b.classList.add('btn-outline-primary'));
+        if (subcategories.length > 0) {
+          const select = document.createElement('select');
+          select.name = 'subcategory';
+          select.className = 'form-select';
+          select.required = true;
+
+          const defaultOption = document.createElement('option');
+          defaultOption.value = '';
+          defaultOption.textContent = 'Select Sub Category';
+          select.appendChild(defaultOption);
+
+          subcategories.forEach(sub => {
+            const option = document.createElement('option');
+            option.value = sub.value;
+            option.textContent = sub.label;
+            select.appendChild(option);
+          });
+
+          const label = document.createElement('label');
+          label.className = 'form-label';
+          label.textContent = 'Subcategory:';
+          subcategoryContainer.appendChild(label);
+          subcategoryContainer.appendChild(select);
+        }
+
+        // Highlight selected category
+        buttons.forEach(b => {
+          b.classList.remove('btn-primary');
+          b.classList.add('btn-outline-primary');
+        });
         button.classList.remove('btn-outline-primary');
         button.classList.add('btn-primary');
       });
