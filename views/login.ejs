@@ -1,5 +1,5 @@
 <div  style="margin-bottom:150px" class="container mt-5">
-    <form action="login" method="POST" class="card p-4 shadow-sm">
+    <form action="/login" method="POST" class="card p-4 shadow-sm">
         <h3 class="mb-4">Login To Your Account</h3>
        
         <div class="mb-3">
@@ -10,6 +10,8 @@
             <label>Password</label>
             <input type="password" name="password" class="form-control" required>
         </div>
+        <!-- In your EJS form -->
+<input type="text" name="companyName" style="display:none">
         <button type="submit" class="btn btn-primary w-100">Login</button>
         
         <!-- Links for Sign Up and Reset Password -->

@@ -1,4 +1,43 @@
-<!-- Offcanvas Menu Begin --><div class="offcanvas-menu-overlay"></div>
+<style>
+  #categoryModal {
+    animation: fadeSlideDown 0.4s ease;
+  }
+
+  @keyframes fadeSlideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-15px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  #modalCategoryContent .col {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: 200px;
+  }
+
+  #modalCategoryContent ul li a {
+    color: #a01486 !important; /* Reddish purple */
+    text-decoration: none;
+  }
+
+  #modalCategoryContent ul li a:hover {
+    text-decoration: underline;
+  }
+
+  #modalCategoryContent h6 {
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+</style>
+
+<!-- Offcanvas Menu Begin -->
+<div class="offcanvas-menu-overlay"></div>
 <div class="offcanvas-menu-wrapper">
   <div class="offcanvas__option">
     <div class="offcanvas__links">
@@ -18,36 +57,53 @@
       </ul>
     </div>
   </div>
+
   <div class="offcanvas__nav__option">
     <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
     <a href="#"><img src="/img/icon/heart.png" alt=""></a>
     <a href="/cart"><img src="/img/icon/cart.png" alt=""> <span>0</span></a>
     <div class="price"><%= session.cart ? session.cart.totalQty : 0 %></div>
   </div>
+
+  <!-- Categories Section -->
   <div id="mobile-categories">
     <ul class="list-unstyled">
-      <li class="mobile-cat" data-category="Bags">Bags</li>
-      <li class="mobile-cat" data-category="Jackets">Jackets</li>
-      <li class="mobile-cat" data-category="Shirts">Shirts</li>
-      <li class="mobile-cat" data-category="Suits">Suits</li>
-      <li class="mobile-cat" data-category="Dresses">Dresses</li>
-      <li class="mobile-cat" data-category="Skirts">Skirts</li>
-      <li class="mobile-cat" data-category="Sets">Sets</li>
-      <li class="mobile-cat" data-category="Kimono">Kimono</li>
-      <li class="mobile-cat" data-category="Sweatshirts">Sweatshirts</li>
-      <li class="mobile-cat" data-category="Hoodies">Hoodies</li>
-      <li class="mobile-cat" data-category="Glasses">Glasses</li>
-      <li class="mobile-cat" data-category="Beach hats">Beach hats</li>
-      <li class="mobile-cat" data-category="Gym">Gym</li>
-      <li class="mobile-cat" data-category="Sales">Sales</li>
-      <li class="mobile-cat" data-category="Clearance sales">Clearance sales</li>
+      <% const categoryMap = {
+        "Bags": ["crossbody-bag", "shoulder-bag", "clutch", "backpack", "duffel-bag", "travel-set"],
+        "Jackets": ["blazer", "denim-jacket", "winter-jacket", "bomber-jacket"],
+        "Shirts": ["t-shirt", "long-sleeve-shirts", "short-sleeve-shirts"],
+        "Suits": ["trouser-suit", "skirt-suit"],
+        "Dresses": ["long-dresses", "shirt-dresses"],
+        "Sets": ["travel-set", "beach-set", "short-and-top-set", "kimono-set"],
+        "Kimono": ["ankara-kimono", "adire-kimono"],
+        "Hoodies": ["adire-hoodie", "ankara-hoodie"],
+        "Glasses": ["clear-glasses", "sunshades"],
+        "Beach hats": ["ankara-beach-hats", "adire-beach-hats"],
+        "Gym": ["active-wears", "yoga-mats", "water-bottle"],
+        "Deals": ["sales", "clearance-sales", "goodie-bag"],
+        "Skirts": [],
+        "Sweatshirts": []
+      }; %>
+
+      <% Object.entries(categoryMap).forEach(([cat, subs]) => { %>
+        <% if (subs.length > 0) { %>
+          <li class="mobile-cat expandable" data-category="<%= cat %>">
+            <span><%= cat %></span>
+          </li>
+        <% } else { %>
+          <li><a class="mobile-cat-link" href="/products/<%= cat %>"><%= cat %></a></li>
+        <% } %>
+      <% }) %>
     </ul>
   </div>
-  <div id="mobile-subcategories" style="display:none;">
+
+  <!-- Subcategories Section -->
+  <div id="mobile-subcategories" style="display: none;">
     <button id="backToCats" class="btn btn-sm btn-link">&larr; Back</button>
     <ul id="mobileSubList" class="list-unstyled"></ul>
   </div>
 </div>
+<!-- Offcanvas Menu End -->
 <!-- Offcanvas Menu End --><!-- Header Section Begin --><header class="header">
   <div class="header__top">
     <div class="container">
@@ -113,30 +169,66 @@
 <!-- Category Modal -->
 <div id="categoryModal" class="position-fixed w-100 bg-white shadow-lg" style="top:100px; display:none; z-index:1050;">
   <div class="container py-4">
-    <div class="row row-cols-1 row-cols-md-3 g-4" id="modalCategoryContent">
+<div class="row row-cols-1 row-cols-md-6 g-4" id="modalCategoryContent">
       <!-- Filled by JS -->
     </div>
   </div>
 </div>
 
+<style>
+  #categoryModal {
+    animation: fadeSlideDown 0.4s ease;
+  }
+
+  @keyframes fadeSlideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-15px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  #modalCategoryContent .col {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    min-height: 220px;
+  }
+
+  #modalCategoryContent ul li a {
+    color: #a01486 !important;
+    text-decoration: none;
+  }
+
+  #modalCategoryContent ul li a:hover {
+    text-decoration: underline;
+  }
+
+  #modalCategoryContent h6 {
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+</style>
+
 <script>
   const categoryMap = {
-    Bags: ["crossbody-bag", "shoulder-bag", "clutch", "backpack", "duffel-bag", "travel-set"],
-    Jackets: ["blazer", "denim-jacket", "winter-jacket", "bomber-jacket"],
-    Shirts: ["t-shirt", "long-sleeve-shirts", "short-sleeve-shirts"],
-    Suits: ["trouser-suit", "skirt-suit"],
-    Dresses: [],
-    Skirts: [],
-    Sets: ["travel-set", "beach-set", "short-and-top-set", "kimono-set"],
-    Kimono: [],
-    Sweatshirts: [],
-    Hoodies: [],
-    Glasses: [],
-    "Beach hats": [],
-    Gym: ["active-wears", "yoga-mats"],
-    Sales: [],
-    "Clearance sales": []
-  };
+  Bags: ["crossbody-bag", "shoulder-bag", "clutch", "backpack", "duffel-bag", "travel-set"],
+  Jackets: ["blazer", "denim-jacket", "winter-jacket", "bomber-jacket"],
+  Shirts: ["t-shirt", "long-sleeve-shirts", "short-sleeve-shirts"],
+  Suits: ["trouser-suit", "skirt-suit"],
+  Dresses: ["long-dresses", "shirt-dresses"],
+  Sets: ["travel-set", "beach-set", "short-and-top-set", "kimono-set"],
+  Kimono: ["ankara-kimono", "adire-kimono"],
+  Hoodies: ["adire-hoodie", "ankara-hoodie"],
+  Glasses: ["clear-glasses", "sunshades"],
+  "Beach hats": ["ankara-beach-hats", "adire-beach-hats"],
+  Gym: ["active-wears", "yoga-mats", "water-bottle"],
+  Deals: ["sales", "clearance-sales", "goodie-bag"],
+  "Other Categories": ["Skirts", "Sweatshirts"]
+};
 
   function capitalize(str) {
     return str.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
@@ -148,14 +240,13 @@
 
     Object.entries(categoryMap).forEach(([category, subcats]) => {
       const col = document.createElement('div');
-      col.className = 'col';
+      col.className = 'col d-flex flex-column';
 
       const title = document.createElement('h6');
       title.textContent = category;
-      title.style.color = 'black';
 
       const list = document.createElement('ul');
-      list.className = 'list-unstyled';
+      list.className = 'list-unstyled flex-grow-1';
 
       if (subcats.length === 0) {
         const li = document.createElement('li');
@@ -163,7 +254,6 @@
         a.href = `/products/${category}/`;
         a.textContent = category;
         a.className = 'fw-bold';
-        a.style.color = '#9b2c9b';
         li.appendChild(a);
         list.appendChild(li);
       } else {
@@ -173,7 +263,6 @@
           a.href = `/products/${category}/${sub}`;
           a.textContent = capitalize(sub);
           a.className = 'fw-bold';
-          a.style.color = '#9b2c9b';
           li.appendChild(a);
           list.appendChild(li);
         });
@@ -192,13 +281,74 @@
     shopLink.addEventListener('click', (e) => {
       e.preventDefault();
       renderModalContent();
-      modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+      if (modal.style.display === 'block') {
+        modal.style.display = 'none';
+      } else {
+        modal.style.display = 'block';
+        modal.classList.remove('fadeSlide');
+        void modal.offsetWidth;
+        modal.classList.add('fadeSlide');
+      }
     });
 
     document.addEventListener('click', (e) => {
       if (!modal.contains(e.target) && !shopLink.contains(e.target)) {
         modal.style.display = 'none';
       }
+    });
+  });
+</script>
+<script>
+  const categoryMap = {
+    "Bags": ["crossbody-bag", "shoulder-bag", "clutch", "backpack", "duffel-bag", "travel-set"],
+    "Jackets": ["blazer", "denim-jacket", "winter-jacket", "bomber-jacket"],
+    "Shirts": ["t-shirt", "long-sleeve-shirts", "short-sleeve-shirts"],
+    "Suits": ["trouser-suit", "skirt-suit"],
+    "Dresses": ["long-dresses", "shirt-dresses"],
+    "Sets": ["travel-set", "beach-set", "short-and-top-set", "kimono-set"],
+    "Kimono": ["ankara-kimono", "adire-kimono"],
+    "Hoodies": ["adire-hoodie", "ankara-hoodie"],
+    "Glasses": ["clear-glasses", "sunshades"],
+    "Beach hats": ["ankara-beach-hats", "adire-beach-hats"],
+    "Gym": ["active-wears", "yoga-mats", "water-bottle"],
+    "Deals": ["sales", "clearance-sales", "goodie-bag"]
+  };
+
+  function capitalize(str) {
+    return str.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const catList = document.getElementById('mobile-categories');
+    const subList = document.getElementById('mobile-subcategories');
+    const mobileSubList = document.getElementById('mobileSubList');
+    const backBtn = document.getElementById('backToCats');
+
+    catList.addEventListener('click', function(e) {
+      const item = e.target.closest('.mobile-cat');
+      if (!item) return;
+
+      const category = item.dataset.category;
+      const subs = categoryMap[category];
+      if (!subs) return;
+
+      mobileSubList.innerHTML = '';
+      subs.forEach(sub => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = `/products/${category}/${sub}`;
+        a.textContent = capitalize(sub);
+        li.appendChild(a);
+        mobileSubList.appendChild(li);
+      });
+
+      catList.style.display = 'none';
+      subList.style.display = 'block';
+    });
+
+    backBtn.addEventListener('click', () => {
+      subList.style.display = 'none';
+      catList.style.display = 'block';
     });
   });
 </script>
