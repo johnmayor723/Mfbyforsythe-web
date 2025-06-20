@@ -166,15 +166,7 @@
                             </div>
                             <h5>£<%= product.price %></h5>
                            
-                            <div class="product__color__select">
-                                <% if(product.colors && product.colors.length) { %>
-                                    <% product.colors.forEach(function(color, index) { %>
-                                        <label for="pc-<%= product._id %>-<%= index %>" class="<%= color.toLowerCase() %>">
-                                            <input type="radio" id="pc-<%= product._id %>-<%= index %>" name="color-<%= product._id %>">
-                                        </label>
-                                    <% }); %>
-                                <% } %>
-                            </div>
+
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,3 @@
-
 <!-- Product Drafts Section -->
 <div class="container mt-5">
   <h3 class="mb-3">Product Drafts</h3>
@@ -7,14 +6,15 @@
     <%= success_msg %>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
-<% } %>
+  <% } %>
 
-<% if (error_msg) { %>
+  <% if (error_msg) { %>
   <div class="alert alert-danger alert-dismissible fade show" role="alert">
     <%= error_msg %>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
-<% } %>
+  <% } %>
+
   <% if (drafts && drafts.length > 0) { %>
     <div class="row">
       <% drafts.forEach(draft => { %>
@@ -25,30 +25,53 @@
             <% } else { %>
               <img src="/images/placeholder.png" class="card-img-top" alt="No Image">
             <% } %>
-         <div class="card-body">
-  <h5 class="card-title"><%= draft.name %></h5>
-  <p class="card-text"><%= draft.description.substring(0, 100) %>...</p>
-  <p><strong>Price:</strong> ₦<%= draft.price %></p>
-  
-  <!-- Category & Subcategory -->
-  <p><strong>Category:</strong> <%= draft.category %></p>
-  <% if (draft.subcategory) { %>
-    <p><strong>Subcategory:</strong> <%= draft.subcategory %></p>
-  <% } %>
+            <div class="card-body">
+              <h5 class="card-title"><%= draft.name %></h5>
+              <p class="card-text"><%= draft.description.substring(0, 100) %>...</p>
+              <p><strong>Price:</strong> ₦<%= draft.price %></p>
 
-  <div class="d-flex justify-content-between">
-    <a href="/management/preview/<%= draft._id %>/edit" class="btn btn-sm btn-outline-primary">Edit</a>
-    <form action="/management/preview/<%= draft._id %>/delete" method="POST" onsubmit="return confirm('Are you sure?');">
-      <input type="hidden" name="_method" value="DELETE">
-      <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
-    </form>
-  </div>
-</div>
+              <p><strong>Category:</strong> <%= draft.category %></p>
+              <% if (draft.subcategory) { %>
+                <p><strong>Subcategory:</strong> <%= draft.subcategory %></p>
+              <% } %>
+
+              <div class="d-flex justify-content-between flex-wrap gap-2">
+                <a href="/management/preview/<%= draft._id %>/edit" class="btn btn-sm btn-outline-primary">Edit</a>
+
+                <!-- Delete Form -->
+                <form action="/management/preview/<%= draft._id %>/delete" method="POST" onsubmit="return confirm('Are you sure?');">
+                  <input type="hidden" name="_method" value="DELETE">
+                  <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                </form>
+
+                <!-- Individual Publish Form -->
+                <form action="/management/product" method="POST">
+                  <input type="hidden" name="name" value="<%= draft.name %>">
+                  <input type="hidden" name="description" value="<%= draft.description %>">
+                  <input type="hidden" name="price" value="<%= draft.price %>">
+                  <input type="hidden" name="category" value="<%= draft.category %>">
+                  <input type="hidden" name="subcategory" value="<%= draft.subcategory %>">
+                  
+                  <% if (draft.images && draft.images.length > 0) { %>
+                    <% draft.images.forEach((img, i) => { %>
+                      <input type="hidden" name="images[]" value="<%= img %>">
+                    <% }) %>
+                  <% } %>
+
+                  <% if (draft.buyingOptions) { %>
+                    <input type="hidden" name="buyingOptions" value='<%= JSON.stringify(draft.buyingOptions) %>'>
+                  <% } %>
+
+                  <button type="submit" class="btn btn-sm btn-outline-success">Publish</button>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       <% }); %>
     </div>
-    <!-- Publish Button -->
+
+    <!-- Publish All Button -->
     <div class="text-end">
       <form action="/management/products/publish" method="POST">
         <button type="submit" class="btn btn-success">Publish Products</button>

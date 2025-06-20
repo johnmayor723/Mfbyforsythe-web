@@ -59,35 +59,75 @@ router.get('/products/new', async (req, res) => {
   }
 });
 
+router.post(
+  '/products/preview',
+  upload.fields([
+    { name: 'images', maxCount: 20 },
+    { name: 'buyingOptionImages', maxCount: 50 }
+  ]),
+  async (req, res) => {
+    try {
+      // For debugging
+      console.log('Raw body:', req.body);
+      const imageUrls = (req.files['images'] || []).map(file => `/uploads/${file.filename}`);
+      const buyingOptionFiles = req.files['buyingOptionImages'] || [];
 
+      console.log('Uploaded buyingOptionImages:', buyingOptionFiles.map(f => f.filename));
 
-// Create new product (staged)
-router.post('/products/preview', upload.array('images'), async (req, res) => {
-  try {
-    const imageUrls = req.files.map(file => `/uploads/${file.filename}`);
+      // Extract option names array safely
+      const names = Array.isArray(req.body.optionNames) ? req.body.optionNames : [req.body.optionNames];
 
-    const newProduct = {
-      name: req.body.name,
-      description: req.body.description,
-      size: req.body.size,
-      price: req.body.price,
-      colors: Array.isArray(req.body.colors) ? req.body.colors : [req.body.colors],
-      images: imageUrls
-    };
+      // Build buyingOptions array by indexing colors, sizes and images
+      const buyingOptions = names.map((name, i) => {
+        // Note: Colors and sizes are arrays with names like optionColors[i], optionSizes[i]
+        const colorsRaw = req.body.optionColors ? req.body.optionColors[i] : undefined;
+        const sizesRaw = req.body.optionSizes ? req.body.optionSizes[i] : undefined;
 
-    const response = await axios.post(`${API_BASE_URL}/preview`, newProduct); // Staging endpoint
+        // Normalize colors and sizes to arrays
+        const colors = Array.isArray(colorsRaw) ? colorsRaw : colorsRaw ? [colorsRaw] : [];
+        const sizes = Array.isArray(sizesRaw) ? sizesRaw : sizesRaw ? [sizesRaw] : [];
 
-    if (response.status === 201 || response.status === 200) {
-      console.log('Draft created:', response.data);
-      res.redirect('/management/products/new');
-    } else {
-      res.status(response.status).send('Failed to create draft product');
+        // Match image file by index if exists
+        const imageFile = buyingOptionFiles[i];
+        const image = imageFile ? `/uploads/${imageFile.filename}` : null;
+
+        return {
+          name,
+          colors,
+          sizes,
+          image
+        };
+      });
+
+      console.log('Processed buyingOptions:', buyingOptions);
+
+      const newProduct = {
+        name: req.body.name,
+        price: req.body.price,
+        description: req.body.description,
+        buyingOptions,
+        images: imageUrls,
+        category: req.body.category,
+        subcategory: req.body.subcategory
+      };
+
+      console.log('Final newProduct payload:', newProduct);
+
+      const response = await axios.post(`${API_BASE_URL}/preview`, newProduct);
+
+      if (response.status === 201 || response.status === 200) {
+        console.log('Draft created:', response.data);
+        return res.redirect('/management/products/new');
+      } else {
+        return res.status(response.status).send('Failed to create draft product');
+      }
+    } catch (error) {
+      console.error('Error creating preview product:', error.message);
+      res.status(500).send('Error creating preview product');
     }
-  } catch (error) {
-    console.error('Error creating preview product:', error.message);
-    res.status(500).send('Error creating preview product');
   }
-});
+);
+
 // get edit before Publish
 router.get('/preview/:id/edit', async (req, res) => {
   try {
@@ -133,57 +173,159 @@ router.get('/preview/:id/edit', async (req, res) => {
   }
 });
 
-router.put('/preview/:id/', upload.array('images'), async (req, res) => {
+
+router.post('/products/edit/:id', upload.fields([
+  { name: 'images', maxCount: 20 },
+  { name: 'buyingOptionImages', maxCount: 50 }
+]), async (req, res) => {
   try {
-    console.log('Updating product...');
-    console.log('Files:', req.files);
-    console.log('Body:', req.body);
+    const productId = req.params.id;
 
-    // New uploaded image URLs
-    const newImageUrls = req.files.map(file => `/uploads/${file.filename}`);
+    // Debug logs
+    console.log('--- Incoming Edit Product Request ---');
+    console.log('Product ID:', productId);
+    console.log('Raw req.body:', JSON.stringify(req.body, null, 2));
+    console.log('Uploaded Product Images:', (req.files['images'] || []).map(f => f.filename));
+    console.log('Uploaded Buying Option Images:', (req.files['buyingOptionImages'] || []).map(f => f.filename));
 
-    // Images user wants to keep from existing images
-    // If only one checkbox selected, req.body.keepImages can be a string, else array
-    let keptImages = [];
-    if (req.body.keepImages) {
-      if (Array.isArray(req.body.keepImages)) {
-        keptImages = req.body.keepImages;
-      } else {
-        keptImages = [req.body.keepImages];
-      }
-    }
+    // Handle retained product images
+    const keptImages = req.body.keptImages 
+      ? (Array.isArray(req.body.keptImages) ? req.body.keptImages : [req.body.keptImages])
+      : [];
 
-    // Combine kept existing images + newly uploaded images
-    const combinedImages = [...keptImages, ...newImageUrls];
+    const newImages = (req.files['images'] || []).map(file => `/uploads/${file.filename}`);
+    const imageUrls = [...keptImages, ...newImages];
 
-    // Handle size and colors to always be arrays
-    const sizes = Array.isArray(req.body.size) ? req.body.size : req.body.size ? [req.body.size] : [];
-    const colors = Array.isArray(req.body.colors) ? req.body.colors : req.body.colors ? [req.body.colors] : [];
+    const price = req.body.price;
+    const uploadedBuyingOptionFiles = req.files['buyingOptionImages'] || [];
+
+    const names = Array.isArray(req.body.optionNames) ? req.body.optionNames : [req.body.optionNames];
+
+    // Handle kept buying option images
+    const keptBuyingOptionImagesRaw = req.body.keptBuyingOptionImages || [];
+    const keptBuyingOptionImages = Array.isArray(keptBuyingOptionImagesRaw)
+      ? keptBuyingOptionImagesRaw
+      : [keptBuyingOptionImagesRaw];
+
+    const buyingOptions = names.map((name, i) => {
+      const colorsRaw = req.body.optionColors ? req.body.optionColors[i] : undefined;
+      const sizesRaw = req.body.optionSizes ? req.body.optionSizes[i] : undefined;
+
+      const colors = Array.isArray(colorsRaw) ? colorsRaw : colorsRaw ? [colorsRaw] : [];
+      const sizes = Array.isArray(sizesRaw) ? sizesRaw : sizesRaw ? [sizesRaw] : [];
+
+      const uploadedImageFile = uploadedBuyingOptionFiles[i];
+      const uploadedImage = uploadedImageFile ? `/uploads/${uploadedImageFile.filename}` : null;
+
+      const keptImage = keptBuyingOptionImages[i] || null;
+
+      const imageArray = [];
+      if (keptImage) imageArray.push(keptImage);
+      if (uploadedImage) imageArray.push(uploadedImage);
+
+      const option = { name, colors, sizes, image: imageArray };
+      console.log(`Processed Buying Option [${i}]:`, JSON.stringify(option, null, 2));
+      return option;
+    });
 
     const updatedProduct = {
       name: req.body.name,
       description: req.body.description,
-      size: sizes,
-      price: req.body.price,
-      colors: colors,
-      images: combinedImages,
+      buyingOptions,
+      images: imageUrls,
+      price,
       category: req.body.category,
       subcategory: req.body.subcategory
     };
 
-    console.log('Payload to API:', updatedProduct);
-    const response = await axios.put(`${API_BASE_URL}/preview/${req.params.id}`, updatedProduct);
-    console.log('API Response:', response.data);
+    console.log('--- Final Updated Product Payload ---');
+    console.log(JSON.stringify(updatedProduct, null, 2));
 
-    res.redirect('/management/products/new');
-  } catch (error) {
-    console.error('Update Error:', error.message);
-    if (error.response) {
-      console.error('Backend Response:', error.response.data);
+    const response = await axios.put(`${API_BASE_URL}/preview/${productId}`, updatedProduct);
+
+    if (response.status === 200) {
+      console.log('✅ Product updated successfully:', response.data);
+      return res.redirect(`/management/products/new`);
+    } else {
+      console.warn('⚠️ Failed to update product. Status:', response.status);
+      return res.status(response.status).send('Failed to update product');
     }
-    res.status(500).send('Error updating preview product');
+
+  } catch (error) {
+    console.error('❌ Error updating product:', error.message);
+    res.status(500).send('Error updating product');
   }
 });
+
+/*
+
+router.post('/products/edit/:id', upload.fields([
+  { name: 'images', maxCount: 20 },
+  { name: 'buyingOptionImages', maxCount: 50 }
+]), async (req, res) => {
+  try {
+    const productId = req.params.id;
+
+    // Log incoming request data
+    console.log('--- Incoming Edit Product Request ---');
+    console.log('Product ID:', productId);
+    console.log('Raw req.body:', JSON.stringify(req.body, null, 2));
+    console.log('Uploaded Product Images:', (req.files['images'] || []).map(f => f.filename));
+    console.log('Uploaded Buying Option Images:', (req.files['buyingOptionImages'] || []).map(f => f.filename));
+    
+    // Process uploaded product images
+    const imageUrls = (req.files['images'] || []).map(file => `/uploads/${file.filename}`);
+    const price = req.body.price;
+    const buyingOptionFiles = req.files['buyingOptionImages'] || [];
+    const names = Array.isArray(req.body.optionNames) ? req.body.optionNames : [req.body.optionNames];
+
+    // Build the buyingOptions array
+    const buyingOptions = names.map((name, i) => {
+      const colorsRaw = req.body.optionColors ? req.body.optionColors[i] : undefined;
+      const sizesRaw = req.body.optionSizes ? req.body.optionSizes[i] : undefined;
+
+      const colors = Array.isArray(colorsRaw) ? colorsRaw : colorsRaw ? [colorsRaw] : [];
+      const sizes = Array.isArray(sizesRaw) ? sizesRaw : sizesRaw ? [sizesRaw] : [];
+
+      const imageFile = buyingOptionFiles[i];
+      const image = imageFile ? `/uploads/${imageFile.filename}` : null;
+
+      const option = { name, colors, sizes, image };
+      console.log(`Processed Buying Option [${i}]:`, JSON.stringify(option, null, 2));
+      return option;
+    });
+
+    // Construct the updated product object
+    const updatedProduct = {
+      name: req.body.name,
+      description: req.body.description,
+      buyingOptions,
+      images: imageUrls,
+      price,
+      category: req.body.category,
+      subcategory: req.body.subcategory
+    };
+
+    console.log('--- Final Updated Product Payload ---');
+    console.log(JSON.stringify(updatedProduct, null, 2));
+
+    // Send update request to API
+    const response = await axios.put(`${API_BASE_URL}/preview/${productId}`, updatedProduct);
+
+    // Handle API response
+    if (response.status === 200) {
+      console.log('✅ Product updated successfully:', response.data);
+      return res.redirect(`/management/products/new`);
+    } else {
+      console.warn('⚠️ Failed to update product. Status:', response.status);
+      return res.status(response.status).send('Failed to update product');
+    }
+
+  } catch (error) {
+    console.error('❌ Error updating product:', error.message);
+    res.status(500).send('Error updating product');
+  }
+});*/
 
 // Create new product
 router.post('/products', upload.array('images', 10), async (req, res) => {
@@ -205,7 +347,27 @@ router.post('/products', upload.array('images', 10), async (req, res) => {
     res.status(500).send('Error creating product');
   }
 });
+router.post('/product', async (req, res) => {
+  try {
+    const newProduct = {
+      name: req.body.name,
+      description: req.body.description,
+      price: req.body.price,
+      category: req.body.category,
+      subcategory: req.body.subcategory,
+    
+      colors: Array.isArray(req.body.colors) ? req.body.colors : [req.body.colors],
+      images: Array.isArray(req.body.images) ? req.body.images : [req.body.images],
+      buyingOptions: req.body.buyingOptions ? JSON.parse(req.body.buyingOptions) : []
+    };
 
+    await axios.post(API_BASE_URL, newProduct);
+    res.redirect('/management/products');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error creating product');
+  }
+});
 // Update product
 router.post('/products/:id/update', upload.array('images', 5), async (req, res) => {
   try {

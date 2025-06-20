@@ -127,6 +127,10 @@ router.get('/register', (req, res) => {
 // Handle Login Submission
 router.post('/login', async (req, res) => {
     try {
+        // In your route handler
+if (req.body.companyName) {
+  return res.status(400).send('Bot detected');
+}
         const response = await axios.post('http://93.127.160.233:3060/api/auth/login', req.body);
         
         if (response.status === 200) {
@@ -144,6 +148,10 @@ router.post('/login', async (req, res) => {
 router.post('/register', async (req, res) => {
     try {
         const {email, name , password} = req.body;
+        // In your route handler
+if (req.body.companyName) {
+  return res.status(400).send('Bot detected');
+}
         const response = await axios.post('http://93.127.160.233:3060/api/auth/register', req.body);
         
         if (response.status === 201) {
@@ -168,6 +176,36 @@ router.get('/products/:id', async (req, res) => {
   }
 });
 
+router.post('/buying-options/:id', async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const buyingOptionName = req.body.buyingOptionId;  // This holds the buying option name now
+
+    console.log('Product ID:', productId);
+    console.log('Buying Option Name from form:', buyingOptionName);
+
+    const response = await axios.get(`${API_URL}/${productId}`);
+    const product = response.data;
+    const price = product.price
+
+    if (!product.buyingOptions || !Array.isArray(product.buyingOptions)) {
+      return res.status(500).send('Invalid product data: buyingOptions missing');
+    }
+
+    // Find the buying option by comparing the name
+    const selectedOption = product.buyingOptions.find(opt => opt.name === buyingOptionName);
+
+    if (!selectedOption) {
+      return res.status(404).send('Selected buying option not found');
+    }
+
+    res.render('buying-options', { product: selectedOption, productId, price });
+
+  } catch (error) {
+    console.error('Error:', error.message);
+    res.status(500).send('An error occurred');
+  }
+});
 
 
 // Product categories route

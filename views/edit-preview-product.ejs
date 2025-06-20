@@ -69,47 +69,58 @@
 <!-- Hidden input with existing subcategory (for JS preselection) -->
 <input type="hidden" id="existingSubcategory" value="<%= product?.subcategory || '' %>">
 
-    <div id="buying-options">
-      <label class="form-label">Buying Options</label>
-      <% if (product.buyingOptions && product.buyingOptions.length > 0) { %>
-        <% product.buyingOptions.forEach((option, index) => { %>
-          <div class="card p-3 mb-3 buying-option">
-            <input type="hidden" name="existingOptionIndexes[]" value="<%= index %>">
+   <div id="buying-options">
+  <label class="form-label">Buying Options</label>
+  <% if (product.buyingOptions && product.buyingOptions.length > 0) { %>
+    <% product.buyingOptions.forEach((option, index) => { 
+         const name = option?.name || '';
+         const colors = Array.isArray(option?.colors) ? option.colors : [];
+         const sizes = Array.isArray(option?.sizes) ? option.sizes : [];
+         const image = option?.image || null;
+    %>
+      <div class="card p-3 mb-3 buying-option">
+        <input type="hidden" name="existingOptionIndexes[]" value="<%= index %>">
 
-            <div class="mb-2">
-              <label>Option Name</label>
-              <input type="text" name="optionNames[]" value="<%= option.name %>" class="form-control" required>
-            </div>
+        <div class="mb-2">
+          <label>Option Name</label>
+          <input type="text" name="optionNames[]" value="<%= name %>" class="form-control" required>
+        </div>
 
-            <div class="mb-2">
-              <label>Colors</label><br>
-              <% ['Red','Blue','Black','White','Green'].forEach(color => { %>
-                <label><input type="checkbox" name="optionColors[<%= index %>][]" value="<%= color %>" <%= option.colors && option.colors.includes(color) ? 'checked' : '' %>> <%= color %></label>
-              <% }); %>
-            </div>
+        <div class="mb-2">
+          <label>Colors</label><br>
+          <% ['Red','Blue','Black','White','Green'].forEach(color => { %>
+            <label>
+              <input type="checkbox" name="optionColors[<%= index %>][]" value="<%= color %>" 
+                <%= colors.includes(color) ? 'checked' : '' %>> <%= color %>
+            </label>
+          <% }); %>
+        </div>
 
-            <div class="mb-2">
-              <label>Sizes</label><br>
-              <% ['S','M','L','XL'].forEach(size => { %>
-                <label><input type="checkbox" name="optionSizes[<%= index %>][]" value="<%= size %>" <%= option.sizes && option.sizes.includes(size) ? 'checked' : '' %>> <%= size %></label>
-              <% }); %>
-            </div>
+        <div class="mb-2">
+          <label>Sizes</label><br>
+          <% ['S','M','L','XL'].forEach(size => { %>
+            <label>
+              <input type="checkbox" name="optionSizes[<%= index %>][]" value="<%= size %>" 
+                <%= sizes.includes(size) ? 'checked' : '' %>> <%= size %>
+            </label>
+          <% }); %>
+        </div>
 
-            <div class="mb-2">
-              <label>Current Option Image</label><br>
-              <% if (option.image) { %>
-                <input type="hidden" name="keptBuyingOptionImages[]" value="<%= option.image %>">
-                <img src="<%= option.image %>" height="80">
-              <% } %>
-              <input type="file" name="buyingOptionImages" class="form-control option-image-input mt-2">
-              <img class="img-preview mt-2" style="display:none;" height="80">
-            </div>
+        <div class="mb-2">
+          <label>Current Option Image</label><br>
+          <% if (image) { %>
+            <input type="hidden" name="keptBuyingOptionImages[]" value="<%= image %>">
+            <img src="<%= image %>" height="80">
+          <% } %>
+          <input type="file" name="buyingOptionImages" class="form-control option-image-input mt-2">
+          <img class="img-preview mt-2" style="display:none;" height="80">
+        </div>
 
-            <button type="button" class="btn btn-danger btn-sm remove-buying-option">Remove</button>
-          </div>
-        <% }); %>
-      <% } %>
-    </div>
+        <button type="button" class="btn btn-danger btn-sm remove-buying-option">Remove</button>
+      </div>
+    <% }); %>
+  <% } %>
+</div>
 
     <button type="button" class="btn btn-secondary mb-3" id="add-buying-option">+ Add More Buying Options</button>
 

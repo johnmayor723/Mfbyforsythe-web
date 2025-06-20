@@ -1,4 +1,30 @@
+<style>
+.style-card {
+  height: 110px;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: background-color 0.2s ease;
+  padding: 0 10px;
+}
 
+.style-card:hover {
+  background-color: #f8f9fa;
+}
+
+.style-card-img-wrapper {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.style-card-img {
+  height: 75px;
+  width: 75px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+</style>
     <!-- Page Preloder -->
     <div id="preloder">
         <div class="loader"></div>
@@ -91,62 +117,33 @@
                                 <span> - 5 Reviews</span>
                             </div>
                             <h3>£ <%=product.price %> <span>70.00</span></h3>
-                            <p><%=product.description %>.</p>
-                            <div class="product__details__option">
-                                <div class="product__details__option__size">
-                                    <span>Size:</span>
-                                    <label for="xxl">xxl
-                                        <input type="radio" id="xxl">
-                                    </label>
-                                    <label class="active" for="xl">xl
-                                        <input type="radio" id="xl">
-                                    </label>
-                                    <label for="l">l
-                                        <input type="radio" id="l">
-                                    </label>
-                                    <label for="sm">s
-                                        <input type="radio" id="sm">
-                                    </label>
-                                </div>
-                                <div class="product__details__option__color">
-                                    <span>Color:</span>
-                                    <label class="c-1" for="sp-1">
-                                        <input type="radio" id="sp-1">
-                                    </label>
-                                    <label class="c-2" for="sp-2">
-                                        <input type="radio" id="sp-2">
-                                    </label>
-                                    <label class="c-3" for="sp-3">
-                                        <input type="radio" id="sp-3">
-                                    </label>
-                                    <label class="c-4" for="sp-4">
-                                        <input type="radio" id="sp-4">
-                                    </label>
-                                    <label class="c-9" for="sp-9">
-                                        <input type="radio" id="sp-9">
-                                    </label>
-                                </div>
-                            </div>
-                            <form action="/cart/<%= product._id %>" method="post">
-                                 <input type="hidden" name="name" value="<%= product.name %>">
-    <input type="hidden" name="imageUrl" value="<%= product.images[0] %>">
-    <input type="hidden" name="price" value="<%= product.price %>">
-                            <div class="product__details__cart__option">
-                                <div class="quantity">
-                                    <div class="pro-qty">
-                                        <input type="text" value="1"  name="qty" >
-                                    </div>
-                                </div>
-                         
-   
-                                <input type="submit"  class="primary-btn" value="add to cart">
 
-                            </div>
-                                                 </form>
-                            <div class="product__details__btns__option">
-                                <a href="#"><i class="fa fa-heart"></i> add to wishlist</a>
-                                <a href="#"><i class="fa fa-exchange"></i> Add To Compare</a>
-                            </div>
+<!-- Available Styles Section -->
+<% if (product.buyingOptions && product.buyingOptions.length > 0) { %>
+  <div class="available-styles mt-4">
+    <h4 class="fw-bold mb-3">Available Styles</h4>
+    <div class="row">
+      <% product.buyingOptions.forEach(function(option) { %>
+        <div class="col-lg-6 col-12 mb-3">
+          <form method="POST" action="/buying-options/<%= product._id %>" class="card d-flex flex-row align-items-center justify-content-between shadow-sm style-card">
+            <input type="hidden" name="buyingOptionId" value="<%= option.name %>">
+            <div class="style-card-img-wrapper">
+                     <!-- Left: Image + Name vertically stacked -->
+            <div class="d-flex flex-column align-items-center text-center me-3">
+              <img src="<%= option.image %>" alt="<%= option.name %>" class="img-fluid style-card-img mb-1">
+              <div class="fw-bold" style="color: red;"><h6><%= option.name %></h6></div>
+            </div>
+            </div>
+            <div class="flex-grow-1 text-end pe-3 d-flex justify-content-between align-items-center">
+              <h6 class="mb-0 text-dark fw-semibold me-3"><%= %></h6>
+              <button type="submit" class="btn btn-sm btn-primary">Buy Now</button>
+            </div>
+          </form>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+<% } %>
                             <div class="product__details__last__option">
                                 <h5><span>Guaranteed Safe Checkout</span></h5>
                                 <img src="img/shop-details/details-payment.png" alt="">
@@ -167,37 +164,14 @@
                                     <a class="nav-link active" data-toggle="tab" href="#tabs-5"
                                     role="tab">Description</a>
                                 </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#tabs-6" role="tab">Customer
-                                    Previews(5)</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#tabs-7" role="tab">Additional
-                                    information</a>
-                                </li>
+                               
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tabs-5" role="tabpanel">
                                     <div class="product__details__tab__content">
-                                        <p class="note">Nam tempus turpis at metus scelerisque placerat nulla deumantos
-                                            solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis
-                                            ut risus. Sedcus faucibus an sullamcorper mattis drostique des commodo
-                                        pharetras loremos.</p>
+                                       
                                         <div class="product__details__tab__content__item">
-                                            <h5>Products Infomation</h5>
-                                            <p>A Pocket PC is a handheld computer, which features many of the same
-                                                capabilities as a modern PC. These handy little devices allow
-                                                individuals to retrieve and store e-mail messages, create a contact
-                                                file, coordinate appointments, surf the internet, exchange text messages
-                                                and more. Every product that is labeled as a Pocket PC must be
-                                                accompanied with specific software to operate the unit and must feature
-                                            a touchscreen and touchpad.</p>
-                                            <p>As is the case with any new technology product, the cost of a Pocket PC
-                                                was substantial during it’s early release. For approximately $700.00,
-                                                consumers could purchase one of top-of-the-line Pocket PCs in 2003.
-                                                These days, customers are finding that prices have become much more
-                                                reasonable now that the newness is wearing off. For approximately
-                                            $350.00, a new Pocket PC can now be purchased.</p>
+                                            <h5>Products Infomation</h5>                            <p><%=product.description %>.</p>
                                         </div>
                                         <div class="product__details__tab__content__item">
                                             <h5>Material used</h5>
@@ -214,64 +188,21 @@
                                 <div class="tab-pane" id="tabs-6" role="tabpanel">
                                     <div class="product__details__tab__content">
                                         <div class="product__details__tab__content__item">
-                                            <h5>Products Infomation</h5>
-                                            <p>A Pocket PC is a handheld computer, which features many of the same
-                                                capabilities as a modern PC. These handy little devices allow
-                                                individuals to retrieve and store e-mail messages, create a contact
-                                                file, coordinate appointments, surf the internet, exchange text messages
-                                                and more. Every product that is labeled as a Pocket PC must be
-                                                accompanied with specific software to operate the unit and must feature
-                                            a touchscreen and touchpad.</p>
-                                            <p>As is the case with any new technology product, the cost of a Pocket PC
-                                                was substantial during it’s early release. For approximately $700.00,
-                                                consumers could purchase one of top-of-the-line Pocket PCs in 2003.
-                                                These days, customers are finding that prices have become much more
-                                                reasonable now that the newness is wearing off. For approximately
-                                            $350.00, a new Pocket PC can now be purchased.</p>
+                                            
                                         </div>
                                         <div class="product__details__tab__content__item">
-                                            <h5>Material used</h5>
-                                            <p>Polyester is deemed lower quality due to its none natural quality’s. Made
-                                                from synthetic materials, not natural like wool. Polyester suits become
-                                                creased easily and are known for not being breathable. Polyester suits
-                                                tend to have a shine to them compared to wool and cotton suits, this can
-                                                make the suit look cheap. The texture of velvet is luxurious and
-                                                breathable. Velvet is a great choice for dinner party jacket and can be
-                                            worn all year round.</p>
+                                            
                                         </div>
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="tabs-7" role="tabpanel">
                                     <div class="product__details__tab__content">
-                                        <p class="note">Nam tempus turpis at metus scelerisque placerat nulla deumantos
-                                            solicitud felis. Pellentesque diam dolor, elementum etos lobortis des mollis
-                                            ut risus. Sedcus faucibus an sullamcorper mattis drostique des commodo
-                                        pharetras loremos.</p>
+                                        
                                         <div class="product__details__tab__content__item">
-                                            <h5>Products Infomation</h5>
-                                            <p>A Pocket PC is a handheld computer, which features many of the same
-                                                capabilities as a modern PC. These handy little devices allow
-                                                individuals to retrieve and store e-mail messages, create a contact
-                                                file, coordinate appointments, surf the internet, exchange text messages
-                                                and more. Every product that is labeled as a Pocket PC must be
-                                                accompanied with specific software to operate the unit and must feature
-                                            a touchscreen and touchpad.</p>
-                                            <p>As is the case with any new technology product, the cost of a Pocket PC
-                                                was substantial during it’s early release. For approximately $700.00,
-                                                consumers could purchase one of top-of-the-line Pocket PCs in 2003.
-                                                These days, customers are finding that prices have become much more
-                                                reasonable now that the newness is wearing off. For approximately
-                                            $350.00, a new Pocket PC can now be purchased.</p>
+                                            
                                         </div>
                                         <div class="product__details__tab__content__item">
-                                            <h5>Material used</h5>
-                                            <p>Polyester is deemed lower quality due to its none natural quality’s. Made
-                                                from synthetic materials, not natural like wool. Polyester suits become
-                                                creased easily and are known for not being breathable. Polyester suits
-                                                tend to have a shine to them compared to wool and cotton suits, this can
-                                                make the suit look cheap. The texture of velvet is luxurious and
-                                                breathable. Velvet is a great choice for dinner party jacket and can be
-                                            worn all year round.</p>
+                                            
                                         </div>
                                     </div>
                                 </div>
