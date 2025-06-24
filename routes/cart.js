@@ -23,7 +23,7 @@ const calculateTotals = (cart) => {
 //route to add a product to cart.
 router.post('/:id', (req, res) => {
     try {
-    const { name, price, imageUrl, qty } = req.body;
+    const { name, price, imageUrl, qty, size, color } = req.body;
     const id = req.params.id
     
     let product = findProductInCart(req.session.cart.items, id);
@@ -31,7 +31,7 @@ router.post('/:id', (req, res) => {
     if (product) {
         product.quantity += qty;
     } else {
-        req.session.cart.items.push({ id, name, imageUrl, price, quantity: qty });
+        req.session.cart.items.push({ id, name, imageUrl,size, color, price, quantity: qty });
     }
     calculateTotals(req.session.cart);
     console.log("Cart Items:", req.session.cart.items);

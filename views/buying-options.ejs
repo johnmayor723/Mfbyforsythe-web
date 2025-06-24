@@ -17,7 +17,7 @@
                             <span>Product Details</span>
                         </div>
                     </div>
-                </div>
+                </div
                 <div class="row">
                     <div class="col-lg-6 col-md-9">
                         <div class="tab-content">
@@ -64,41 +64,48 @@
                             <h3>£ <%=price %> <span>70.00</span></h3>
                             <p><%=product.description %>.</p>
                             <div class="product__details__option">
-                                <div class="product__details__option__size">
-                                    <span>Size:</span>
-                                    <label for="xxl">xxl
-                                        <input type="radio" id="xxl">
-                                    </label>
-                                    <label class="active" for="xl">xl
-                                        <input type="radio" id="xl">
-                                    </label>
-                                    <label for="l">l
-                                        <input type="radio" id="l">
-                                    </label>
-                                    <label for="sm">s
-                                        <input type="radio" id="sm">
-                                    </label>
-                                </div>
-                                <div class="product__details__option__color">
-                                    <span>Color:</span>
-                                    <label class="c-1" for="sp-1">
-                                        <input type="radio" id="sp-1">
-                                    </label>
-                                    <label class="c-2" for="sp-2">
-                                        <input type="radio" id="sp-2">
-                                    </label>
-                                    <label class="c-3" for="sp-3">
-                                        <input type="radio" id="sp-3">
-                                    </label>
-                                    <label class="c-4" for="sp-4">
-                                        <input type="radio" id="sp-4">
-                                    </label>
-                                    <label class="c-9" for="sp-9">
-                                        <input type="radio" id="sp-9">
-                                    </label>
-                                </div>
-                            </div>
-                            <form action="/cart/<%= productId %>" method="post">
+                                <form action="/cart/<%= productId %>" method="post">
+                               <div class="product__details__option__size">
+    <span>Size:</span>
+    <label for="xxl">xxl
+        <input type="radio" id="xxl" name="size" value="xxl">
+    </label>
+    <label class="active" for="xl">xl
+        <input type="radio" id="xl" name="size" value="xl">
+    </label>
+    <label for="l">l
+        <input type="radio" id="l" name="size" value="l">
+    </label>
+    <label for="sm">s
+        <input type="radio" id="sm" name="size" value="s">
+    </label>
+</div>
+<!-- Color Selection -->
+  <div class="mb-3">
+    <strong>Color:</strong>
+    <div class="d-flex flex-wrap">
+      <% const bootstrapColors = {
+          red: 'danger',
+          green: 'success',
+          blue: 'primary',
+          yellow: 'warning',
+          black: 'dark',
+          gray: 'secondary',
+          white: 'light'
+      }; %>
+      <% product.colors.forEach((color, index) => {
+          const badgeColor = bootstrapColors[color.toLowerCase()] || 'secondary';
+          const inputId = `color-${index}`;
+      %>
+        <input type="radio" class="btn-check" name="color" id="<%= inputId %>" value="<%= color %>" autocomplete="off">
+        <label class="badge text-bg-<%= badgeColor %> me-2 mb-2 p-2 cursor-pointer" for="<%= inputId %>">
+          <%= color %>
+        </label>
+      <% }) %>
+    </div>
+  </div>
+
+                            
                                  <input type="hidden" name="name" value="<%= product.name %>">
     <input type="hidden" name="imageUrl" value="<%= product.image %>">
     <input type="hidden" name="price" value="<%= product.price %>">

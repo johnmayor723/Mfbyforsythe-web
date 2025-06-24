@@ -15,7 +15,37 @@ const transporter = nodemailer.createTransport({
 });
 
 
+function formatCart(sessionCart) {
+    const formattedItems = [];
 
+    if (!sessionCart || !sessionCart.items) {
+        return {
+            items: [],
+            totalAmount: 0,
+            totalQty: 0
+        };
+    }
+
+    for (let id in sessionCart.items) {
+        const cartItem = sessionCart.items[id];
+
+        formattedItems.push({
+            productId: id,
+            name: cartItem.item.name,
+            qty: cartItem.qty,
+            price: cartItem.price,
+            size: cartItem.size || null,
+            color: cartItem.color || null,
+            total: cartItem.price * cartItem.qty
+        });
+    }
+
+    return {
+        items: formattedItems,
+        totalAmount: sessionCart.totalAmount || 0,
+        totalQty: sessionCart.totalQty || 0
+    };
+}
 
 // Payment page route
 router.post('/', (req, res, next) => {
@@ -41,6 +71,7 @@ router.post('/charge',  function(req, res, next) {
   }
   console.log(req.body)
   var cart = req.session.cart;
+  const cartContents = formatCart(cart);
   var totalAmount = cart.totalAmount;
   console.log("cart found:", cart)
   console.log("Total amount is:", totalAmount)
@@ -102,7 +133,7 @@ router.get('/callback', async (req, res) => {
     }
 });
 
-router.post('/charge',  function(req, res, next) {
+/*router.post('/charge',  function(req, res, next) {
   
   if (!req.session.cart) {
       return res.redirect('/products');
@@ -135,7 +166,7 @@ router.post('/charge',  function(req, res, next) {
           res.redirect('/');
       });
   }); 
-});
+});*/
 
 router.post('/process', async (req, res) => {
     console.log(req.body); // Logging the incoming request body for debugging
